@@ -26,10 +26,24 @@ jobs:
           test -f .bootstrap/RUN-PR
           test -f .bootstrap/part-001.b64
           test -f .bootstrap/part-006.b64
+
           cat .bootstrap/part-*.b64 | tr -d '\r\n ' > /tmp/orish-v119.b64
-          base64 --decode /tmp/orish-v119.b64 > /tmp/orish-v119.tar.xz
+          base64 --decode /tmp/orish-v119.b64 > /tmp/orish-v119.bundle.xz
+          xz -t /tmp/orish-v119.bundle.xz
+          xz -dc /tmp/orish-v119.bundle.xz > /tmp/orish-v119.bundle
+
           mkdir -p /tmp/orish-v119
-          tar -xJf /tmp/orish-v119.tar.xz -C /tmp/orish-v119
+          if unzip -tqq /tmp/orish-v119.bundle >/dev/null 2>&1; then
+            echo "Detected ZIP payload"
+            unzip -q /tmp/orish-v119.bundle -d /tmp/orish-v119
+          elif tar -tf /tmp/orish-v119.bundle >/dev/null 2>&1; then
+            echo "Detected TAR payload"
+            tar -xf /tmp/orish-v119.bundle -C /tmp/orish-v119
+          else
+            echo "Unsupported decoded payload"
+            file /tmp/orish-v119.bundle || true
+            exit 1
+          fi
 
           SRC=/tmp/orish-v119
           if [ ! -f "$SRC/index.html" ]; then
@@ -38,6 +52,7 @@ jobs:
               SRC="$FIRST_DIR"
             fi
           fi
+
           test -f "$SRC/index.html"
           test -f "$SRC/app.js"
           test -d "$SRC/modules"
