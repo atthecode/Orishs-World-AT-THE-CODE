@@ -24,8 +24,8 @@ jobs:
         run: |
           set -euo pipefail
           test -f .bootstrap/RUN-PR
-          test -f .bootstrap/part-001.b64
-          test -f .bootstrap/part-006.b64
+          test -f .bootstrap/part-000.b64
+          test -f .bootstrap/part-005.b64
 
           : > /tmp/orish-v119.bundle.xz
           for f in .bootstrap/part-*.b64; do
