@@ -27,8 +27,12 @@ jobs:
           test -f .bootstrap/part-001.b64
           test -f .bootstrap/part-006.b64
 
-          cat .bootstrap/part-*.b64 | tr -d '\r\n ' > /tmp/orish-v119.b64
-          base64 --decode /tmp/orish-v119.b64 > /tmp/orish-v119.bundle.xz
+          : > /tmp/orish-v119.bundle.xz
+          for f in .bootstrap/part-*.b64; do
+            echo "Decoding $f"
+            tr -d '\r\n ' < "$f" | base64 --decode >> /tmp/orish-v119.bundle.xz
+          done
+
           xz -t /tmp/orish-v119.bundle.xz
           xz -dc /tmp/orish-v119.bundle.xz > /tmp/orish-v119.bundle
 
