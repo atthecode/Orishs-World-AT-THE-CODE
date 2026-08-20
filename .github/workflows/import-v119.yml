@@ -1,27 +1,31 @@
 name: Import Orish World V1.19
 
 on:
-  push:
+  pull_request:
     branches: [main]
     paths:
-      - '.bootstrap/READY'
+      - '.bootstrap/RUN-PR'
 
 permissions:
   contents: write
+  pull-requests: read
 
 jobs:
   unpack-v119:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out private repository
+      - name: Check out import branch
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Rebuild and extract V1.19 package
         shell: bash
         run: |
           set -euo pipefail
-          test -f .bootstrap/READY
+          test -f .bootstrap/RUN-PR
           test -f .bootstrap/part-001.b64
+          test -f .bootstrap/part-006.b64
           cat .bootstrap/part-*.b64 | tr -d '\r\n ' > /tmp/orish-v119.b64
           base64 --decode /tmp/orish-v119.b64 > /tmp/orish-v119.tar.xz
           mkdir -p /tmp/orish-v119
@@ -65,7 +69,7 @@ jobs:
           for f in modules/*.js; do node --check "$f"; done
           echo "Imported files: $(find . -type f ! -path './.git/*' | wc -l)"
 
-      - name: Commit extracted V1.19 app
+      - name: Commit extracted V1.19 app to import branch
         shell: bash
         run: |
           set -euo pipefail
@@ -73,4 +77,4 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -m "Import complete Orish's World V1.19 app"
-          git push
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
