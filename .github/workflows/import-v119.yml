@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - '.bootstrap/RUN-PR'
+      - 'Orishs-World-AT-THE-CODE-v1.19-release-ready.zip'
 
 permissions:
   contents: write
@@ -20,125 +20,82 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
 
-      - name: Rebuild and extract V1.19 package
+      - name: Verify and extract original V1.19 release ZIP
         shell: bash
         run: |
           set -euo pipefail
-          test -f .bootstrap/RUN-PR
-          test -f .bootstrap/part-000.b64
-          test -f .bootstrap/part-010.b64
+          ZIP='Orishs-World-AT-THE-CODE-v1.19-release-ready.zip'
+          EXPECTED_SHA256='2e912784ef993488e73f43b696a03e4fddac1553d2688c058340b4730911baf1'
 
-          echo "Bootstrap diagnostics"
-          for f in .bootstrap/part-*.b64; do
-            size=$(wc -c < "$f" | tr -d ' ')
-            clean=$(LC_ALL=C tr -cd 'A-Za-z0-9+/=' < "$f" | wc -c | tr -d ' ')
-            invalid=$(LC_ALL=C grep -o '[^A-Za-z0-9+/=[:space:]]' "$f" 2>/dev/null | wc -l || true)
-            echo "$(basename "$f"): chars=$size clean=$clean invalid=$invalid"
-          done
-
-          python3 - <<'PY'
-          from pathlib import Path
-          allowed = set('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=\r\n \t')
-          for p in sorted(Path('.bootstrap').glob('part-*.b64')):
-              s = p.read_text()
-              bad = [i for i, ch in enumerate(s) if ch not in allowed]
-              if bad:
-                  print(f'WRAPPER CONTEXT {p.name}')
-                  seen = set()
-                  for i in bad:
-                      a, b = max(0, i-35), min(len(s), i+36)
-                      ctx = repr(s[a:b])
-                      if ctx not in seen:
-                          print(ctx)
-                          seen.add(ctx)
-          PY
-
-          # Part 006 was shortened during an earlier repair attempt. Recover its
-          # complete pre-repair contents, then strip only wrapper/formatting
-          # characters from every chunk. This preserves the Base64 payload.
-          ORIGINAL_PART006_COMMIT="3426abd61bfd2c64b076a6b0dff54c7387930e49"
-          TMP_B64=/tmp/orish-v119.b64
-          : > "$TMP_B64"
-
-          for f in .bootstrap/part-*.b64; do
-            name=$(basename "$f")
-            if [ "$name" = "part-006.b64" ]; then
-              git show "${ORIGINAL_PART006_COMMIT}:.bootstrap/part-006.b64" \
-                | LC_ALL=C tr -cd 'A-Za-z0-9+/=' >> "$TMP_B64"
-            else
-              LC_ALL=C tr -cd 'A-Za-z0-9+/=' < "$f" >> "$TMP_B64"
-            fi
-          done
-
-          combined=$(wc -c < "$TMP_B64" | tr -d ' ')
-          echo "Combined cleaned base64 chars: $combined"
-          if [ $((combined % 4)) -ne 0 ]; then
-            echo "Cleaned Base64 length is not divisible by 4"
-            exit 1
+          # A follow-up synchronize event can occur after the workflow removes
+          # the ZIP. Treat that as an already-completed import, not a failure.
+          if [ ! -f "$ZIP" ]; then
+            echo 'Release ZIP is no longer present; import has already been applied.'
+            exit 0
           fi
 
-          base64 --decode "$TMP_B64" > /tmp/orish-v119.bundle.xz
-          xz -t /tmp/orish-v119.bundle.xz
-          xz -dc /tmp/orish-v119.bundle.xz > /tmp/orish-v119.bundle
+          ACTUAL_SHA256=$(sha256sum "$ZIP" | awk '{print $1}')
+          echo "Release ZIP SHA256: $ACTUAL_SHA256"
+          test "$ACTUAL_SHA256" = "$EXPECTED_SHA256"
+          unzip -tqq "$ZIP"
 
+          rm -rf /tmp/orish-v119
           mkdir -p /tmp/orish-v119
-          if unzip -tqq /tmp/orish-v119.bundle >/dev/null 2>&1; then
-            echo "Detected ZIP payload"
-            unzip -q /tmp/orish-v119.bundle -d /tmp/orish-v119
-          elif tar -tf /tmp/orish-v119.bundle >/dev/null 2>&1; then
-            echo "Detected TAR payload"
-            tar -xf /tmp/orish-v119.bundle -C /tmp/orish-v119
-          else
-            echo "Unsupported decoded payload"
-            file /tmp/orish-v119.bundle || true
-            exit 1
-          fi
+          unzip -q "$ZIP" -d /tmp/orish-v119
 
-          SRC=/tmp/orish-v119
-          if [ ! -f "$SRC/index.html" ]; then
-            FIRST_DIR="$(find "$SRC" -mindepth 1 -maxdepth 1 -type d | head -n 1 || true)"
-            if [ -n "$FIRST_DIR" ] && [ -f "$FIRST_DIR/index.html" ]; then
-              SRC="$FIRST_DIR"
-            fi
-          fi
-
+          SRC='/tmp/orish-v119/orishs-world-v1.19'
           test -f "$SRC/index.html"
           test -f "$SRC/app.js"
+          test -f "$SRC/styles.css"
+          test -f "$SRC/manifest.webmanifest"
+          test -f "$SRC/service-worker.js"
           test -d "$SRC/modules"
           test -d "$SRC/assets"
 
+          # Preserve git metadata and this workflow while replacing the
+          # temporary bootstrap with the exact release-ready app.
           find . -mindepth 1 -maxdepth 1 \
             ! -name '.git' \
             ! -name '.github' \
-            ! -name '.bootstrap' \
+            ! -name "$ZIP" \
             -exec rm -rf {} +
           cp -a "$SRC"/. .
+          rm -f "$ZIP"
           rm -rf .bootstrap
 
       - name: Verify imported app
         shell: bash
         run: |
           set -euo pipefail
+          # If this is the harmless follow-up run after ZIP removal, there is
+          # nothing new to commit and the already-imported app is still checked.
           test -f index.html
           test -f app.js
           test -f styles.css
           test -f manifest.webmanifest
           test -f service-worker.js
           test -f RELEASE-CHECKLIST.md
+          test -f assets/apple-touch-icon.png
           test -f assets/icon-192.png
           test -f assets/icon-512.png
+          test -f assets/orish-explorer.webp
+          test -f assets/learning-adventures.webp
           test -f modules/orish-intelligence-engine.js
           test -f modules/parent-controls-engine.js
           node --check app.js
           for f in modules/*.js; do node --check "$f"; done
-          echo "Imported files: $(find . -type f ! -path './.git/*' | wc -l)"
+          echo "Verified V1.19 files: $(find . -type f ! -path './.git/*' | wc -l)"
 
-      - name: Commit extracted V1.19 app to import branch
+      - name: Commit exact V1.19 app to import branch
         shell: bash
         run: |
           set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
-          git commit -m "Import complete Orish's World V1.19 app"
+          if git diff --cached --quiet; then
+            echo 'No new changes to commit.'
+            exit 0
+          fi
+          git commit -m "Import exact Orish's World V1.19 release"
           git push origin HEAD:${{ github.event.pull_request.head.ref }}
