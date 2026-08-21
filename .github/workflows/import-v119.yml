@@ -1,38 +1,53 @@
 name: Import Orish World V1.19
 
 on:
-  pull_request:
-    branches: [main]
+  push:
+    branches: [import-v119-review]
     paths:
-      - 'Orishs-World-AT-THE-CODE-v1.19-release-ready.zip'
+      - '.bootstrap/**'
+      - '.github/workflows/import-v119.yml'
+  workflow_dispatch:
 
 permissions:
   contents: write
-  pull-requests: read
 
 jobs:
   unpack-v119:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out import branch
+      - name: Check out review branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: import-v119-review
           fetch-depth: 0
 
-      - name: Verify and extract original V1.19 release ZIP
+      - name: Rebuild, verify and extract V1.19 release
         shell: bash
         run: |
           set -euo pipefail
-          ZIP='Orishs-World-AT-THE-CODE-v1.19-release-ready.zip'
-          EXPECTED_SHA256='2e912784ef993488e73f43b696a03e4fddac1553d2688c058340b4730911baf1'
 
-          # A follow-up synchronize event can occur after the workflow removes
-          # the ZIP. Treat that as an already-completed import, not a failure.
-          if [ ! -f "$ZIP" ]; then
-            echo 'Release ZIP is no longer present; import has already been applied.'
+          # A follow-up run can occur after the bootstrap folder has been removed.
+          # In that case the real app should already be present and only needs checking.
+          if [ ! -d .bootstrap ]; then
+            echo 'Bootstrap folder is gone; verifying the imported app.'
+            test -f index.html
+            test -f app.js
+            test -f styles.css
+            test -f manifest.webmanifest
+            test -f service-worker.js
             exit 0
           fi
+
+          test -f .bootstrap/READY
+          shopt -s nullglob
+          PARTS=(.bootstrap/part-*.b64)
+          test "${#PARTS[@]}" -gt 0
+
+          ZIP='/tmp/Orishs-World-AT-THE-CODE-v1.19-release-ready.zip'
+          EXPECTED_SHA256='2e912784ef993488e73f43b696a03e4fddac1553d2688c058340b4730911baf1'
+
+          # The bootstrap files are consecutive pieces of one base64-encoded ZIP.
+          cat "${PARTS[@]}" | tr -d '\r\n' | base64 --decode > "$ZIP"
 
           ACTUAL_SHA256=$(sha256sum "$ZIP" | awk '{print $1}')
           echo "Release ZIP SHA256: $ACTUAL_SHA256"
@@ -52,23 +67,15 @@ jobs:
           test -d "$SRC/modules"
           test -d "$SRC/assets"
 
-          # Preserve git metadata and this workflow while replacing the
-          # temporary bootstrap with the exact release-ready app.
-          find . -mindepth 1 -maxdepth 1 \
-            ! -name '.git' \
-            ! -name '.github' \
-            ! -name "$ZIP" \
-            -exec rm -rf {} +
+          # Replace only the temporary bootstrap payload. Keep git metadata,
+          # the workflow and README while copying the exact app into the repo root.
           cp -a "$SRC"/. .
-          rm -f "$ZIP"
           rm -rf .bootstrap
 
       - name: Verify imported app
         shell: bash
         run: |
           set -euo pipefail
-          # If this is the harmless follow-up run after ZIP removal, there is
-          # nothing new to commit and the already-imported app is still checked.
           test -f index.html
           test -f app.js
           test -f styles.css
@@ -86,7 +93,7 @@ jobs:
           for f in modules/*.js; do node --check "$f"; done
           echo "Verified V1.19 files: $(find . -type f ! -path './.git/*' | wc -l)"
 
-      - name: Commit exact V1.19 app to import branch
+      - name: Commit exact V1.19 app to review branch
         shell: bash
         run: |
           set -euo pipefail
@@ -98,4 +105,4 @@ jobs:
             exit 0
           fi
           git commit -m "Import exact Orish's World V1.19 release"
-          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          git push origin HEAD:import-v119-review
