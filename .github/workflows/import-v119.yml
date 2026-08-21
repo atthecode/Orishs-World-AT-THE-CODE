@@ -30,13 +30,36 @@ jobs:
           echo "Bootstrap diagnostics"
           for f in .bootstrap/part-*.b64; do
             size=$(wc -c < "$f" | tr -d ' ')
+            clean=$(LC_ALL=C tr -cd 'A-Za-z0-9+/=' < "$f" | wc -c | tr -d ' ')
             invalid=$(LC_ALL=C grep -o '[^A-Za-z0-9+/=[:space:]]' "$f" 2>/dev/null | wc -l || true)
-            echo "$(basename "$f"): chars=$size invalid=$invalid"
+            echo "$(basename "$f"): chars=$size clean=$clean invalid=$invalid"
           done
 
-          cat .bootstrap/part-*.b64 | tr -d '\r\n ' > /tmp/orish-v119.b64
-          echo "Combined base64 chars: $(wc -c < /tmp/orish-v119.b64)"
-          base64 --decode /tmp/orish-v119.b64 > /tmp/orish-v119.bundle.xz
+          # Part 006 was shortened during an earlier repair attempt. Recover its
+          # complete pre-repair contents, then strip only wrapper/formatting
+          # characters from every chunk. This preserves the Base64 payload.
+          ORIGINAL_PART006_COMMIT="3426abd61bfd2c64b076a6b0dff54c7387930e49"
+          TMP_B64=/tmp/orish-v119.b64
+          : > "$TMP_B64"
+
+          for f in .bootstrap/part-*.b64; do
+            name=$(basename "$f")
+            if [ "$name" = "part-006.b64" ]; then
+              git show "${ORIGINAL_PART006_COMMIT}:.bootstrap/part-006.b64" \
+                | LC_ALL=C tr -cd 'A-Za-z0-9+/=' >> "$TMP_B64"
+            else
+              LC_ALL=C tr -cd 'A-Za-z0-9+/=' < "$f" >> "$TMP_B64"
+            fi
+          done
+
+          combined=$(wc -c < "$TMP_B64" | tr -d ' ')
+          echo "Combined cleaned base64 chars: $combined"
+          if [ $((combined % 4)) -ne 0 ]; then
+            echo "Cleaned Base64 length is not divisible by 4"
+            exit 1
+          fi
+
+          base64 --decode "$TMP_B64" > /tmp/orish-v119.bundle.xz
           xz -t /tmp/orish-v119.bundle.xz
           xz -dc /tmp/orish-v119.bundle.xz > /tmp/orish-v119.bundle
 
