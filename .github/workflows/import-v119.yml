@@ -18,6 +18,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
 
       - name: Rebuild and extract V1.19 package
         shell: bash
@@ -34,6 +35,23 @@ jobs:
             invalid=$(LC_ALL=C grep -o '[^A-Za-z0-9+/=[:space:]]' "$f" 2>/dev/null | wc -l || true)
             echo "$(basename "$f"): chars=$size clean=$clean invalid=$invalid"
           done
+
+          python3 - <<'PY'
+          from pathlib import Path
+          allowed = set('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=\r\n \t')
+          for p in sorted(Path('.bootstrap').glob('part-*.b64')):
+              s = p.read_text()
+              bad = [i for i, ch in enumerate(s) if ch not in allowed]
+              if bad:
+                  print(f'WRAPPER CONTEXT {p.name}')
+                  seen = set()
+                  for i in bad:
+                      a, b = max(0, i-35), min(len(s), i+36)
+                      ctx = repr(s[a:b])
+                      if ctx not in seen:
+                          print(ctx)
+                          seen.add(ctx)
+          PY
 
           # Part 006 was shortened during an earlier repair attempt. Recover its
           # complete pre-repair contents, then strip only wrapper/formatting
