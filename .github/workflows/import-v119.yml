@@ -25,14 +25,10 @@ jobs:
           set -euo pipefail
           test -f .bootstrap/RUN-PR
           test -f .bootstrap/part-000.b64
-          test -f .bootstrap/part-005.b64
+          test -f .bootstrap/part-010.b64
 
-          : > /tmp/orish-v119.bundle.xz
-          for f in .bootstrap/part-*.b64; do
-            echo "Decoding $f"
-            tr -d '\r\n ' < "$f" | base64 --decode >> /tmp/orish-v119.bundle.xz
-          done
-
+          cat .bootstrap/part-*.b64 | tr -d '\r\n ' > /tmp/orish-v119.b64
+          base64 --decode /tmp/orish-v119.b64 > /tmp/orish-v119.bundle.xz
           xz -t /tmp/orish-v119.bundle.xz
           xz -dc /tmp/orish-v119.bundle.xz > /tmp/orish-v119.bundle
 
