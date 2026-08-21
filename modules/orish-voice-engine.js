@@ -83,6 +83,11 @@
 
     getCapabilities(profile = {}) {
       const band = ageBand(profile.age);
+      const adultApproved = profile.adultApproved === true;
+      const parentPresent = profile.parentPresent === true;
+      const parentLedReady = band !== 'parent-led' || parentPresent;
+      const modeReady = this.config.mode !== 'disabled';
+
       return {
         enabled: Boolean(this.config.enabled),
         mode: this.config.mode,
@@ -90,8 +95,10 @@
         parentLed: band === 'parent-led',
         canStart: Boolean(
           this.config.enabled
+          && modeReady
           && band
-          && (!this.config.requireAdultApproval || profile.adultApproved === true)
+          && parentLedReady
+          && (!this.config.requireAdultApproval || adultApproved)
         ),
         privacy: {
           retainRawAudio: Boolean(this.config.retainRawAudio),
@@ -195,7 +202,7 @@
         parentLed: this.session.profile.ageBand === 'parent-led',
         memory: memoryForModel,
         rules: {
-          teachRatherThanPretendToKnow,
+          teachRatherThanPretendToKnow: true,
           noSecretsFromTrustedAdults: true,
           noAds: true,
           noPurchasingPressure: true,
@@ -228,10 +235,6 @@
         turns: this.session.turns,
       };
     }
-  }
-
-  function teachRatherThanPretendToKnow() {
-    return true;
   }
 
   const api = Object.freeze({
