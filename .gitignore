@@ -1,0 +1,19 @@
+.env
+.env.*
+!.env.example
+node_modules/
+dist/
+.DS_Store
+*.log
+secrets/
+private-data/
+child-data/
+
+# V1.28 local voice runtime/model files
+voice-gateway/.runtime/
+voice-gateway/local.env
+*.ggml
+*.bin
+*.pth
+*.pt
+*.onnx

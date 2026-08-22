@@ -1,0 +1,1290 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#061426">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Orish's World">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="description" content="Orish's World @ THE CODE — family learning, play and missions from birth to 16.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests">
+  <title>Orish's World @ THE CODE</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="app-shell">
+    <header class="topbar">
+      <button class="brand" id="homeButton" type="button" aria-label="Go to Orish's World home">
+        <span class="brand-mark" aria-hidden="true"><img src="assets/at-the-code-mark.webp" alt=""></span>
+        <span><small>AT THE CODE</small><strong>Orish's World</strong></span>
+      </button>
+      <div class="top-actions">
+        <span class="prototype-pill">£0 build</span>
+        <button id="accessibilityButton" class="ghost-button" type="button" aria-controls="accessibilityPanel">Accessibility</button>
+        <button id="parentGateButton" class="ghost-button" type="button" aria-controls="parentPanel">Parent Gate</button>
+      </div>
+    </header>
+
+    <main id="main">
+      <section id="landing" class="hero" aria-labelledby="heroTitle">
+        <div class="hero-copy">
+          <p class="eyebrow">ORISH'S WORLD @ THE CODE</p>
+          <h1 id="heroTitle">Explore. Learn.<br>Play. Grow.</h1>
+          <p class="hero-text">A family learning world from birth to 16, guided by Orish through games, science, creativity, routines, cooking, stories and real-life missions.</p>
+          <div class="hero-actions">
+            <button id="startChild" class="primary-button" type="button">Enter the World</button>
+            <button id="talkToOrish" class="secondary-button" type="button">Hear Orish</button>
+            <button id="partnerDemoButton" class="secondary-button partner-demo-button" type="button">Show Prototype Demo</button>
+          </div>
+          <div class="trust-row" aria-label="Prototype privacy status">
+            <span>✓ No ads</span><span>✓ No trackers</span><span>✓ No paid AI</span>
+          </div>
+        </div>
+
+        <div class="orish-stage premium-orish-stage" aria-label="Orish character area">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <div class="orish-art-frame" aria-hidden="true">
+            <img src="assets/orish-explorer.webp" alt="" class="orish-hero-art">
+            <span class="orish-glow"></span>
+          </div>
+          <div class="speech-card" id="heroSpeech">Hi! I'm Orish. Pick an adventure and I'll grow it with you.</div>
+          <div class="hero-world-badge"><span>20+</span><small>connected learning pathways</small></div>
+        </div>
+      </section>
+
+      <section id="partnerDemo" class="screen hidden partner-demo-screen showcase-cinematic" aria-labelledby="partnerDemoTitle">
+        <div class="showcase-topbar">
+          <div>
+            <p class="eyebrow">ORISH’S WORLD • LIVE PARTNER WALKTHROUGH</p>
+            <h2 id="partnerDemoTitle">See the prototype move, respond and teach.</h2>
+          </div>
+          <div class="showcase-top-actions">
+            <button id="showcaseTourToggle" class="secondary-button" type="button" aria-pressed="false">▶ Guided tour</button>
+            <button id="partnerBackHome" class="ghost-button" type="button">Exit showcase</button>
+          </div>
+        </div>
+
+        <div class="showcase-layout">
+          <nav class="showcase-rail" aria-label="Showcase chapters">
+            <button class="showcase-scene-button active" data-showcase-scene="origin" type="button"><b>01</b><span>Why Orish</span></button>
+            <button class="showcase-scene-button" data-showcase-scene="learning" type="button"><b>02</b><span>Learning world</span></button>
+            <button class="showcase-scene-button" data-showcase-scene="skills" type="button"><b>03</b><span>Playable skills</span></button>
+            <button class="showcase-scene-button" data-showcase-scene="safety" type="button"><b>04</b><span>Safety layer</span></button>
+            <button class="showcase-scene-button" data-showcase-scene="cloud" type="button"><b>05</b><span>Cloud-ready</span></button>
+          </nav>
+
+          <section id="partnerStage" class="partner-live-stage" data-scene="origin" aria-live="polite">
+            <div class="partner-stage-media" aria-hidden="true">
+              <img id="partnerSceneImage" src="assets/learning-adventures.webp" alt="">
+              <div class="stage-aurora"></div>
+              <div class="stage-stars"></div>
+              <div class="stage-gridlines"></div>
+              <div id="partnerCloudNetwork" class="partner-cloud-network hidden">
+                <i></i><i></i><i></i><i></i><i></i><i></i>
+              </div>
+              <img id="partnerStageOrish" class="partner-stage-orish" src="assets/orish-explorer.webp" alt="">
+            </div>
+
+            <div id="partnerHotspots" class="partner-hotspots"></div>
+
+            <div class="partner-stage-story">
+              <div class="partner-story-kicker"><span id="partnerSceneNumber">01</span><strong id="partnerSceneEyebrow">WHY IT EXISTS</strong></div>
+              <h3 id="partnerSceneTitle">A six-year-old asked for a learning game that is actually fun.</h3>
+              <p id="partnerSceneCopy">Orish’s World begins with play, curiosity and movement — then grows with the child into science, evidence, technology and real-world problem solving.</p>
+              <div class="partner-stage-actions">
+                <button id="showcasePrimaryAction" class="primary-button" type="button">Try the age-6 world</button>
+                <button id="showcaseSpeak" class="secondary-button" type="button">🔊 Hear Orish</button>
+              </div>
+            </div>
+
+            <div class="partner-orish-speech" id="partnerOrishSpeech">
+              <span class="speech-pulse"></span>
+              <strong>ORISH</strong>
+              <p>Tap the glowing points. This is a guided doorway into the real prototype, not a slide deck.</p>
+            </div>
+
+            <div class="showcase-progress" aria-label="Showcase progress"><span id="showcaseProgressBar"></span></div>
+          </section>
+
+          <aside class="showcase-proof" aria-label="Live prototype proof">
+            <div class="showcase-proof-head"><span class="live-dot"></span><strong>LIVE PROTOTYPE</strong></div>
+            <div id="showcaseProofVisual" class="showcase-proof-visual">
+              <span class="proof-ring ring-one"></span><span class="proof-ring ring-two"></span><span class="proof-core">£0</span>
+            </div>
+            <h4 id="showcaseProofTitle">Built before paid AI</h4>
+            <p id="showcaseProofText">The current experience runs as a mobile-first local PWA with reusable learning engines, device speech and parent controls.</p>
+            <div id="showcaseProofList" class="showcase-proof-list">
+              <span>Age-adaptive</span><span>Interactive</span><span>Local-first</span>
+            </div>
+            <button id="partnerEnterWorld" class="showcase-enter-world" type="button">Enter the full world →</button>
+          </aside>
+        </div>
+
+        <div class="showcase-live-strip" aria-label="Prototype principles">
+          <span><i>●</i> No advertising</span>
+          <span><i>●</i> No trackers</span>
+          <span><i>●</i> No unrestricted child social</span>
+          <span><i>●</i> No arbitrary AI-generated code</span>
+          <span><i>●</i> Future AI keys server-side</span>
+        </div>
+      </section>
+
+      <section id="childWorld" class="screen hidden" aria-labelledby="worldTitle">
+        <div class="screen-header">
+          <div>
+            <p class="eyebrow">YOUR WORLD</p>
+            <h2 id="worldTitle">What shall we do?</h2>
+          </div>
+          <div class="child-header-tools">
+            <div class="active-child-card" id="activeChildCard" aria-live="polite">
+              <small>Playing as</small><strong id="activeChildName">Explorer</strong><span id="activeChildFramework">Local demo profile</span>
+            </div>
+            <label class="age-picker" for="ageBand">Age experience
+            <select id="ageBand">
+              <option value="0-2">0–2 Parent & Baby</option>
+              <option value="2-4">2–4 Early Explorer</option>
+              <option value="4-6">4–6 Little Explorer</option>
+              <option value="7-9" selected>7–9 Growing Explorer</option>
+              <option value="10-12">10–12 Big Explorer</option>
+              <option value="13-16">13–16 Teen Explorer</option>
+            </select>
+            </label>
+          </div>
+        </div>
+
+        <div id="ageMessage" class="age-banner" aria-live="polite"></div>
+
+        <section class="explorer-companion-strip" id="worldExplorerCompanion" aria-label="My saved explorer">
+          <div class="explorer-companion-portrait" id="worldExplorerPortraitWrap" aria-hidden="true">
+            <img id="worldExplorerPortrait" alt="" hidden>
+            <span id="worldExplorerFallback" class="explorer-companion-fallback"><i></i></span>
+          </div>
+          <div class="explorer-companion-copy">
+            <p class="eyebrow">MY EXPLORER</p>
+            <strong id="worldExplorerName">Explorer</strong>
+            <small id="worldExplorerLook">Explorer outfit • ready to learn</small>
+          </div>
+          <button id="worldExplorerWave" class="ghost-button compact" type="button">👋 Wave</button>
+          <button id="worldExplorerEdit" class="secondary-button" type="button">Edit avatar</button>
+        </section>
+
+        <section class="today-strip" aria-labelledby="todayTitle">
+          <div>
+            <p class="eyebrow">TODAY WITH ORISH</p>
+            <h3 id="todayTitle">Your adventure board</h3>
+          </div>
+          <div class="today-cards">
+            <button class="mini-card" data-world="Mission HQ" type="button"><span>🚀</span><strong>Today's Mission</strong><small id="todayMissionCount">0 waiting</small></button>
+            <button class="mini-card" data-world="Good News" type="button"><span>🌍</span><strong>Good News</strong><small>1 hopeful story</small></button>
+            <button class="mini-card" data-world="Rewards" type="button"><span>⭐</span><strong>Explorer Stars</strong><small id="todayStarCount">0 earned</small></button>
+          </div>
+        </section>
+
+        <section class="world-map-shell" aria-labelledby="worldMapTitle">
+          <div class="world-map-copy">
+            <p class="eyebrow">ORISH WORLD MAP</p>
+            <h3 id="worldMapTitle">Choose a district</h3>
+            <p id="worldZoneIntro">Everything is connected. Pick a district or show the whole world.</p>
+          </div>
+          <div class="world-portals" role="group" aria-label="World districts">
+            <button class="world-portal selected" data-zone="all" type="button" aria-pressed="true"><span>◎</span><strong>Whole World</strong><small>All areas</small></button>
+            <button class="world-portal" data-zone="core" type="button" aria-pressed="false"><span>✦</span><strong>Orish Core</strong><small>Guide + missions</small></button>
+            <button class="world-portal" data-zone="discovery" type="button" aria-pressed="false"><span>🪐</span><strong>Discovery</strong><small>Science + evidence</small></button>
+            <button class="world-portal" data-zone="skills" type="button" aria-pressed="false"><span>⌁</span><strong>Skills Academy</strong><small>Maths + literacy</small></button>
+            <button class="world-portal" data-zone="create" type="button" aria-pressed="false"><span>✎</span><strong>Create & Make</strong><small>Build + cook</small></button>
+            <button class="world-portal" data-zone="life" type="button" aria-pressed="false"><span>⌂</span><strong>Life & Family</strong><small>Money + routines</small></button>
+          </div>
+        </section>
+
+        <div class="world-grid" id="worldGrid" aria-live="polite">
+          <button class="world-card featured" data-zone="core" data-world="Talk to Orish" type="button"><span class="world-icon">🎙️</span><strong>Talk to Orish</strong><small>Ask, learn, make a game or story</small><span class="card-tag">Talking guide</span></button>
+          <button class="world-card" data-zone="core" data-world="Mission HQ" type="button"><span class="world-icon">🚀</span><strong>Mission HQ</strong><small>Learning + real-life missions</small></button>
+          <button class="world-card" data-zone="discovery" data-world="Science World" type="button"><span class="world-icon">🪐</span><strong>Science World</strong><small>Space, fossils, oceans, weather + mysteries</small><span class="card-tag">Mystery wing</span></button>
+          <button class="world-card cosmic-world-card" data-zone="discovery" data-world="Are We Alone?" type="button"><span class="world-icon">👽</span><strong>Are We Alone?</strong><small>Alien claims, exoplanets, UAP + what counts as proof</small><span class="card-tag">Evidence mission</span></button>
+          <button class="world-card" data-zone="discovery" data-world="Evidence Detective" type="button"><span class="world-icon">🔎</span><strong>AI Evidence Detective</strong><small>Ask AI, check claims, sources, notes and drawings</small></button>
+          <button class="world-card history-world-card" data-zone="discovery" data-world="Global History & Culture" type="button"><span class="world-icon">🌍</span><strong>Global History & Culture</strong><small>Black changemakers + cultures around the world</small><span class="card-tag">Evidence-backed</span></button>
+          <button class="world-card" data-zone="life" data-world="Real-World Missions" type="button"><span class="world-icon">💷</span><strong>Real-World Missions</strong><small>Money, rights, laws and smart decisions</small></button>
+          <button class="world-card" data-zone="skills" data-world="Learning Adventures" type="button"><span class="world-icon">🧩</span><strong>Learning Adventures</strong><small>Maths, reading, spelling, logic</small></button>
+          <button class="world-card" data-zone="skills" data-world="Maths Lab" type="button"><span class="world-icon">📐</span><strong>Maths Lab</strong><small>Numbers, fractions, money, geometry, graphs and reasoning</small></button>
+          <button class="world-card" data-zone="create" data-world="Kitchen Lab" type="button"><span class="world-icon">🥣</span><strong>Kitchen Lab</strong><small>Make it with what you have</small></button>
+          <button class="world-card" data-zone="create" data-world="Make With Orish" type="button"><span class="world-icon">✈️</span><strong>Make With Orish</strong><small>Paper planes, crafts, experiments</small></button>
+          <button class="world-card" data-zone="life" data-world="Family Clubhouse" type="button"><span class="world-icon">🏠</span><strong>Family Clubhouse</strong><small>Family missions and challenges</small></button>
+          <button class="world-card" data-zone="discovery" data-world="Good News" type="button"><span class="world-icon">🌍</span><strong>Good News Beacon</strong><small>Hopeful demo stories + media literacy</small></button>
+          <button class="world-card" data-zone="life" data-world="Home & Routines" type="button"><span class="world-icon">🌙</span><strong>Home & Routines</strong><small>Morning, bedtime, confidence</small></button>
+          <button class="world-card" data-zone="create" data-world="Creative Studio" type="button"><span class="world-icon">🎨</span><strong>Creative Studio</strong><small>Draw, invent, design and build</small></button>
+          <button class="world-card avatar-world-card" data-zone="create" data-world="My Avatar Lab" type="button"><span class="world-icon">🧑🏾‍🚀</span><strong>My Avatar Lab</strong><small>Create, spin and save your own explorer</small><span class="card-tag">New</span></button>
+          <button class="world-card" data-zone="skills" data-world="Memory Lab" type="button"><span class="world-icon">🧠</span><strong>Memory Lab</strong><small>Age-adaptive visual matching — no timer</small></button>
+          <button class="world-card" data-zone="discovery" data-world="Observation Lab" type="button"><span class="world-icon">🔎</span><strong>Observation Lab</strong><small>Hidden objects, spot-the-change and evidence investigation</small></button>
+          <button class="world-card" data-zone="skills" data-world="Logic Lab" type="button"><span class="world-icon">🧭</span><strong>Logic Lab</strong><small>Sequencing, processes and planning challenges</small></button>
+          <button class="world-card" data-zone="skills" data-world="Reading & Keyboard Lab" type="button"><span class="world-icon">⌨️</span><strong>Reading & Keyboard Lab</strong><small>First words, spelling, comprehension and keyboard skills</small></button>
+          <button class="world-card" data-zone="skills" data-world="Story & Choice Lab" type="button"><span class="world-icon">📖</span><strong>Story & Choice Lab</strong><small>Branching stories, communication, consequences and mysteries</small></button>
+          <button class="world-card" data-zone="core" data-world="Accessibility Centre" type="button"><span class="world-icon">⚙️</span><strong>Accessibility Centre</strong><small>Text, contrast, motion and spoken support</small></button>
+        </div>
+
+        <section class="featured-journeys" aria-labelledby="featuredJourneyTitle">
+          <div class="section-row journey-heading"><div><p class="eyebrow">FEATURED JOURNEYS</p><h3 id="featuredJourneyTitle">Jump straight into an adventure</h3></div><span class="safe-pill">Same learning engines</span></div>
+          <div class="journey-rail">
+            <button class="journey-card" data-world="Science World" type="button"><img src="assets/fossil-detective.webp" alt="Fossil Detective adventure artwork"><span><small>DISCOVERY DISTRICT</small><strong>Fossil Detective</strong><em>Investigate clues from the past</em></span></button>
+            <button class="journey-card" data-world="Maths Lab" type="button"><img src="assets/fraction-rescue.webp" alt="Fraction Rescue maths adventure artwork"><span><small>SKILLS ACADEMY</small><strong>Fraction Rescue</strong><em>Visual maths mission</em></span></button>
+            <button class="journey-card" data-world="Learning Adventures" type="button"><img src="assets/learning-adventures.webp" alt="Orish learning adventures artwork"><span><small>ORISH'S PICKS</small><strong>Learning Adventures</strong><em>Choose your next challenge</em></span></button>
+          </div>
+        </section>
+
+        <section id="worldPreview" class="preview-panel" aria-live="polite">
+          <div class="preview-copy">
+            <p class="eyebrow">ORISH PREVIEW</p>
+            <h3 id="previewTitle">Choose an area</h3>
+            <p id="previewText">Every area becomes more advanced as the child grows.</p>
+          </div>
+          <button id="previewAction" class="primary-button" type="button" disabled>Open activity</button>
+        </section>
+      </section>
+
+      <section id="avatarPanel" class="screen hidden avatar-lab-screen" aria-labelledby="avatarTitle">
+        <div class="screen-header">
+          <div>
+            <p class="eyebrow">MY AVATAR LAB</p>
+            <h2 id="avatarTitle">Create your explorer</h2>
+          </div>
+          <button class="ghost-button back-to-world" type="button">Back to World</button>
+        </div>
+
+        <div class="avatar-lab-shell">
+          <section class="avatar-viewer-card" aria-label="Interactive avatar preview">
+            <div class="avatar-viewer-topline">
+              <div class="avatar-render-status"><span class="safe-pill">Private on this device</span><span id="avatar3DStatus" class="avatar-3d-status" data-state="loading">Loading local 3D model…</span></div>
+              <button id="avatarAutoSpin" class="ghost-button compact" type="button" aria-pressed="false">↻ Auto spin</button>
+            </div>
+            <div id="avatarViewport" class="avatar-viewport" tabindex="0" aria-label="Avatar preview. Swipe left or right to rotate.">
+              <div id="avatar3DNote" class="sr-only" aria-live="polite"></div>
+              <div class="avatar-light avatar-light-one"></div>
+              <div class="avatar-light avatar-light-two"></div>
+              <div class="avatar-platform"><span></span></div>
+              <div id="avatarModel" class="avatar-model hair-afro outfit-explorer" style="--avatar-skin:#805141;--avatar-hair:#17120f;--avatar-accent:#17d7e8;--avatar-angle:-8deg" aria-hidden="true">
+                <div class="avatar-shadow"></div>
+                <div class="avatar-figure-3d">
+                  <div class="avatar-hair-back"></div>
+                  <div class="avatar-head">
+                    <span class="avatar-ear left"></span><span class="avatar-ear right"></span>
+                    <span class="avatar-eye left"></span><span class="avatar-eye right"></span>
+                    <span class="avatar-brow left"></span><span class="avatar-brow right"></span>
+                    <span class="avatar-nose"></span><span class="avatar-smile"></span>
+                    <span class="avatar-hair-front"></span>
+                  </div>
+                  <div class="avatar-neck"></div>
+                  <div class="avatar-body"><span class="avatar-chest-mark">ATC</span></div>
+                  <div class="avatar-arm left"><span class="avatar-hand"></span></div>
+                  <div class="avatar-arm right"><span class="avatar-hand"></span></div>
+                  <div class="avatar-leg left"><span class="avatar-boot"></span></div>
+                  <div class="avatar-leg right"><span class="avatar-boot"></span></div>
+                  <div class="avatar-pack"></div>
+                </div>
+              </div>
+              <div class="avatar-drag-hint">↔ Swipe or drag to spin 360°</div>
+            </div>
+            <div class="avatar-rotate-buttons" role="group" aria-label="Rotate avatar">
+              <button id="avatarRotateLeft" class="secondary-button" type="button">↶ Turn left</button>
+              <button id="avatarResetView" class="ghost-button" type="button">Front</button>
+              <button id="avatarRotateRight" class="secondary-button" type="button">Turn right ↷</button>
+            </div>
+
+            <div class="avatar-pose-buttons" role="group" aria-label="Make your avatar move">
+              <button class="avatar-pose-button" data-avatar-pose="wave" type="button"><span>👋</span><strong>Wave</strong></button>
+              <button class="avatar-pose-button" data-avatar-pose="power" type="button"><span>⭐</span><strong>Power pose</strong></button>
+              <button class="avatar-pose-button" data-avatar-pose="celebrate" type="button"><span>🎉</span><strong>Celebrate</strong></button>
+            </div>
+            <p class="privacy-note">V1.24 keeps the original local GLB character on-device and adds lightweight living motion and poses through the AT THE CODE WebGL viewer. No photo, camera, face scan, upload or externally branded character service is required. The earlier renderer remains as a safe fallback if 3D is unavailable.</p>
+          </section>
+
+          <section class="avatar-controls-card">
+            <div class="avatar-mode-switch" role="group" aria-label="Avatar style mode">
+              <button id="avatarRealMode" class="avatar-mode active" type="button" aria-pressed="true"><span>🪞</span><strong>Real Me</strong><small>Natural skin palette</small></button>
+              <button id="avatarCreativeMode" class="avatar-mode" type="button" aria-pressed="false"><span>✨</span><strong>Creative Me</strong><small>Natural + fantasy colours</small></button>
+              <button id="avatarSurprise" class="avatar-mode surprise" type="button"><span>🎲</span><strong>Surprise Me</strong><small>Make a random explorer</small></button>
+            </div>
+
+            <div class="avatar-control-section">
+              <div class="section-row"><div><h3>Skin colour</h3><p>Choose a real-world tone or switch to Creative Me for fantasy colours.</p></div></div>
+              <div id="avatarSkinPalette" class="avatar-swatch-grid" role="group" aria-label="Skin colours"></div>
+            </div>
+
+            <div class="avatar-control-section">
+              <div class="section-row"><div><h3>Hair</h3><p>Pick a style and colour. More styles can be added as 3D assets are created.</p></div></div>
+              <div id="avatarHairStyles" class="avatar-choice-grid" role="group" aria-label="Hair styles"></div>
+              <div id="avatarHairPalette" class="avatar-swatch-grid small" role="group" aria-label="Hair colours"></div>
+            </div>
+
+            <div class="avatar-control-section">
+              <div class="section-row"><div><h3>Outfit</h3><p>Explorer, science, cooking, art and space looks.</p></div></div>
+              <div id="avatarOutfits" class="avatar-choice-grid" role="group" aria-label="Outfits"></div>
+            </div>
+
+            <div class="avatar-control-section">
+              <div class="section-row"><div><h3>Accent colour</h3><p>Choose the glow and trim colour for your outfit.</p></div></div>
+              <div id="avatarAccentPalette" class="avatar-swatch-grid small" role="group" aria-label="Accent colours"></div>
+            </div>
+
+            <div class="avatar-save-row">
+              <div><strong id="avatarSaveStatus">Your changes are not saved yet.</strong><small>Only the avatar choices are stored locally for the active profile.</small></div>
+              <button id="avatarSave" class="primary-button" type="button">Save my avatar</button>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="orishPanel" class="screen hidden" aria-labelledby="orishTitle">
+        <div class="screen-header">
+          <div>
+            <p class="eyebrow">TALK TO ORISH</p>
+            <h2 id="orishTitle">Your talking guide</h2>
+          </div>
+          <button class="ghost-button back-to-world" type="button">Back to World</button>
+        </div>
+
+        <div class="orish-chat-layout">
+          <div class="orish-live-stage">
+            <div class="orish-avatar large" aria-hidden="true"><span class="orish-head">O</span><span class="orish-body"></span></div>
+            <p class="live-status" id="orishStatus">Free prototype voice is ready</p>
+            <div class="intelligence-badge" aria-label="Local Orish Intelligence status">
+              <strong>🧠 Local Orish Intelligence</strong>
+              <span id="orishIntelligenceStatus">Routes ideas into approved learning engines</span>
+            </div>
+            <button id="speakWelcome" class="secondary-button" type="button">🔊 Orish, say hello</button>
+            <div id="openVoiceLab" class="open-voice-lab" aria-label="Two-way voice prototype">
+              <div class="open-voice-heading">
+                <div><small>AT THE CODE OPEN VOICE</small><strong>Talk naturally to Orish</strong></div>
+                <span id="voiceModeBadge" class="safe-pill">Parent opt-in</span>
+              </div>
+              <button id="voiceMicButton" class="voice-mic-button" type="button" disabled aria-pressed="false">🎤 Tap to talk</button>
+              <button id="voiceStopButton" class="ghost-button hidden" type="button">Stop</button>
+              <p id="voiceGatewayStatus" class="voice-gateway-status" aria-live="polite">Two-way microphone is off until a grown-up enables it in Parent Studio.</p>
+              <p id="voiceTranscriptPreview" class="voice-transcript-preview hidden" aria-live="polite"></p>
+              <p class="privacy-note voice-privacy">The microphone starts only after a tap, stops after the turn, and raw audio is not saved by the app. The production route is designed for our own reviewed self-hosted voice gateway.</p>
+            </div>
+          </div>
+          <div class="chat-card">
+            <div id="chatLog" class="chat-log" aria-live="polite">
+              <div class="bubble orish-bubble">What shall we explore? I can make a game, quiz, story or mission.</div>
+            </div>
+            <div class="quick-prompts" aria-label="Quick prompts">
+              <button type="button" data-prompt="Why is the Bermuda Triangle mysterious?">Bermuda mystery</button>
+              <button type="button" data-prompt="Teach me how to check evidence from AI">Check AI evidence</button>
+              <button type="button" data-prompt="Give me a money challenge">Money mission</button>
+              <button type="button" data-prompt="Make me a space game">Space game</button>
+              <button type="button" data-prompt="Give me something to make with paper">Paper challenge</button>
+              <button type="button" data-prompt="Tell me a story where my choices matter">Choice story</button>
+            </div>
+            <label for="orishInput">Ask Orish</label>
+            <div class="composer">
+              <input id="orishInput" type="text" maxlength="180" autocomplete="off" placeholder="Type a safe prototype question…">
+              <button id="sendToOrish" class="primary-button" type="button">Send</button>
+            </div>
+            <p class="privacy-note">This prototype runs locally and does not send the message to an AI service. Orish selects only from approved game/activity engines; it never executes generated child-supplied code.</p>
+            <div class="orish-intelligence-note">
+              <strong>How this £0 version thinks</strong>
+              <p>It checks the child’s age band, the words in the request and optional locally saved interests, then recommends the safest matching learning engine. Private Parent Studio wording is never shown here.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="gamePanel" class="screen hidden" aria-labelledby="gameTitle">
+        <div class="screen-header">
+          <div>
+            <p class="eyebrow">ORISH GAME MAKER</p>
+            <h2 id="gameTitle">A game made from your idea</h2>
+          </div>
+          <button class="ghost-button back-to-world" type="button">Back to World</button>
+        </div>
+        <div class="game-shell">
+          <div class="game-header">
+            <div><span id="gameThemeIcon">🚀</span><strong id="gameName">Space Signal Sort</strong></div>
+            <span id="gameProgress">0 / 4</span>
+          </div>
+          <div class="game-tags"><span id="gameAgeTag" class="safe-pill">Growing Explorer</span><span id="gameDifficultyTag" class="safe-pill">Explorer</span></div>
+          <p id="gameAgeSummary" class="game-age-summary">The activity adapts to the active age profile.</p>
+          <p id="gameInstruction">Tap the best answer.</p>
+          <div id="gameQuestion" class="game-question"></div>
+          <div id="gameAnswers" class="answer-grid"></div>
+          <div id="gameFeedback" class="game-feedback" aria-live="polite"></div>
+          <button id="nextQuestion" class="primary-button hidden" type="button">Next</button>
+        </div>
+      </section>
+
+      <section id="sciencePanel" class="screen hidden" aria-labelledby="scienceTitle">
+        <div class="screen-header">
+          <div><p class="eyebrow">SCIENCE WORLD</p><h2 id="scienceTitle">Choose an investigation</h2></div>
+          <button class="ghost-button back-to-world" type="button">Back to World</button>
+        </div>
+        <div class="science-age-card">
+          <span class="world-icon">🔬</span>
+          <div><strong id="scienceAgeTitle">Science at your level</strong><p id="scienceAgeSummary">Every investigation changes with the active age profile.</p></div>
+        </div>
+        <div class="section-row science-section-title"><div><h3>Core science games</h3><p>Space and human-body missions use the reusable question engine.</p></div></div>
+        <div id="scienceTopicGrid" class="science-topic-grid"></div>
+        <div class="section-row science-section-title"><div><h3>Are We Alone?</h3><p>Investigate extraterrestrial-life claims without confusing possibility, testimony, UAP and proof.</p></div><span class="safe-pill">Evidence can update</span></div>
+        <button id="openAreWeAlone" class="cosmic-launch-card" type="button"><span class="cosmic-launch-orbit" aria-hidden="true"></span><span class="world-icon">👽</span><span><small>SPACE + EVIDENCE SPECIAL</small><strong>Are We Alone?</strong><em>Explore what we know, what has been claimed, what is unresolved, and what would count as confirmation.</em></span><b>ENTER MISSION →</b></button>
+        <div class="section-row science-section-title"><div><h3>Science expeditions</h3><p>Fossils, weather, caves/minerals, oceans, plants and experiment design.</p></div><span class="safe-pill">Evidence first</span></div>
+        <div id="scienceExpeditionGrid" class="science-topic-grid"></div>
+        <div class="section-row science-section-title"><div><h3>Mysteries & unexplained</h3><p>Explore fascinating claims without treating rumours as facts. Older explorers compare sources, alternative explanations and uncertainty.</p></div><span class="safe-pill">Curiosity + critical thinking</span></div>
+        <div id="scienceMysteryGrid" class="science-topic-grid"></div>
+      </section>
+
+      <section id="areWeAlonePanel" class="screen hidden cosmic-screen" aria-labelledby="areWeAloneTitle">
+        <div class="screen-header">
+          <div><p class="eyebrow">SCIENCE WORLD • EVIDENCE SPECIAL</p><h2 id="areWeAloneTitle">Are We Alone?</h2></div>
+          <button id="areWeAloneBackScience" class="ghost-button" type="button">Back to Science World</button>
+        </div>
+        <div class="cosmic-hero">
+          <div class="cosmic-system" aria-hidden="true">
+            <span class="cosmic-sun"></span><span class="cosmic-orbit cosmic-orbit-a"><i></i></span><span class="cosmic-orbit cosmic-orbit-b"><i></i></span><span class="cosmic-orbit cosmic-orbit-c"><i></i></span>
+            <span class="cosmic-signal signal-one"></span><span class="cosmic-signal signal-two"></span>
+          </div>
+          <div><span id="areWeAloneAge" class="safe-pill">Evidence Explorer</span><h3>Wonder boldly. Claim carefully.</h3><p id="areWeAloneIntro">Scientists are genuinely searching for life beyond Earth. This mission separates possibility, claims, unresolved observations and confirmed evidence.</p><div class="cosmic-truth-row"><span>🪐 Exoplanets: confirmed</span><span>🔭 Search for life: active</span><span>🛰️ UAP: some unresolved</span><span>👽 Alien contact: not confirmed</span></div></div>
+        </div>
+        <div class="cosmic-progress" id="areWeAloneProgress" aria-label="Investigation progress"></div>
+        <div class="cosmic-case-layout">
+          <section class="cosmic-case-stage">
+            <div class="cosmic-visual" id="areWeAloneVisual" data-visual="planet" aria-hidden="true"><div class="cosmic-object"></div><div class="cosmic-radar"></div></div>
+            <div><span id="areWeAloneStageLabel" class="safe-pill">CASE 1</span><h3 id="areWeAloneStageTitle">What do we actually know?</h3><p id="areWeAloneStagePrompt">Follow the evidence.</p></div>
+          </section>
+          <section class="activity-card">
+            <div class="section-row"><div><h3>Evidence console</h3><p>Each light is a fact or limitation to use before choosing.</p></div><button id="speakAreWeAlone" class="ghost-button compact" type="button">🔊 Orish</button></div>
+            <div id="areWeAloneFacts" class="cosmic-evidence-grid"></div>
+          </section>
+          <section class="activity-card wide">
+            <p class="eyebrow">MAKE THE BEST-SUPPORTED CONCLUSION</p><h3 id="areWeAloneQuestion">Question</h3><div id="areWeAloneChoices" class="answer-grid"></div><p id="areWeAloneFeedback" class="game-feedback" aria-live="polite"></p>
+            <div class="form-actions"><button id="areWeAloneNext" class="primary-button hidden" type="button">Next evidence case</button><button id="finishAreWeAlone" class="primary-button hidden" type="button">Complete investigation</button></div>
+          </section>
+          <section class="activity-card wide cosmic-sources">
+            <div class="section-row"><div><h3>Source trail</h3><p>Children stay inside the app. These source records show what the approved lesson was checked against.</p></div><span id="areWeAloneSourceCount" class="safe-pill"></span></div>
+            <div id="areWeAloneSources" class="history-sources"></div>
+            <p class="research-banner cosmic-update-note"><strong>Science can update.</strong> If independently verified evidence changes, this lesson should change with it.</p>
+          </section>
+        </div>
+      </section>
+
+      <section id="discoveryPanel" class="screen hidden" aria-labelledby="discoveryTitle">
+        <div class="screen-header">
+          <div><p id="discoveryEyebrow" class="eyebrow">SCIENCE EXPEDITION</p><h2 id="discoveryTitle">Choose a case</h2></div>
+          <button id="discoveryBackScience" class="ghost-button" type="button">Back to Science World</button>
+        </div>
+        <div class="discovery-hero">
+          <span id="discoveryIcon" class="world-icon">🔬</span>
+          <div><span id="discoveryAge" class="safe-pill">Explorer</span><h3 id="discoveryCaseTitle">Investigation</h3><p id="discoveryHook">Follow the evidence.</p></div>
+        </div>
+        <div class="activity-layout">
+          <section class="activity-card"><h3>Evidence pack</h3><div id="discoveryFacts" class="evidence-pack"></div></section>
+          <section class="activity-card"><h3>Investigation steps</h3><div id="discoverySteps" class="step-list"></div></section>
+          <section class="activity-card wide">
+            <p class="eyebrow">EVIDENCE CHECK</p><h3 id="discoveryQuestion">Question</h3>
+            <div id="discoveryChoices" class="answer-grid"></div>
+            <p id="discoveryFeedback" class="game-feedback" aria-live="polite"></p>
+            <div class="form-actions"><button id="speakDiscovery" class="secondary-button" type="button">🔊 Orish explains</button><button id="completeDiscovery" class="primary-button hidden" type="button">Finish investigation</button></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="evidencePanel" class="screen hidden" aria-labelledby="evidenceTitle">
+        <div class="screen-header">
+          <div><p class="eyebrow">AI EVIDENCE DETECTIVE</p><h2 id="evidenceTitle">Use AI like an investigator</h2></div>
+          <button class="ghost-button back-to-world" type="button">Back to World</button>
+        </div>
+        <div class="research-banner"><strong>AI can help you ask better questions — it is not automatic proof.</strong><p id="evidenceAgeIntro">Check important claims with suitable sources and observations.</p></div>
+        <div class="activity-layout">
+          <section class="activity-card">
+            <span id="evidenceIcon" class="world-icon">🔎</span><span id="evidenceAge" class="safe-pill">Evidence Explorer</span><h3 id="evidenceLessonTitle">Claim → Check → Source</h3><p id="evidenceLessonIntro"></p>
+            <div id="evidenceLessonSteps" class="step-list"></div>
+          </section>
+          <section class="activity-card">
+            <h3 id="evidenceQuestion">Evidence question</h3><div id="evidenceChoices" class="answer-grid"></div><p id="evidenceFeedback" class="game-feedback" aria-live="polite"></p>
+            <button id="completeEvidenceLesson" class="primary-button hidden" type="button">Complete lesson</button>
+          </section>
+          <section class="activity-card wide research-notebook">
+            <div class="section-row"><div><h3>Investigation Notebook</h3><p>Practise documenting an investigation. These notes and drawings stay on this screen and are not automatically stored.</p></div><span class="safe-pill">Transient by default</span></div>
+            <div class="notebook-grid">
+              <label>Research question<input id="researchQuestion" type="text" maxlength="160" placeholder="What am I trying to find out?"></label>
+              <label>Claim to check<input id="researchClaim" type="text" maxlength="200" placeholder="What exactly is being claimed?"></label>
+              <label>Source / evidence<textarea id="researchSource" rows="4" maxlength="700" placeholder="Source title, author/organisation, date if known, and what evidence it gives."></textarea></label>
+              <label>Observation vs inference<textarea id="researchObservation" rows="4" maxlength="700" placeholder="What did I directly observe? What did I infer from it?"></textarea></label>
+              <label>Conclusion<textarea id="researchConclusion" rows="4" maxlength="700" placeholder="What conclusion is supported? What is still uncertain?"></textarea></label>
+              <label>Confidence<select id="researchConfidence"><option>Not enough evidence yet</option><option>Low confidence</option><option selected>Medium confidence</option><option>High confidence</option></select></label>
+            </div>
+            <div class="drawing-lab">
+              <div><strong>Draw a diagram / evidence sketch</strong><p>Use labels, arrows, measurements or a simple map. The canvas is not uploaded.</p></div>
+              <canvas id="researchCanvas" width="900" height="420" aria-label="Local research drawing canvas"></canvas>
+              <div class="form-actions"><button id="clearResearchCanvas" class="ghost-button" type="button">Clear drawing</button><button id="clearResearchNotebook" class="ghost-button" type="button">Clear notebook</button><button id="finishResearchNotebook" class="primary-button" type="button">Finish notebook practice</button></div>
+              <p id="researchNotebookStatus" class="game-feedback" aria-live="polite"></p>
+            </div>
+          </section>
+        </div>
+      </section>
+
+
+      <section id="globalHistoryPanel" class="screen hidden history-screen" aria-labelledby="globalHistoryTitle">
+        <div class="screen-header">
+          <div><p class="eyebrow">GLOBAL HISTORY, CULTURE & CHANGEMAKERS</p><h2 id="globalHistoryTitle">History is bigger than the usual list</h2></div>
+          <button class="ghost-button back-to-world" type="button">Back to World</button>
+        </div>
+        <div class="history-hero">
+          <div class="history-globe" aria-hidden="true"><span class="history-orbit orbit-a"></span><span class="history-orbit orbit-b"></span><span class="history-pin pin-a">●</span><span class="history-pin pin-b">●</span><span class="history-pin pin-c">●</span><span class="history-pin pin-d">●</span><strong>WORLD<br>HISTORY</strong></div>
+          <div><span id="historyAgePill" class="safe-pill">History Explorer</span><h3>Real journeys. Real context. Checkable sources.</h3><p id="historyAgeIntro">Explore history through people, evidence, culture and change.</p><div class="history-principles"><span>Black history all year</span><span>No stereotypes</span><span>Source trail</span><span>Known / disputed / uncertain</span></div><small id="historySourceCount"></small></div>
+        </div>
+        <div class="history-mode-tabs" role="group" aria-label="History explorer mode">
+          <button class="selected" data-history-mode="changemakers" type="button" aria-pressed="true"><span>✦</span><strong>Black Changemakers</strong><small>Inventors, scientists, leaders & organisers</small></button>
+          <button data-history-mode="cultures" type="button" aria-pressed="false"><span>◎</span><strong>Culture Explorer</strong><small>Living practices in historical context</small></button>
+        </div>
+        <div id="historyGrid" class="history-grid" aria-live="polite"></div>
+        <section id="historyPlayer" class="history-player">
+          <div class="history-player-heading"><span id="historyPlayerIcon" class="world-icon">🌍</span><div><p class="eyebrow">INVESTIGATE THE JOURNEY</p><h3 id="historyPlayerTitle">Choose a changemaker</h3><p id="historyPlayerMeta">Black history stays available all year and includes overlooked people as well as familiar names.</p></div><button id="speakHistory" class="ghost-button compact" type="button" disabled>🔊 Orish explains</button></div>
+          <p id="historyPlayerIntro" class="history-intro"></p>
+          <div id="historyJourney" class="history-timeline"></div>
+          <div id="historyContext" class="history-context">Choose a journey to see context, impact and evidence.</div>
+          <h3 id="historyMission"></h3><div id="historyChoices" class="answer-grid"></div><p id="historyFeedback" class="game-feedback" aria-live="polite"></p>
+          <button id="completeHistoryMission" class="primary-button hidden" type="button">Complete history mission</button>
+          <div class="history-source-trail"><div class="section-row"><div><p class="eyebrow">SOURCE TRAIL</p><h3>Where did this claim come from?</h3></div><span class="safe-pill">Pre-reviewed starter sources</span></div><p>Child mode does not open the web. Source organisations are shown so older learners and grown-ups can see that the story is traceable rather than invented.</p><div id="historySources" class="history-sources"></div></div>
+        </section>
+      </section>
+
+      <section id="lifeSkillsPanel" class="screen hidden" aria-labelledby="lifeSkillsTitle">
+        <div class="screen-header">
+          <div><p class="eyebrow">REAL-WORLD MISSIONS</p><h2 id="lifeSkillsTitle">Money, rights & smart choices</h2></div>
+          <button class="ghost-button back-to-world" type="button">Back to World</button>
+        </div>
+        <div class="research-banner"><strong>Practise real-world thinking through games.</strong><p id="lifeSkillsNote">Money examples are educational. Law examples teach reasoning and are not personalised legal advice.</p></div>
+        <div id="lifeSkillGrid" class="science-topic-grid"></div>
+        <section id="lifeSkillPlayer" class="activity-card wide life-skill-player">
+          <div class="discovery-hero"><span id="lifeSkillIcon" class="world-icon">💷</span><div><span id="lifeSkillAge" class="safe-pill">Growing decision-maker</span><h3 id="lifeSkillMissionTitle">Choose a mission</h3><p id="lifeSkillMissionIntro"></p></div></div>
+          <div id="lifeSkillSteps" class="step-list"></div>
+          <h3 id="lifeSkillQuestion">Question</h3><div id="lifeSkillChoices" class="answer-grid"></div>
+          <p id="lifeSkillFeedback" class="game-feedback" aria-live="polite"></p>
+          <button id="completeLifeSkill" class="primary-button hidden" type="button">Finish mission</button>
+        </section>
+      </section>
+
+      <section id="rewardsPanel" class="screen hidden" aria-labelledby="rewardsTitle">
+        <div class="screen-header">
+          <div><p class="eyebrow">EXPLORER PROGRESS</p><h2 id="rewardsTitle">Stars, badges & discoveries</h2></div>
+          <button class="ghost-button back-to-world" type="button">Back to World</button>
+        </div>
+        <div class="rewards-summary">
+          <article><span>⭐</span><strong id="rewardStars">0</strong><small>Explorer Stars</small></article>
+          <article><span>🧭</span><strong id="rewardLevel">1</strong><small>Explorer Level</small></article>
+          <article><span>✅</span><strong id="rewardActivities">0</strong><small>Learning activities</small></article>
+        </div>
+        <div class="reward-note"><strong>Stars are encouragement, not money.</strong> They cannot be bought, cashed out or used to pressure a child into behaviour. Replaying is welcome, but the same activity earns stars only once per day.</div>
+        <div class="activity-layout rewards-layout">
+          <section class="activity-card"><div class="section-row"><div><h3>Badges</h3><p>Unlocked by exploring and learning across the world.</p></div></div><div id="badgeGrid" class="badge-grid"></div></section>
+          <section class="activity-card"><div class="section-row"><div><h3>Explorer items</h3><p>Local cosmetic milestones only — there is no shop.</p></div></div><div id="rewardItemGrid" class="reward-item-grid"></div></section>
+          <section class="activity-card wide"><div class="section-row"><div><h3>Recent discoveries</h3><p>A simple local activity history for this profile.</p></div></div><div id="rewardHistory" class="reward-history"></div></section>
+        </div>
+      </section>
+
+
+      <section id="missionPanel" class="screen hidden" aria-labelledby="missionTitle">
+        <div class="screen-header">
+          <div><p class="eyebrow">MISSION HQ</p><h2 id="missionTitle">Your missions</h2></div>
+          <button class="ghost-button back-to-world" type="button">Back to World</button>
+        </div>
+        <div class="activity-layout">
+          <section class="activity-card">
+            <div class="section-row"><div><h3>Ready missions</h3><p>Parent-created missions appear here using child-safe wording only.</p></div><span id="missionReadyCount" class="safe-pill">0 ready</span></div>
+            <div id="missionList" class="mission-list"><div class="empty-evidence">No missions waiting yet.</div></div>
+          </section>
+          <section class="activity-card" id="missionPlayer">
+            <p class="eyebrow">ORISH MISSION</p>
+            <h3 id="missionPlayTitle">Choose a mission</h3>
+            <p id="missionPlayIntro">A mission created in Parent Studio will appear here without revealing the adult's private wording.</p>
+            <div id="missionSteps" class="step-list"></div>
+            <p id="missionPlayStatus" class="game-feedback" aria-live="polite"></p>
+            <button id="completeMission" class="primary-button hidden" type="button">Mission complete</button>
+          </section>
+        </div>
+      </section>
+
+      <section id="routinePanel" class="screen hidden" aria-labelledby="routineTitle">
+        <div class="screen-header">
+          <div><p class="eyebrow">HOME & ROUTINES</p><h2 id="routineTitle">Build your rhythm</h2></div>
+          <button class="ghost-button back-to-world" type="button">Back to World</button>
+        </div>
+        <div class="activity-layout">
+          <section class="activity-card routine-hero">
+            <span class="world-icon">☀️</span><h3>Morning Launch</h3><p>Turn getting ready into a calm launch sequence.</p>
+            <button id="startMorningRoutine" class="primary-button" type="button">Start morning routine</button>
+          </section>
+          <section class="activity-card routine-hero">
+            <span class="world-icon">🌙</span><h3>Night Landing</h3><p>Slow the world down with a predictable bedtime sequence.</p>
+            <button id="startBedtimeRoutine" class="primary-button" type="button">Start bedtime routine</button>
+          </section>
+          <section class="activity-card wide">
+            <p class="eyebrow">CURRENT ROUTINE</p><h3 id="routinePlayTitle">Choose morning or bedtime</h3>
+            <p id="routineEncouragement">Your grown-up can customise the steps privately in Parent Studio.</p>
+            <div id="routineSteps" class="step-list"></div>
+            <p id="routineStatus" class="game-feedback" aria-live="polite"></p>
+            <button id="finishRoutine" class="primary-button hidden" type="button">Finish routine</button>
+          </section>
+        </div>
+      </section>
+
+      <section id="kitchenPanel" class="screen hidden" aria-labelledby="kitchenTitle">
+        <div class="screen-header">
+          <div><p class="eyebrow">KITCHEN LAB</p><h2 id="kitchenTitle">What can we make?</h2></div>
+          <button class="ghost-button back-to-world" type="button">Back to World</button>
+        </div>
+        <div class="security-banner"><strong>Kitchen safety:</strong> heat, knives and hot equipment stay grown-up jobs. Allergy information must be checked by the adult supervising the real activity.</div>
+        <div class="kitchen-controls" aria-label="Kitchen recipe controls">
+          <label for="kitchenCategory">Recipe area<select id="kitchenCategory"><option value="all">All six areas</option><option>Bread</option><option>Homemade Butter</option><option>Cakes</option><option>Microwave Cakes</option><option>No-Heat</option><option>Family Baking</option></select></label>
+          <label for="measureMode">Measurements<select id="measureMode"><option value="metric">Metric (g/ml)</option><option value="imperial">Imperial (oz/fl oz)</option><option value="cups">Cups & spoons</option><option value="no-scales">No-scales spoons/cups</option></select></label>
+          <label for="servingScale">Batch size<select id="servingScale"><option value="0.5">½ batch</option><option value="1" selected>1× recipe</option><option value="1.5">1½× recipe</option><option value="2">2× recipe</option><option value="3">3× recipe</option></select></label>
+        </div>
+        <p id="measureNote" class="privacy-note">No-scales measurements are practical approximations. For baking, use level spoons/cups and let the supervising adult check dough or batter texture.</p>
+        <div class="activity-layout">
+          <section class="activity-card">
+            <div class="section-row"><div><h3>Ready with what you have</h3><p>Recipes only become ready when the saved ingredients and equipment match.</p></div><span id="kitchenReadyCount" class="safe-pill">0 ready</span></div>
+            <div id="recipeList" class="recipe-list"><div class="empty-evidence">A grown-up needs to set up the kitchen list in Parent Studio first.</div></div>
+            <div class="section-row kitchen-almost-head"><div><h3>Almost there</h3><p>These need only one or two missing items/equipment.</p></div><span id="kitchenAlmostCount" class="safe-pill">0 close</span></div>
+            <div id="recipeAlmostList" class="recipe-list"></div>
+          </section>
+          <section class="activity-card" id="recipeDetail">
+            <p class="eyebrow">COOK WITH ORISH</p><h3 id="recipeTitle">Choose a recipe</h3>
+            <p id="recipeMeta">Measurements and child/adult roles will appear here.</p>
+            <div id="recipeIngredients" class="recipe-measures"></div>
+            <div id="recipeSteps" class="cook-steps"></div>
+            <button id="startCookMode" class="primary-button hidden" type="button">Start one-step Cook Mode</button>
+            <p id="recipeAllergy" class="privacy-note"></p>
+          </section>
+          <section class="activity-card wide hidden" id="cookModeCard">
+            <div class="section-row"><div><p class="eyebrow">ONE-STEP COOK MODE</p><h3 id="cookModeTitle">Recipe</h3></div><span id="cookProgress" class="safe-pill">Step 1</span></div>
+            <div class="cook-focus">
+              <span id="cookRole" class="cook-role-badge">TOGETHER</span>
+              <p id="cookStepText">Choose a recipe and start Cook Mode.</p>
+            </div>
+            <div class="cook-timer">
+              <strong id="cookTimerDisplay">No timer for this step</strong>
+              <div><button id="cookTimerStart" class="ghost-button" type="button">Start timer</button><button id="cookTimerReset" class="ghost-button" type="button">Reset</button></div>
+            </div>
+            <div class="cook-nav"><button id="cookPrev" class="ghost-button" type="button">Previous</button><button id="cookNext" class="primary-button" type="button">Next step</button></div>
+            <p id="cookStatus" class="game-feedback" aria-live="polite"></p>
+          </section>
+        </div>
+      </section>
+
+
+      <section id="makerPanel" class="screen hidden" aria-labelledby="makerTitle">
+        <div class="screen-header">
+          <div><p class="eyebrow">MAKE WITH ORISH</p><h2 id="makerTitle">Build it for real</h2></div>
+          <button class="ghost-button back-to-world" type="button">Back to World</button>
+        </div>
+        <div class="maker-age-card">
+          <span class="world-icon">🛠️</span>
+          <div><strong id="makerAgeTitle">Maker mode</strong><p id="makerAgeSummary">Projects adapt to the active age profile.</p></div>
+        </div>
+        <div class="offline-banner"><strong>Off-screen by design:</strong> choose a project here, then put the device down while you build and test it. No photo upload is required.</div>
+        <div class="activity-layout">
+          <section class="activity-card">
+            <div class="section-row"><div><h3>Choose a project</h3><p>Paper engineering, geometry, forces and story-making using ordinary household materials.</p></div><span class="safe-pill">£0 offline</span></div>
+            <div id="makerProjectGrid" class="maker-project-grid"></div>
+          </section>
+          <section class="activity-card" id="makerDetail">
+            <p class="eyebrow">ORISH MAKER LAB</p>
+            <h3 id="makerProjectTitle">Choose a project</h3>
+            <p id="makerProjectQuestion">The investigation question and steps will appear here.</p>
+            <div id="makerSafety" class="maker-safety"></div>
+            <div class="maker-columns">
+              <div><h4>Materials</h4><div id="makerMaterials" class="material-list"></div></div>
+              <div><h4>What you are learning</h4><p id="makerObjective" class="maker-objective"></p></div>
+            </div>
+            <h4>Build & test</h4>
+            <div id="makerSteps" class="step-list"></div>
+            <p id="makerStatus" class="game-feedback" aria-live="polite"></p>
+            <button id="completeMakerProject" class="primary-button hidden" type="button">Save learning discovery</button>
+          </section>
+        </div>
+      </section>
+
+      <section id="creativePanel" class="screen hidden" aria-labelledby="creativeTitle">
+        <div class="screen-header">
+          <div><p class="eyebrow">CREATIVE STUDIO</p><h2 id="creativeTitle">Design, invent & explain</h2></div>
+          <button class="ghost-button back-to-world" type="button">Back to World</button>
+        </div>
+        <div class="creative-hero-card">
+          <div><span class="world-icon">🎨</span><strong id="creativeAgeTitle">Creative challenge</strong><p id="creativeAgeSummary">The brief becomes more sophisticated with age.</p></div>
+          <button id="openVisualLab" class="secondary-button" type="button">Open Visual Sort Lab</button>
+        </div>
+        <div class="privacy-note creative-note">Creative work stays offline in this prototype. Orish records only that a learning challenge was completed — not the child’s drawing, handwriting or personal story content.</div>
+        <div class="activity-layout">
+          <section class="activity-card">
+            <div class="section-row"><div><h3>Creative briefs</h3><p>Pick a challenge, make it on paper or with safe materials, then return to mark the learning complete.</p></div></div>
+            <div id="creativeChallengeGrid" class="creative-challenge-grid"></div>
+          </section>
+          <section class="activity-card">
+            <p class="eyebrow">DESIGN BRIEF</p>
+            <h3 id="creativeBriefTitle">Choose a challenge</h3>
+            <p id="creativeBriefText">Your age-adapted design brief will appear here.</p>
+            <div id="creativeConstraints" class="constraint-list"></div>
+            <div class="maker-columns">
+              <div><h4>Learning goal</h4><p id="creativeObjective" class="maker-objective"></p></div>
+              <div><h4>Privacy rule</h4><p class="maker-objective">Keep real addresses, schools, full names and other private information out of shareable creative work.</p></div>
+            </div>
+            <p id="creativeStatus" class="game-feedback" aria-live="polite"></p>
+            <button id="completeCreativeChallenge" class="primary-button hidden" type="button">Challenge complete</button>
+          </section>
+        </div>
+      </section>
+
+      <section id="familyPanel" class="screen hidden" aria-labelledby="familyTitle">
+        <div class="screen-header">
+          <div><p class="eyebrow">FAMILY CLUBHOUSE</p><h2 id="familyTitle">Play & learn together</h2></div>
+          <button class="ghost-button back-to-world" type="button">Back to World</button>
+        </div>
+        <div class="family-hero-card">
+          <div><span class="world-icon">🏠</span><strong id="familyAgeTitle">Family team mode</strong><p id="familyAgeSummary">Activities adapt to the active child profile while keeping everyone on one cooperative team.</p></div>
+          <span class="safe-pill">Approved family only</span>
+        </div>
+        <div class="offline-banner"><strong>No public social features:</strong> Family Clubhouse is for people already together or approved by the parent/guardian. No public profiles, stranger matching, private child messaging, location sharing or family recordings are required.</div>
+
+        <div class="family-role-box">
+          <div><h3>Who is joining?</h3><p>Choose a role only. Names are not required or stored.</p></div>
+          <div id="familyRoleGrid" class="family-role-grid" aria-label="Family role"></div>
+        </div>
+
+        <div class="activity-layout family-layout">
+          <section class="activity-card">
+            <div class="section-row"><div><h3>Choose a family challenge</h3><p>Cooperative quizzes, safe hunts, science, cooking, stories and building.</p></div><span class="safe-pill">Team, not competition</span></div>
+            <div id="familyActivityGrid" class="family-activity-grid"></div>
+          </section>
+          <section class="activity-card">
+            <p class="eyebrow">ORISH FAMILY MISSION</p>
+            <h3 id="familyActivityTitle">Choose a challenge</h3>
+            <p id="familyActivitySummary">Your shared family activity will appear here.</p>
+            <div id="familySafety" class="maker-safety"></div>
+            <div class="maker-columns">
+              <div><h4>Learning goal</h4><p id="familyObjective" class="maker-objective"></p></div>
+              <div><h4>Clubhouse rule</h4><p class="maker-objective">Help each other. No one is ranked, shamed or forced to answer, eat, perform or share private experiences.</p></div>
+            </div>
+            <div id="familyQuizArea" class="family-quiz hidden">
+              <span id="familyQuizProgress" class="safe-pill">Question 1</span>
+              <p id="familyQuizQuestion" class="family-question"></p>
+              <div id="familyQuizAnswer" class="family-answer hidden"></div>
+              <div class="family-actions"><button id="revealFamilyAnswer" class="secondary-button" type="button">Reveal team answer</button><button id="nextFamilyQuestion" class="primary-button hidden" type="button">Next question</button></div>
+            </div>
+            <div id="familyStepsArea">
+              <h4>Do it together</h4>
+              <div id="familySteps" class="step-list"></div>
+            </div>
+            <p id="familyStatus" class="game-feedback" aria-live="polite"></p>
+            <div class="family-actions"><button id="speakFamilyActivity" class="ghost-button hidden" type="button">🔊 Orish, read this</button><button id="openFamilyKitchen" class="secondary-button hidden" type="button">Open Family Baking</button><button id="completeFamilyActivity" class="primary-button hidden" type="button">We did it together</button></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="visualGamePanel" class="screen hidden" aria-labelledby="visualGameTitle">
+        <div class="screen-header">
+          <div><p class="eyebrow">VISUAL GAME ENGINE</p><h2 id="visualGameTitle">Sort the signals</h2></div>
+          <button id="visualBackCreative" class="ghost-button" type="button">Back to Creative Studio</button>
+        </div>
+        <div class="visual-game-shell">
+          <div class="visual-game-heading">
+            <span id="visualGameIcon" class="world-icon">🪐</span>
+            <div><strong id="visualGameName">Visual Sort Lab</strong><p id="visualGameInstruction">Tap or drag each card into the correct zone.</p></div>
+            <span id="visualGameProgress" class="safe-pill">0 / 0</span>
+          </div>
+          <div id="visualCardBank" class="visual-card-bank" aria-label="Cards to sort"></div>
+          <div id="visualZones" class="visual-zones" aria-label="Sorting zones"></div>
+          <p id="visualGameFeedback" class="game-feedback" aria-live="polite"></p>
+          <button id="finishVisualGame" class="primary-button hidden" type="button">Save visual learning</button>
+        </div>
+      </section>
+
+
+      <section id="accessibilityPanel" class="screen hidden" aria-labelledby="accessibilityTitle">
+        <div class="screen-header">
+          <div><p class="eyebrow">ACCESSIBILITY CENTRE</p><h2 id="accessibilityTitle">Make the world work for you</h2></div>
+          <button class="ghost-button back-to-world" type="button">Back to World</button>
+        </div>
+        <div class="accessibility-intro">
+          <span class="world-icon" aria-hidden="true">⚙️</span>
+          <div><strong>Change how Orish's World feels on this device.</strong><p>No diagnosis or explanation is needed. These controls change presentation only and do not lower the learning goal.</p></div>
+        </div>
+        <div class="accessibility-grid">
+          <section class="accessibility-card">
+            <label for="a11yTextSize"><strong>Text size</strong><small>Increase text without changing the activity.</small></label>
+            <select id="a11yTextSize"><option value="standard">Standard</option><option value="large">Large</option><option value="extra">Extra large</option></select>
+          </section>
+          <label class="accessibility-card switch-card"><span><strong>High contrast</strong><small>Stronger separation between text, controls and backgrounds.</small></span><input id="a11yHighContrast" type="checkbox"></label>
+          <label class="accessibility-card switch-card"><span><strong>Reduce motion</strong><small>Turn off decorative movement and animated transitions.</small></span><input id="a11yReducedMotion" type="checkbox"></label>
+          <label class="accessibility-card switch-card"><span><strong>Spacious text</strong><small>Add breathing room to lines and letters.</small></span><input id="a11ySpaciousText" type="checkbox"></label>
+          <label class="accessibility-card switch-card"><span><strong>Simplified visuals</strong><small>Remove decorative orbits, glows and non-essential effects.</small></span><input id="a11ySimplifiedVisuals" type="checkbox"></label>
+          <label class="accessibility-card switch-card"><span><strong>Spoken support</strong><small>Allow Orish to read supported prompts aloud when the profile permits it.</small></span><input id="a11ySpeechEnabled" type="checkbox" checked></label>
+        </div>
+        <div class="accessibility-actions">
+          <button id="testAccessibilityVoice" class="secondary-button" type="button">🔊 Test Orish voice</button>
+          <button id="resetAccessibility" class="ghost-button" type="button">Reset display settings</button>
+        </div>
+        <p id="accessibilityStatus" class="game-feedback" aria-live="polite"></p>
+        <div class="offline-banner"><strong>Built-in alternatives:</strong> Memory Lab has no countdown, Observation Lab uses keyboard-focusable tap targets, text labels support visual symbols, and core games do not require drag-only controls.</div>
+      </section>
+
+      <section id="memoryPanel" class="screen hidden" aria-labelledby="memoryTitle">
+        <div class="screen-header">
+          <div><p class="eyebrow">MEMORY + MATCHING ENGINE</p><h2 id="memoryTitle">Memory Lab</h2></div>
+          <button class="ghost-button back-to-world" type="button">Back to World</button>
+        </div>
+        <div class="memory-shell">
+          <div class="memory-heading">
+            <span id="memoryIcon" class="world-icon" aria-hidden="true">🧠</span>
+            <div><strong id="memoryGameName">Memory Lab</strong><p id="memoryInstruction">Turn over two cards and find the pairs.</p></div>
+            <span id="memoryProgress" class="safe-pill">0 / 0 pairs</span>
+          </div>
+          <div class="memory-tools">
+            <span id="memoryTurns" class="safe-pill">0 turns</span>
+            <button id="speakMemoryInstruction" class="ghost-button" type="button">🔊 Read instructions</button>
+            <button id="restartMemoryGame" class="ghost-button" type="button">Shuffle & restart</button>
+          </div>
+          <div id="memoryBoard" class="memory-board" role="group" aria-label="Memory matching cards"></div>
+          <p id="memoryFeedback" class="game-feedback" aria-live="polite">Take your time. There is no timer.</p>
+          <button id="finishMemoryGame" class="primary-button hidden" type="button">Save memory learning</button>
+        </div>
+      </section>
+
+      <section id="observationPanel" class="screen hidden" aria-labelledby="observationTitle">
+        <div class="screen-header">
+          <div><p class="eyebrow">OBSERVATION + EVIDENCE ENGINE</p><h2 id="observationTitle">Observation Lab</h2></div>
+          <button class="ghost-button back-to-world" type="button">Back to World</button>
+        </div>
+        <div class="observation-safety"><strong>Look carefully, not quickly.</strong> There is no countdown, camera access, upload, leaderboard or facial recognition. The game uses built-in scenes only.</div>
+        <div class="observation-shell">
+          <div class="observation-heading">
+            <span id="observationIcon" class="world-icon" aria-hidden="true">🔎</span>
+            <div><strong id="observationGameName">Observation Lab</strong><p id="observationInstruction">Look carefully and find the evidence.</p></div>
+            <span id="observationProgress" class="safe-pill">0 / 0</span>
+          </div>
+          <div class="observation-tools">
+            <div id="observationTargets" class="observation-targets" aria-label="Things to find"></div>
+            <button id="speakObservationInstruction" class="ghost-button" type="button">🔊 Read instructions</button>
+            <button id="restartObservationGame" class="ghost-button" type="button">Restart</button>
+          </div>
+          <div id="observationScenes" class="observation-scenes"></div>
+          <div id="observationReasoning" class="observation-reasoning hidden" aria-live="polite"></div>
+          <p id="observationFeedback" class="game-feedback" aria-live="polite">Take your time and look for evidence.</p>
+          <button id="finishObservationGame" class="primary-button hidden" type="button">Save observation learning</button>
+        </div>
+      </section>
+
+
+      <section id="mathsPanel" class="screen hidden" aria-labelledby="mathsTitle">
+        <div class="screen-header">
+          <div><p class="eyebrow">MATHS LAB</p><h2 id="mathsTitle">Numbers become missions</h2></div>
+          <button class="ghost-button back-to-world" type="button">Back to World</button>
+        </div>
+        <p class="maths-safety"><strong>No speed race.</strong> Maths Lab rewards careful reasoning, trying again and using hints. The prototype stores results, not a transcript of working or typed answers.</p>
+        <div class="maths-shell">
+          <div class="maths-heading">
+            <span id="mathsIcon" class="world-icon" aria-hidden="true">📐</span>
+            <div><strong id="mathsGameName">Maths Lab</strong><p id="mathsInstruction">Choose an age profile to begin.</p></div>
+            <span id="mathsDifficulty" class="safe-pill">Age adaptive</span>
+          </div>
+          <div class="maths-tools">
+            <span id="mathsProgress" class="safe-pill">1 / 1</span>
+            <button id="speakMathsInstruction" class="ghost-button" type="button">🔊 Read instruction</button>
+            <button id="mathsHint" class="ghost-button" type="button">Hint</button>
+            <button id="restartMathsGame" class="ghost-button" type="button">Restart</button>
+          </div>
+          <div id="mathsTopicStrip" class="maths-topic-strip" aria-label="Maths topics"></div>
+          <div id="mathsVisual" class="maths-visual" aria-live="polite"></div>
+          <div id="mathsRound" class="maths-round"></div>
+          <div id="mathsAnswerArea" class="maths-answer-area"></div>
+          <p id="mathsFeedback" class="game-feedback" aria-live="polite"></p>
+          <div class="maths-actions">
+            <button id="checkMathsAnswer" class="primary-button" type="button">Check answer</button>
+            <button id="nextMathsRound" class="secondary-button hidden" type="button">Next challenge</button>
+            <button id="finishMathsGame" class="primary-button hidden" type="button">Finish Maths Lab</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="sequencePanel" class="screen hidden" aria-labelledby="sequenceTitle">
+        <div class="screen-header">
+          <div><p class="eyebrow">SEQUENCING + LOGIC ENGINE</p><h2 id="sequenceTitle">Logic Lab</h2></div>
+          <button class="ghost-button back-to-world" type="button">Back to World</button>
+        </div>
+        <div class="sequence-safety"><strong>Think it through, not against the clock.</strong> There is no countdown, leaderboard or drag-only control. Every step can be moved with accessible up/down buttons.</div>
+        <div class="sequence-shell">
+          <div class="sequence-heading">
+            <span id="sequenceIcon" class="world-icon" aria-hidden="true">🧭</span>
+            <div><strong id="sequenceGameName">Logic Lab</strong><p id="sequenceInstruction">Put the steps into an order that makes sense.</p></div>
+            <span id="sequenceStatus" class="safe-pill">Planning</span>
+          </div>
+          <div class="sequence-tools">
+            <button id="speakSequenceInstruction" class="ghost-button" type="button">🔊 Read instructions</button>
+            <button id="sequenceHint" class="ghost-button" type="button">💡 Hint</button>
+            <button id="restartSequenceGame" class="ghost-button" type="button">Shuffle & restart</button>
+          </div>
+          <ol id="sequenceList" class="sequence-list" aria-label="Steps to put in order"></ol>
+          <div class="sequence-actions">
+            <button id="checkSequence" class="primary-button" type="button">Check the order</button>
+            <button id="finishSequenceGame" class="secondary-button hidden" type="button">Save logic learning</button>
+          </div>
+          <p id="sequenceFeedback" class="game-feedback" aria-live="polite">Move the steps until the plan makes sense.</p>
+        </div>
+      </section>
+
+      <section id="literacyPanel" class="screen hidden" aria-labelledby="literacyTitle">
+        <div class="screen-header">
+          <div><p class="eyebrow">READING + SPELLING + KEYBOARD ENGINE</p><h2 id="literacyTitle">Reading & Keyboard Lab</h2></div>
+          <button class="ghost-button back-to-world" type="button">Back to World</button>
+        </div>
+        <div class="literacy-safety"><strong>Accuracy before speed.</strong> There is no typing race, public score or saved free-text response. Typed practice stays transient in this screen; the Learning Passport records only completion, accuracy and support level.</div>
+        <div class="literacy-shell">
+          <div class="literacy-heading">
+            <span id="literacyIcon" class="world-icon" aria-hidden="true">⌨️</span>
+            <div><strong id="literacyGameName">Reading & Keyboard Lab</strong><p id="literacyInstruction">Read, spell and type at the active age level.</p></div>
+            <span id="literacyProgress" class="safe-pill">1 / 4</span>
+          </div>
+          <div class="literacy-tools">
+            <button id="speakLiteracyInstruction" class="ghost-button" type="button">🔊 Read instructions</button>
+            <button id="literacyHint" class="ghost-button" type="button">💡 Hint</button>
+            <button id="restartLiteracyGame" class="ghost-button" type="button">Restart</button>
+          </div>
+          <div id="literacyKeyboardTip" class="keyboard-tip">Take your time. Accuracy matters more than speed.</div>
+          <article id="literacyRound" class="literacy-round" aria-live="polite"></article>
+          <div id="literacyAnswerArea" class="literacy-answer-area"></div>
+          <div class="literacy-actions">
+            <button id="checkLiteracyAnswer" class="primary-button" type="button">Check answer</button>
+            <button id="nextLiteracyRound" class="secondary-button hidden" type="button">Next</button>
+            <button id="finishLiteracyGame" class="secondary-button hidden" type="button">Save literacy learning</button>
+          </div>
+          <p id="literacyFeedback" class="game-feedback" aria-live="polite">No timer. Read carefully and use the keyboard only when it helps.</p>
+        </div>
+      </section>
+
+      <section id="storyPanel" class="screen hidden" aria-labelledby="storyTitle">
+        <div class="screen-header">
+          <div><p class="eyebrow">INTERACTIVE STORY + CHOICE ENGINE</p><h2 id="storyTitle">Story & Choice Lab</h2></div>
+          <button class="ghost-button back-to-world" type="button">Back to World</button>
+        </div>
+        <div class="story-safety"><strong>Choices are for learning, not judging.</strong> There is no behaviour score, personality label, timer or public result. A mistake can open a repair path. The Learning Passport records completion only — not the exact choices a child made.</div>
+        <div class="story-shell">
+          <div class="story-heading">
+            <span id="storyIcon" class="world-icon" aria-hidden="true">📖</span>
+            <div><strong id="storyGameName">Story & Choice Lab</strong><p id="storyInstruction">Choose what happens next and notice the consequences.</p></div>
+            <span id="storyProgress" class="safe-pill">Scene 1</span>
+          </div>
+          <div class="story-tools">
+            <button id="speakStoryInstruction" class="ghost-button" type="button">🔊 Read instructions</button>
+            <button id="restartStoryGame" class="ghost-button" type="button">Restart story</button>
+          </div>
+          <article id="storyScene" class="story-scene" aria-live="polite"></article>
+          <div id="storyChoices" class="story-choices" aria-label="Story choices"></div>
+          <div id="storyReflection" class="story-reflection hidden" aria-live="polite"></div>
+          <p id="storyFeedback" class="game-feedback" aria-live="polite">Take your time. See what each decision changes.</p>
+          <button id="finishStoryGame" class="secondary-button hidden" type="button">Save story learning</button>
+        </div>
+      </section>
+
+      <section id="goodNewsPanel" class="screen hidden" aria-labelledby="goodNewsTitle">
+        <div class="screen-header">
+          <div><p class="eyebrow">GOOD NEWS BEACON</p><h2 id="goodNewsTitle">Hopeful ideas, carefully presented</h2></div>
+          <button class="ghost-button back-to-world" type="button">Back to World</button>
+        </div>
+        <div class="good-news-safety"><strong>Demo content only:</strong> these are manually written sample cards, not live/current news reports. No feed, browser tracking, ads or frightening breaking-news alerts are used.</div>
+        <div class="good-news-hero">
+          <span class="world-icon" aria-hidden="true">🌍</span>
+          <div><strong id="goodNewsAgeLabel">Growing Explorer</strong><p id="goodNewsAgeIntro">Look for the problem people noticed, what they tried and what changed.</p></div>
+          <button id="readBeaconIntro" class="ghost-button" type="button">🔊 Read intro</button>
+        </div>
+        <div id="goodNewsCategories" class="good-news-filters" aria-label="Good News categories"></div>
+        <div class="good-news-layout">
+          <div>
+            <div class="section-row"><div><h3>Beacon cards</h3><p>Choose a positive example to explore.</p></div><span class="safe-pill">Manual demo review</span></div>
+            <div id="goodNewsGrid" class="good-news-grid"></div>
+          </div>
+          <article id="goodNewsDetail" class="good-news-detail" aria-live="polite">
+            <div class="empty-evidence">Choose a Beacon card.</div>
+          </article>
+        </div>
+      </section>
+
+      <section id="parentGateScreen" class="screen hidden" aria-labelledby="gateTitle">
+        <div class="screen-header">
+          <div>
+            <p class="eyebrow">ADULT ACCESS</p>
+            <h2 id="gateTitle">Parent Gate</h2>
+          </div>
+          <button class="ghost-button back-to-world" type="button">Back</button>
+        </div>
+        <div class="gate-shell">
+          <div class="gate-icon" aria-hidden="true">🔐</div>
+          <div>
+            <h3 id="gateModeTitle">Create an adult PIN</h3>
+            <p id="gateHelp">This local PIN helps stop a child casually opening Parent Studio. It is not a replacement for production account authentication.</p>
+            <label for="parentPin">Adult PIN</label>
+            <input id="parentPin" type="password" inputmode="numeric" pattern="[0-9]*" minlength="6" maxlength="8" autocomplete="current-password" aria-describedby="gateHelp gateStatus">
+            <div id="pinConfirmWrap" class="hidden"><label for="parentPinConfirm">Confirm adult PIN</label><input id="parentPinConfirm" type="password" inputmode="numeric" pattern="[0-9]*" minlength="6" maxlength="8" autocomplete="new-password"></div>
+            <div class="gate-actions">
+              <button id="unlockParent" class="primary-button" type="button">Continue</button>
+              <button id="cancelParentGate" class="ghost-button" type="button">Cancel</button>
+            </div>
+            <p id="gateStatus" class="gate-status" aria-live="polite"></p>
+            <p class="privacy-note">The PIN itself is never stored. On HTTPS/localhost, the browser stores only a salted PBKDF2 verification value.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="parentPanel" class="screen hidden" aria-labelledby="parentTitle">
+        <div class="screen-header">
+          <div>
+            <p class="eyebrow">PRIVATE ADULT AREA</p>
+            <h2 id="parentTitle">Parent Studio</h2>
+          </div>
+          <button class="ghost-button back-to-world" type="button">Back</button>
+        </div>
+
+        <div class="security-banner"><strong>Prototype safety:</strong> profiles and learning records stay in this browser only. Use fictional/demo information until a production backend and formal security review exist.</div>
+
+        <div class="parent-toolbar">
+          <div><strong id="parentActiveProfile">No active child profile</strong><small>Parent Studio session unlocked</small></div>
+          <div class="parent-toolbar-actions"><button id="lockParent" class="ghost-button" type="button">Lock Parent Studio</button></div>
+        </div>
+
+        <div class="parent-grid">
+          <section class="control-card wide safety-control-centre">
+            <div class="section-row">
+              <div><p class="eyebrow">CENTRAL SAFETY SETTINGS</p><h3>Safety & Parent Controls Centre</h3><p>One place to decide which child-facing features are available for the active profile. These prototype controls stay on this device.</p></div>
+              <span id="safetyCentreProfile" class="safe-pill">No active profile</span>
+            </div>
+
+            <div id="safetyNoProfile" class="security-banner">Create or select a child profile before changing profile-specific safety controls.</div>
+            <div id="safetyControlsBody">
+              <div class="safety-control-grid">
+                <fieldset class="safety-control-group">
+                  <legend>Orish interaction</legend>
+                  <label class="setting-switch"><input id="controlFreeTextOrish" type="checkbox"><span><strong>Free-text Ask Orish</strong><small>Allow the child to type their own question into the local Orish router. Always OFF for 0–2.</small></span></label>
+                  <label class="setting-switch"><input id="controlSpokenSupport" type="checkbox"><span><strong>Spoken support</strong><small>Permit read-aloud. The app prefers a configured self-hosted voice gateway and otherwise uses device/browser speech where available.</small></span></label>
+                  <label class="setting-switch"><input id="controlTwoWayVoice" type="checkbox"><span><strong>Two-way microphone with Orish</strong><small>Explicit parent opt-in. Microphone starts only after the child taps Talk, each turn auto-stops, and 0–2 remains parent-led with child microphone locked off.</small></span></label>
+                  <label class="setting-switch"><input id="controlOfflineActivities" type="checkbox"><span><strong>Offline activities</strong><small>Allow Orish to recommend making, movement, family and other off-screen activities.</small></span></label>
+                  <label class="setting-switch"><input id="controlParentMissions" type="checkbox"><span><strong>Parent-created missions</strong><small>Allow private Parent Studio goals to become child-facing missions without revealing the original adult wording.</small></span></label>
+                </fieldset>
+
+                <fieldset class="safety-control-group">
+                  <legend>Learning & family areas</legend>
+                  <label class="setting-switch"><input id="controlEvidence" type="checkbox"><span><strong>Learning Passport evidence</strong><small>Store compact activity metadata only. Free-form Orish chat, story routes and typed practice text are excluded.</small></span></label>
+                  <label class="setting-switch"><input id="controlFamily" type="checkbox"><span><strong>Family Clubhouse</strong><small>Permit cooperative activities only with approved family/trusted roles selected below.</small></span></label>
+                  <label class="setting-switch"><input id="controlKitchen" type="checkbox"><span><strong>Kitchen Lab</strong><small>Permit recipe matching. Adult still owns heat, sharps, allergens and final food-safety decisions.</small></span></label>
+                  <label class="setting-switch"><input id="controlGoodNews" type="checkbox"><span><strong>Good News Beacon</strong><small>Permit manually approved local demo stories. No live breaking-news feed in V1.</small></span></label>
+                </fieldset>
+              </div>
+
+              <fieldset class="trusted-role-box">
+                <legend>Approved Family Clubhouse roles</legend>
+                <p>Role labels only — family names are not needed.</p>
+                <div class="trusted-role-grid">
+                  <label><input id="controlRoleParent" type="checkbox" value="parent"> Parent / Guardian</label>
+                  <label><input id="controlRoleSibling" type="checkbox" value="sibling"> Sibling</label>
+                  <label><input id="controlRoleGrandparent" type="checkbox" value="grandparent"> Grandparent</label>
+                  <label><input id="controlRoleFamily" type="checkbox" value="family"> Other approved family</label>
+                </div>
+              </fieldset>
+
+              <div class="future-safety-box">
+                <div><strong>Future online capabilities — locked OFF in this £0 prototype</strong><p>These cannot be switched on from the browser build. A production version would require a reviewed server-side safety gateway and explicit parent controls.</p></div>
+                <div class="locked-feature-grid">
+                  <span>🔒 Unreviewed live generative AI</span><span>🔒 Open web search</span><span>🔒 Public social features</span><span>🔒 Location access</span><span>🔒 Child camera/uploads</span>
+                </div>
+              </div>
+
+              <div class="safety-actions">
+                <button id="saveParentControls" class="primary-button" type="button">Save safety controls</button>
+                <button id="resetParentControls" class="ghost-button" type="button">Reset to age-safe defaults</button>
+                <p id="parentControlsStatus" class="gate-status" aria-live="polite"></p>
+              </div>
+            </div>
+          </section>
+
+
+          <section class="control-card wide release-readiness-card">
+            <div class="section-row"><div><p class="eyebrow">V1 RELEASE READINESS</p><h3>App & device readiness</h3><p>Checks this browser/device without analytics or sending device details anywhere.</p></div><span id="releaseVersion" class="safe-pill">V1.28</span></div>
+            <div class="release-readiness-grid">
+              <div class="readiness-stat"><small>Connection</small><strong id="networkStatus">Checking…</strong></div>
+              <div class="readiness-stat"><small>App mode</small><strong id="displayModeStatus">Browser tab</strong></div>
+              <div class="readiness-stat"><small>Offline shell</small><strong id="serviceWorkerStatus">Checking…</strong></div>
+              <div class="readiness-stat"><small>Data model</small><strong>Local prototype</strong></div>
+            </div>
+            <div class="release-actions">
+              <button id="installAppButton" class="primary-button" type="button">Install / Add to Home Screen</button>
+              <button id="reloadUpdateButton" class="ghost-button hidden" type="button">Reload updated app</button>
+            </div>
+            <p id="installHelp" class="privacy-note" aria-live="polite">Install availability depends on the browser. On iPhone/iPad Safari, use Share → Add to Home Screen.</p>
+            <div class="security-banner release-boundary"><strong>Before real child data:</strong> complete physical-device QA, production authentication/backend work, formal privacy/safeguarding review and security testing. This local PIN/browser-storage prototype is not production child-data security.</div>
+          </section>
+
+          <section class="control-card wide privacy-dashboard">
+            <div class="section-row"><div><h3>Privacy & data dashboard</h3><p>Shows counts and storage boundaries without displaying private Parent Studio wording.</p></div><span class="safe-pill">Local prototype</span></div>
+            <div id="privacyDashboard" class="privacy-stat-grid"><div class="empty-evidence">Select a profile to view its local-data summary.</div></div>
+            <div class="privacy-boundary-grid">
+              <span>✓ No saved Orish transcript store</span><span>✓ No raw voice store</span><span>✓ No location store</span><span>✓ No camera/photo store required</span>
+            </div>
+            <div class="form-actions">
+              <button id="clearActiveLearningData" class="ghost-button" type="button">Delete active profile learning records</button>
+            </div>
+            <p id="privacyDashboardStatus" class="gate-status" aria-live="polite"></p>
+          </section>
+
+          <section class="control-card">
+            <div class="section-row"><div><h3>Child profile</h3><p>Only collect what Orish genuinely needs.</p></div><span class="safe-pill">On-device</span></div>
+            <input id="profileId" type="hidden">
+            <label for="childNickname">Nickname / first name <span>avoid full legal names</span></label>
+            <input id="childNickname" type="text" maxlength="30" placeholder="Explorer" autocomplete="off">
+            <div class="two-col">
+              <label for="profileAge">Age experience
+                <select id="profileAge"><option value="0-2">0–2</option><option value="2-4">2–4</option><option value="4-6">4–6</option><option value="7-9" selected>7–9</option><option value="10-12">10–12</option><option value="13-16">13–16</option></select>
+              </label>
+              <label for="curriculumRegion">Learning framework
+                <select id="curriculumRegion"><option value="england">England</option><option value="scotland">Scotland</option><option value="wales">Wales</option><option value="ni">Northern Ireland</option><option value="us">US starter mapping</option><option value="custom">Flexible homeschool</option></select>
+              </label>
+            </div>
+            <label for="routineGoal">Current focus</label>
+            <select id="routineGoal"><option>Learning curiosity</option><option>Morning routine</option><option>Bedtime routine</option><option>Listening</option><option>Sharing & turn-taking</option><option>Trying something new</option><option>Confidence</option><option>Family cooking</option></select>
+            <fieldset class="interest-fieldset"><legend>Interests <span>choose any</span></legend><div id="interestGrid" class="interest-grid"></div></fieldset>
+            <div class="toggle-list">
+              <label><input id="readAloudSetting" type="checkbox" checked> Read-aloud enabled</label>
+              <label><input id="offlineSetting" type="checkbox" checked> Offline activities enabled</label>
+              <label><input id="evidenceSetting" type="checkbox" checked> Learning Passport evidence enabled</label>
+            </div>
+            <div class="form-actions"><button id="saveProfile" class="primary-button" type="button">Save profile</button><button id="newProfile" class="ghost-button" type="button">New profile</button></div>
+            <p id="profileStatus" class="gate-status" aria-live="polite"></p>
+          </section>
+
+          <section class="control-card">
+            <div class="section-row"><div><h3>Family profiles</h3><p>Switch which child Orish adapts to.</p></div><span id="profileCount" class="safe-pill">0 profiles</span></div>
+            <div id="profileList" class="profile-list"><div class="empty-evidence">No profiles yet.</div></div>
+          </section>
+
+          <section class="control-card">
+            <h3>Private back channel</h3>
+            <p>Tell Orish what you want the active child to practise. The child-facing version never quotes this private wording.</p>
+            <label for="lessonRequest">Private parent goal</label>
+            <textarea id="lessonRequest" rows="4" maxlength="300" placeholder="Example: practise getting ready in the morning with fewer reminders."></textarea>
+            <label for="lessonFormat">Turn it into</label>
+            <select id="lessonFormat"><option>Game mission</option><option>Interactive story</option><option>Nursery rhyme / rhyme</option><option>Family activity</option><option>Science challenge</option><option>Routine adventure</option></select>
+            <button id="makeMission" class="primary-button" type="button">Create local mission</button>
+          </section>
+
+
+          <section class="control-card">
+            <div class="section-row"><div><h3>Morning & bedtime routines</h3><p>One step per line. Keep routines positive and realistic.</p></div><span class="safe-pill">Private setup</span></div>
+            <label for="morningRoutineSteps">Morning steps</label>
+            <textarea id="morningRoutineSteps" rows="6" maxlength="700" placeholder="Wake up and stretch&#10;Wash and get dressed&#10;Breakfast&#10;Brush teeth"></textarea>
+            <label for="bedtimeRoutineSteps">Bedtime steps</label>
+            <textarea id="bedtimeRoutineSteps" rows="6" maxlength="700" placeholder="Quiet tidy-up&#10;Wash / bath routine&#10;Brush teeth&#10;Calm story"></textarea>
+            <label for="routineEncouragementInput">Orish encouragement</label>
+            <input id="routineEncouragementInput" type="text" maxlength="120" placeholder="One step at a time — you’re getting there.">
+            <button id="saveRoutines" class="primary-button" type="button">Save routines locally</button>
+            <p id="routineSaveStatus" class="gate-status" aria-live="polite"></p>
+          </section>
+
+          <section class="control-card">
+            <div class="section-row"><div><h3>Kitchen setup</h3><p>Enter only ingredients and equipment actually available at home.</p></div><span class="safe-pill">Parent controlled</span></div>
+            <label for="kitchenIngredients">Ingredients <span>comma or line separated</span></label>
+            <textarea id="kitchenIngredients" rows="5" maxlength="800" placeholder="banana, oats, yogurt, flour, milk"></textarea>
+            <label for="kitchenEquipment">Available equipment</label>
+            <textarea id="kitchenEquipment" rows="4" maxlength="500" placeholder="bowl, spoon, microwave, microwave-safe mug"></textarea>
+            <label for="kitchenAllergyNote">Adult food-safety note <span>do not enter medical details</span></label>
+            <input id="kitchenAllergyNote" type="text" maxlength="160" placeholder="Example: adult has checked allergies and food safety before cooking.">
+            <button id="saveKitchenSetup" class="primary-button" type="button">Save kitchen setup</button>
+            <p id="kitchenSaveStatus" class="gate-status" aria-live="polite"></p>
+          </section>
+
+          <section class="control-card">
+            <div class="section-row"><div><h3>Curriculum engine</h3><p>Hidden mapping behind each activity.</p></div><span class="safe-pill">£0 rules engine</span></div>
+            <div id="curriculumPreview" class="curriculum-preview">
+              <strong>No active profile yet</strong><p>Create a profile to see its framework and age-adaptive objectives.</p>
+            </div>
+          </section>
+
+          <section class="control-card wide">
+            <div class="section-row">
+              <div><h3>Generated activity preview</h3><p>Local template engine only — no AI service called.</p></div>
+              <span class="safe-pill">Parent-only source</span>
+            </div>
+            <div id="missionPreview" class="mission-preview" aria-live="polite">Create a profile and add a private goal. Orish will turn it into a child-facing activity without revealing the private wording.</div>
+          </section>
+
+          <section class="control-card wide">
+            <div class="section-row">
+              <div><h3>Parent Learning Summary</h3><p>A compact overview generated only from Learning Passport records — never from private conversations.</p></div>
+              <label class="summary-period" for="summaryPeriod">Period
+                <select id="summaryPeriod"><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="all">All local records</option></select>
+              </label>
+            </div>
+            <div id="parentLearningSummary" class="parent-summary"><div class="empty-evidence">Create or select a child profile to see a learning summary.</div></div>
+          </section>
+
+          <section class="control-card wide">
+            <div class="section-row">
+              <div><h3>Learning Passport</h3><p>Completed V1 games automatically create local evidence for the active profile when enabled.</p></div>
+              <div class="passport-actions"><button id="exportEvidence" class="ghost-button" type="button">Export local record</button><button id="printEvidence" class="ghost-button" type="button">Print</button></div>
+            </div>
+            <div class="evidence-grid" id="evidenceGrid"><div class="empty-evidence">No learning evidence yet.</div></div>
+          </section>
+
+          <section class="control-card wide danger-zone">
+            <div><h3>Local privacy controls</h3><p>Delete this prototype’s local profiles, adult PIN, parent requests and evidence from this browser.</p></div>
+            <button id="clearLocalData" class="danger-button" type="button">Delete all local prototype data</button>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <nav id="worldDock" class="world-dock hidden" aria-label="Orish's World quick navigation">
+      <button id="dockWorldHome" type="button"><span>⌂</span><strong>World</strong></button>
+      <button id="dockOrish" type="button"><span>✦</span><strong>Orish</strong></button>
+      <button id="dockMission" type="button"><span>🚀</span><strong>Missions</strong></button>
+      <button id="dockRewards" type="button"><span>★</span><strong>Stars</strong><small id="dockStarCount">0</small></button>
+    </nav>
+
+    <footer>
+      <strong>Orish's World @ THE CODE</strong>
+      <span>V1.28 local-voice runtime • self-hosted voice gateway architecture • no paid AI dependency • no advertising • <strong id="footerConnectionStatus">checking connection</strong></span>
+    </footer>
+  </div>
+  <script src="modules/security-store.js" defer></script>
+  <script src="modules/curriculum-engine.js" defer></script>
+  <script src="modules/age-game-engine.js" defer></script>
+  <script src="modules/rewards-engine.js" defer></script>
+  <script src="modules/profile-ui.js" defer></script>
+  <script src="modules/mission-engine.js" defer></script>
+  <script src="modules/routines-engine.js" defer></script>
+  <script src="modules/kitchen-engine.js" defer></script>
+  <script src="modules/maker-engine.js" defer></script>
+  <script src="modules/creative-engine.js" defer></script>
+  <script src="modules/visual-game-engine.js" defer></script>
+  <script src="modules/family-engine.js" defer></script>
+  <script src="modules/accessibility-engine.js" defer></script>
+  <script src="modules/memory-game-engine.js" defer></script>
+  <script src="modules/observation-game-engine.js" defer></script>
+  <script src="modules/maths-game-engine.js" defer></script>
+  <script src="modules/sequencing-game-engine.js" defer></script>
+  <script src="modules/literacy-keyboard-engine.js" defer></script>
+  <script src="modules/story-choice-engine.js" defer></script>
+  <script src="modules/good-news-engine.js" defer></script>
+  <script src="modules/parent-summary-engine.js" defer></script>
+  <script src="modules/discovery-engine.js" defer></script>
+  <script src="modules/life-skills-engine.js" defer></script>
+  <script src="modules/global-history-engine.js" defer></script>
+  <script src="modules/are-we-alone-engine.js" defer></script>
+  <script src="modules/orish-intelligence-engine.js" defer></script>
+  <script src="modules/parent-controls-engine.js" defer></script>
+  <script src="modules/avatar-lab-engine.js" defer></script>
+  <script src="modules/avatar-3d-viewer.js" defer></script>
+  <script src="modules/open-voice-engine.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+</html>
