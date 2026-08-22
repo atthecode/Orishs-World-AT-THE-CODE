@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#061525">
+  <meta name="description" content="Orish turns toys you already own into safe real-world missions.">
+  <title>Orish Play World | AT THE CODE</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="star-field" aria-hidden="true"></div>
+  <main class="app-shell">
+    <header class="topbar">
+      <button id="homeButton" class="brand" type="button" aria-label="Return to Toy Vault">
+        <span class="orish-orb" aria-hidden="true"><span>O</span></span>
+        <span>
+          <strong>ORISH</strong>
+          <small>PLAY WORLD · AT THE CODE</small>
+        </span>
+      </button>
+      <div class="score-card" aria-label="Player progress">
+        <span><b id="xpValue">0</b> XP</span>
+        <span><b id="missionCount">0</b> missions</span>
+      </div>
+    </header>
+
+    <section id="setupScreen" class="screen active" aria-labelledby="setupTitle">
+      <div class="hero-card">
+        <span class="status-pill"><i></i> ORISH ONLINE</span>
+        <p class="eyebrow">THE AI THAT TURNS YOUR WORLD INTO A GAME</p>
+        <h1 id="setupTitle">Your toys.<br><em>New adventure.</em></h1>
+        <p class="hero-copy">Choose what is available today. Orish will turn it into a safe, screen-light mission you play in the real world.</p>
+        <div class="orish-message">
+          <span class="mini-orb" aria-hidden="true">O</span>
+          <p><strong>Orish:</strong> Grown-up, set the play zone first. Then show me what we've got to work with.</p>
+        </div>
+      </div>
+
+      <form id="missionForm" class="control-stack">
+        <section class="panel">
+          <div class="panel-heading">
+            <span class="step-number">01</span>
+            <div><h2>Agent age</h2><p>I change the challenge, not just the words.</p></div>
+          </div>
+          <div class="choice-grid" data-group="age">
+            <button type="button" class="choice" data-value="4-5">4–5 <small>Grown-up together</small></button>
+            <button type="button" class="choice selected" data-value="6-7">6–7 <small>Curious explorer</small></button>
+            <button type="button" class="choice" data-value="8-10">8–10 <small>Mission solver</small></button>
+            <button type="button" class="choice" data-value="11-12">11–12 <small>Strategy agent</small></button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading">
+            <span class="step-number">02</span>
+            <div><h2>What's in the Toy Vault?</h2><p>Pick at least two. Nothing new to buy.</p></div>
+          </div>
+          <div id="toyChoices" class="chip-grid" aria-label="Toy choices">
+            <button type="button" class="chip selected" data-toy="building blocks">🧱 Blocks</button>
+            <button type="button" class="chip selected" data-toy="toy car">🏎️ Car</button>
+            <button type="button" class="chip" data-toy="dinosaur">🦖 Dinosaur</button>
+            <button type="button" class="chip" data-toy="figure or doll">🧍 Figure / doll</button>
+            <button type="button" class="chip" data-toy="toy animal">🐾 Animal</button>
+            <button type="button" class="chip" data-toy="soft ball">⚽ Soft ball</button>
+            <button type="button" class="chip" data-toy="cardboard box">📦 Box</button>
+            <button type="button" class="chip" data-toy="paper and crayons">🖍️ Paper + crayons</button>
+          </div>
+          <label class="custom-toy">
+            <span>Add another safe toy</span>
+            <div><input id="customToy" maxlength="32" autocomplete="off" placeholder="e.g. train"><button id="addToy" type="button">Add</button></div>
+          </label>
+          <div id="customToyList" class="custom-list" aria-live="polite"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading">
+            <span class="step-number">03</span>
+            <div><h2>Choose today's world</h2><p>The same toys can become something completely different tomorrow.</p></div>
+          </div>
+          <div class="world-grid" data-group="world">
+            <button type="button" class="world selected" data-value="space"><span>🪐</span><b>Space Rescue</b><small>Signals · portals · planets</small></button>
+            <button type="button" class="world" data-value="dino"><span>🦕</span><b>Dino Sector</b><small>Tracks · rescue · discovery</small></button>
+            <button type="button" class="world" data-value="spy"><span>🕵️</span><b>Signal Detective</b><small>Clues · codes · observation</small></button>
+            <button type="button" class="world" data-value="magic"><span>✨</span><b>Hidden Portal</b><small>Imagination · riddles · build</small></button>
+            <button type="button" class="world" data-value="science"><span>🧪</span><b>Science Lab</b><small>Patterns · testing · logic</small></button>
+            <button type="button" class="world" data-value="rescue"><span>🚨</span><b>Rescue HQ</b><small>Plan · build · teamwork</small></button>
+          </div>
+        </section>
+
+        <section class="panel compact-panel">
+          <div class="panel-heading">
+            <span class="step-number">04</span>
+            <div><h2>Mission length</h2><p>Short enough to fit real family life.</p></div>
+          </div>
+          <div class="segmented" data-group="time">
+            <button type="button" data-value="10">10 min</button>
+            <button type="button" class="selected" data-value="20">20 min</button>
+            <button type="button" data-value="30">30 min</button>
+          </div>
+        </section>
+
+        <section class="safety-card">
+          <label class="safety-check"><input id="safeZone" type="checkbox"><span></span><strong>I am the grown-up and I've set a safe play area.</strong></label>
+          <p>No climbing, roads, balconies, hot/sharp items, medicines or opening unknown cupboards. Ages 4–5 play with a grown-up.</p>
+        </section>
+
+        <p id="formError" class="form-error" role="alert"></p>
+        <button id="startMission" class="primary-button" type="submit"><span>ORISH, START MISSION</span><b>→</b></button>
+        <button id="parentInfoButton" class="text-button" type="button">How Orish works in this free prototype</button>
+      </form>
+    </section>
+
+    <section id="missionScreen" class="screen" aria-labelledby="missionTitle">
+      <div class="mission-topline">
+        <button id="backToVault" class="ghost-button" type="button">← Toy Vault</button>
+        <div class="voice-control"><button id="voiceToggle" type="button" aria-pressed="false">🔊 Voice on</button></div>
+      </div>
+
+      <article class="transmission-card">
+        <div class="transmission-head">
+          <span class="orish-orb large" aria-hidden="true"><span>O</span></span>
+          <div><span class="status-pill"><i></i> LIVE TRANSMISSION</span><h1 id="missionTitle">Mission loading…</h1></div>
+        </div>
+        <p id="missionBrief" class="mission-brief"></p>
+        <div id="toyLoadout" class="loadout"></div>
+      </article>
+
+      <div class="mission-progress" aria-label="Mission progress"><div id="progressFill"></div></div>
+      <p id="stageCounter" class="stage-counter">STAGE 1 OF 4</p>
+
+      <article id="stageCard" class="stage-card">
+        <div class="stage-icon" id="stageIcon">⚡</div>
+        <p id="stageType" class="eyebrow">BUILD</p>
+        <h2 id="stageTitle">Prepare the mission zone</h2>
+        <p id="stageText" class="stage-text"></p>
+        <div id="challengeBox" class="challenge-box"></div>
+        <div class="orish-message stage-message"><span class="mini-orb" aria-hidden="true">O</span><p id="orishLine"></p></div>
+      </article>
+
+      <button id="completeStage" class="primary-button pulse" type="button"><span>MISSION STEP COMPLETE</span><b>✓</b></button>
+      <button id="repeatVoice" class="text-button" type="button">🔁 Orish, say that again</button>
+    </section>
+
+    <section id="completeScreen" class="screen" aria-labelledby="completeTitle">
+      <article class="complete-card">
+        <div class="portal-ring"><span>✓</span></div>
+        <p class="eyebrow">MISSION COMPLETE</p>
+        <h1 id="completeTitle">Portal secured.</h1>
+        <p id="completeMessage"></p>
+        <div class="reward-row"><div><strong>+100</strong><span>XP earned</span></div><div><strong id="newMissionCount">1</strong><span>Missions complete</span></div></div>
+        <div class="memory-card"><span>ORISH MEMORY</span><p id="memoryText"></p></div>
+        <button id="newMission" class="primary-button" type="button"><span>CREATE ANOTHER ADVENTURE</span><b>↻</b></button>
+        <button id="sameLoadout" class="ghost-button full" type="button">Use the same toys again</button>
+      </article>
+    </section>
+  </main>
+
+  <dialog id="parentDialog">
+    <div class="dialog-card">
+      <button id="closeDialog" class="dialog-close" type="button" aria-label="Close">×</button>
+      <p class="eyebrow">GROWN-UP INFORMATION</p>
+      <h2>Free-first and private by design.</h2>
+      <p>This V1 uses an <strong>on-device Orish mission engine</strong>. It combines age, toy and world choices locally in the browser. No child name, photo, account or conversation is required, and this prototype does not send child data to an external AI provider.</p>
+      <p>That lets us test whether families love the play experience before paying for generative AI. A future AI upgrade can sit behind Orish with parent controls, moderation and strict child-safety rules.</p>
+      <button id="dialogDone" class="primary-button" type="button"><span>GOT IT</span><b>✓</b></button>
+    </div>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
