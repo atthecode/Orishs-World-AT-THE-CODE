@@ -1,0 +1,4 @@
+# Optional local text-to-speech runtime for V1.28.
+# Pin exact versions after production review/testing.
+kokoro>=0.9.4
+soundfile

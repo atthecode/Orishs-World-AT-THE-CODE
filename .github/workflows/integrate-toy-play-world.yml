@@ -1,0 +1,104 @@
+name: Integrate Orish Toy Play World
+
+on:
+  pull_request:
+    branches: [recovery/v128-source]
+    paths:
+      - '.integration/TOY-PLAY-WORLD'
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  integrate-toy-play-world:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Wire Toy Play World into Orish's World
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          index = Path('index.html')
+          html = index.read_text()
+          card = '''          <a class="world-card featured toy-play-world-card" data-zone="core" href="toy-portal/index.html" aria-label="Open Toy Play World"><span class="world-icon">🧸</span><strong>Toy Play World</strong><small>Turn the toys you already own into Orish missions</small><span class="card-tag">New · Real-world play</span></a>\n'''
+          anchor = '          <button class="world-card" data-zone="core" data-world="Mission HQ" type="button"><span class="world-icon">🚀</span><strong>Mission HQ</strong><small>Learning + real-life missions</small></button>\n'
+          if 'toy-play-world-card' not in html:
+              if anchor not in html:
+                  raise SystemExit('Main World insertion anchor not found')
+              html = html.replace(anchor, anchor + card, 1)
+              index.write_text(html)
+
+          styles = Path('styles.css')
+          css = styles.read_text()
+          css_patch = '''\n/* Toy Play World main-world entry */\n.toy-play-world-card{color:inherit;text-decoration:none}\n.toy-play-world-card:visited{color:inherit}\n.toy-play-world-card:focus-visible{outline:3px solid var(--cyan,#38d9ff);outline-offset:3px}\n'''
+          if '.toy-play-world-card' not in css:
+              styles.write_text(css + css_patch)
+
+          portal = Path('toy-portal/index.html')
+          portal_html = portal.read_text()
+          portal_anchor = '      <div class="score-card" aria-label="Player progress">\n'
+          return_link = '      <a class="main-world-link" href="../index.html" aria-label="Back to Orish’s World">← ORISH’S WORLD</a>\n'
+          if 'main-world-link' not in portal_html:
+              if portal_anchor not in portal_html:
+                  raise SystemExit('Toy Portal topbar anchor not found')
+              portal_html = portal_html.replace(portal_anchor, return_link + portal_anchor, 1)
+              portal.write_text(portal_html)
+
+          portal_styles = Path('toy-portal/styles.css')
+          portal_css = portal_styles.read_text()
+          portal_patch = '''\n/* Return path into the connected Orish's World */\n.main-world-link{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 12px;border:1px solid rgba(91,224,255,.32);border-radius:999px;background:rgba(4,28,45,.72);color:#dff9ff;text-decoration:none;font-size:.72rem;font-weight:800;letter-spacing:.08em;white-space:nowrap}\n.main-world-link:hover,.main-world-link:focus-visible{border-color:#38d9ff;box-shadow:0 0 0 3px rgba(56,217,255,.14);outline:none}\n@media(max-width:560px){.main-world-link{order:3;width:100%;margin-top:2px}.topbar{flex-wrap:wrap}}\n'''
+          if '.main-world-link' not in portal_css:
+              portal_styles.write_text(portal_css + portal_patch)
+
+          sw = Path('service-worker.js')
+          sw_text = sw.read_text()
+          sw_text = sw_text.replace("const CACHE='orish-world-v128-local-voice';", "const CACHE='orish-world-v128-toy-play';")
+          shell_anchor = "  './','./index.html','./styles.css','./app.js','./manifest.webmanifest',\n"
+          toy_shell = "  './toy-portal/index.html','./toy-portal/styles.css','./toy-portal/app.js',\n"
+          if "'./toy-portal/index.html'" not in sw_text:
+              if shell_anchor not in sw_text:
+                  raise SystemExit('Service worker shell anchor not found')
+              sw_text = sw_text.replace(shell_anchor, shell_anchor + toy_shell, 1)
+          old_nav = "    event.respondWith(fetch(event.request,{cache:'no-store'}).catch(()=>caches.match('./index.html')));\n"
+          new_nav = "    const fallback=url.pathname.includes('/toy-portal')?'./toy-portal/index.html':'./index.html';\n    event.respondWith(fetch(event.request,{cache:'no-store'}).catch(()=>caches.match(fallback)));\n"
+          if old_nav in sw_text:
+              sw_text = sw_text.replace(old_nav, new_nav, 1)
+          elif "const fallback=url.pathname.includes('/toy-portal')" not in sw_text:
+              raise SystemExit('Service worker navigation fallback anchor not found')
+          sw.write_text(sw_text)
+          PY
+
+      - name: Verify integration
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'toy-play-world-card' index.html
+          grep -q 'href="toy-portal/index.html"' index.html
+          grep -q 'main-world-link' toy-portal/index.html
+          grep -q "'./toy-portal/index.html'" service-worker.js
+          grep -q "fallback=url.pathname.includes('/toy-portal')" service-worker.js
+          node --check app.js
+          node --check toy-portal/app.js
+          node --check service-worker.js
+
+      - name: Commit integration to feature branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html styles.css toy-portal/index.html toy-portal/styles.css service-worker.js
+          if git diff --cached --quiet; then
+            echo 'Integration already present.'
+            exit 0
+          fi
+          git commit -m "Integrate Toy Play World into Orish's World navigation"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
