@@ -143,3 +143,8 @@ dialog::backdrop { background: rgba(0,7,13,.78); backdrop-filter: blur(6px); }
 @media (min-width: 680px) { .app-shell { padding-inline: 24px; } .hero-card { padding: 40px 36px; } .panel { padding: 26px; } .choice-grid { grid-template-columns: repeat(4, 1fr); } .world-grid { grid-template-columns: repeat(3, 1fr); } .transmission-card, .stage-card { padding: 30px; } }
 @media (max-width: 420px) { .score-card span:last-child { display: none; } .brand small { font-size: .56rem; } .hero-card { min-height: 330px; } .world { min-height: 105px; padding: 12px; } .stage-card { min-height: 330px; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; } }
+
+/* Return path into the connected Orish's World */
+.main-world-link{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 12px;border:1px solid rgba(91,224,255,.32);border-radius:999px;background:rgba(4,28,45,.72);color:#dff9ff;text-decoration:none;font-size:.72rem;font-weight:800;letter-spacing:.08em;white-space:nowrap}
+.main-world-link:hover,.main-world-link:focus-visible{border-color:#38d9ff;box-shadow:0 0 0 3px rgba(56,217,255,.14);outline:none}
+@media(max-width:560px){.main-world-link{order:3;width:100%;margin-top:2px}.topbar{flex-wrap:wrap}}
