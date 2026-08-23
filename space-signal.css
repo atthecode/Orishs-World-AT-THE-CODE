@@ -25,6 +25,7 @@
   touch-action:pan-y;
 }
 .mini-card button{touch-action:manipulation}
+.original-voice-button{border-color:rgba(255,214,87,.5);background:linear-gradient(145deg,#50317f,#173b69);box-shadow:0 10px 24px rgba(119,71,201,.18)}
 #miniClose{
   position:sticky;
   bottom:8px;

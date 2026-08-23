@@ -9,6 +9,14 @@
   const AvatarLab = window.OrishAvatarLab;
   const SecurityStore = window.OrishSecurityStore;
   const ParentControls = window.OrishParentControls;
+  const originalVoiceClips = {
+    welcomeOrishWorld: 'assets/audio/orish/welcome-orish-world.m4a',
+    welcomeMyWorld: 'assets/audio/orish/welcome-my-world.m4a',
+    letsGo: 'assets/audio/orish/lets-go.m4a',
+    funAndLearn: 'assets/audio/orish/fun-and-learn.m4a',
+    signalReturned: 'assets/audio/orish/signal-returned.m4a',
+    moveObservatory: 'assets/audio/orish/move-through-observatory.m4a'
+  };
   const ui = {
     briefing: $('#briefing'), stage: $('#gameStage'), analysis: $('#analysisPanel'), complete: $('#completePanel'),
     objective: $('#objectiveText'), evidence: $('#evidenceCount'), miniCount: $('#miniCount'), stars: $('#starCount'), scanner: $('#scannerFill'),
@@ -33,7 +41,7 @@
     { x: 730, y: 250, w: 145, h: 28 }
   ];
   const keys = new Set();
-  let running = false, paused = false, last = 0, scannerPower = 8, foundCount = 0, miniComplete = 0, activeMini = null, soundOn = true, animationId, audioContext, musicMaster, blockedAt = 0;
+  let running = false, paused = false, last = 0, scannerPower = 8, foundCount = 0, miniComplete = 0, activeMini = null, soundOn = true, animationId, audioContext, musicMaster, blockedAt = 0, originalVoiceAudio = null, voiceSequenceId = 0;
   let selectedCharacter = 'orish';
   let customAvatar = AvatarLab?.get('demo') || { mode:'real', skin:'#805141', hair:'afro', hairColor:'#17120f', outfit:'explorer', accent:'#17d7e8' };
   const avatarLabels = {afro:'Rounded afro',braids:'Beaded braids',locs:'Shoulder-length locs',curls:'Round curls',waves:'Close waves',straight:'Straight side panels',explorer:'Explorer',scientist:'Scientist',space:'Space',chef:'Chef',artist:'Artist'};
@@ -88,6 +96,8 @@
     } catch (_) {}
   }
   function speak(text) {
+    if (!spokenSupportEnabled()) { ui.comms.textContent = 'Spoken support is turned off in Parent Studio.'; return; }
+    stopOriginalVoice();
     if (!('speechSynthesis' in window)) { ui.comms.textContent = 'Read-aloud is not available in this browser.'; return; }
     window.speechSynthesis.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-GB'; utterance.rate = .92; utterance.pitch = 1.04;
     const voice = window.speechSynthesis.getVoices().find(item => item.lang === 'en-GB' || item.lang.startsWith('en-GB')); if (voice) utterance.voice = voice; window.speechSynthesis.speak(utterance);
@@ -96,6 +106,33 @@
     const profile = SecurityStore?.getActiveProfile?.();
     if (!profile) return true;
     return ParentControls?.get?.(profile.id, profile.ageBand)?.phonicsGuide !== false;
+  }
+  function spokenSupportEnabled() {
+    const profile = SecurityStore?.getActiveProfile?.();
+    if (!profile) return true;
+    return ParentControls?.get?.(profile.id, profile.ageBand)?.spokenSupport !== false;
+  }
+  function stopOriginalVoice() {
+    voiceSequenceId += 1;
+    if (originalVoiceAudio) { originalVoiceAudio.pause(); originalVoiceAudio.currentTime = 0; originalVoiceAudio = null; }
+  }
+  function playOriginalClip(source, sequenceId) {
+    return new Promise(resolve => {
+      if (sequenceId !== voiceSequenceId) { resolve(false); return; }
+      const audio = new Audio(source); originalVoiceAudio = audio; audio.preload = 'auto'; audio.volume = 1;
+      const finish = success => { audio.onended = null; audio.onerror = null; if (originalVoiceAudio === audio) originalVoiceAudio = null; resolve(success); };
+      audio.onended = () => finish(true); audio.onerror = () => finish(false); audio.play().catch(() => finish(false));
+    });
+  }
+  async function playOriginalSequence(keys, fallbackText = '') {
+    if (!spokenSupportEnabled()) { ui.comms.textContent = 'Spoken support is turned off in Parent Studio.'; return; }
+    if (!soundOn) { ui.comms.textContent = 'Sound is off. Tap the music button to turn sound on.'; return; }
+    window.speechSynthesis?.cancel(); stopOriginalVoice(); const sequenceId = voiceSequenceId;
+    if (musicMaster && audioContext) musicMaster.gain.setTargetAtTime(.012, audioContext.currentTime, .08);
+    let allPlayed = true;
+    for (const key of keys) { const source = originalVoiceClips[key]; if (!source || !(await playOriginalClip(source, sequenceId))) { allPlayed = false; break; } }
+    if (musicMaster && audioContext) musicMaster.gain.setTargetAtTime(soundOn ? .045 : 0, audioContext.currentTime, .2);
+    if (!allPlayed && fallbackText && sequenceId === voiceSequenceId) speak(fallbackText);
   }
   function collides(x, y) { return walls.some(w => x + player.r > w.x && x - player.r < w.x + w.w && y + player.r > w.y && y - player.r < w.y + w.h); }
   function blockedRoute() {
@@ -168,9 +205,11 @@
     const n=nearestTrace();const traceDistance=n?Math.hypot(player.x-n.x,player.y-n.y):400;const miniDistances=miniMissions.filter(m=>!m.complete).map(m=>Math.hypot(player.x-m.x,player.y-m.y));const d=Math.min(traceDistance,...miniDistances,400);scannerPower=Math.max(8,Math.min(100,112-d/2));ui.scanner.style.width=`${scannerPower}%`;ui.scan.classList.toggle('ready',scannerPower>70);
   }
   function loop(time) { if(!running)return;const dt=Math.min(.035,(time-last)/1000||0);last=time;if(!paused)update(dt);drawGrid(time);drawWalls(time);drawMiniMissions(time);drawTraces(time);drawPlayer(time);animationId=requestAnimationFrame(loop); }
-  function start() { reset(); if(selectedCharacter==='explorer')refreshAvatarSprite(); startMusic(); ui.briefing.hidden=true;ui.analysis.hidden=true;ui.complete.hidden=true;ui.stage.hidden=false;running=true;paused=false;last=performance.now();animationId=requestAnimationFrame(loop); }
+  function start() { reset(); if(selectedCharacter==='explorer')refreshAvatarSprite(); startMusic(); playOriginalSequence(['letsGo'], 'Let’s go!'); ui.briefing.hidden=true;ui.analysis.hidden=true;ui.complete.hidden=true;ui.stage.hidden=false;running=true;paused=false;last=performance.now();animationId=requestAnimationFrame(loop); }
   function setMove(direction,on){const map={up:'ArrowUp',down:'ArrowDown',left:'ArrowLeft',right:'ArrowRight'};on?keys.add(map[direction]):keys.delete(map[direction]);}
   $('#startMission').addEventListener('click',start); $('#replayMission').addEventListener('click',start); ui.scan.addEventListener('click',scan);
+  $('#playOrishWelcome').addEventListener('click',()=>playOriginalSequence(['welcomeOrishWorld','welcomeMyWorld','funAndLearn'], 'Welcome to Orish’s World. Welcome to my world. You can have fun and learn as you explore.'));
+  $('#hearMissionVoice').addEventListener('click',()=>playOriginalSequence(['signalReturned','moveObservatory'], 'The signal has returned. Move through the observatory.'));
   document.addEventListener('keydown',e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' ','w','a','s','d'].includes(e.key))e.preventDefault();if(e.key===' ')scan();else keys.add(e.key.toLowerCase()==='w'?'w':e.key.toLowerCase()==='a'?'a':e.key.toLowerCase()==='s'?'s':e.key.toLowerCase()==='d'?'d':e.key)});
   document.addEventListener('keyup',e=>keys.delete(e.key.length===1?e.key.toLowerCase():e.key));
   document.querySelectorAll('[data-move]').forEach(b=>{['pointerdown','touchstart'].forEach(evt=>b.addEventListener(evt,e=>{e.preventDefault();setMove(b.dataset.move,true)}));['pointerup','pointerleave','pointercancel','touchend'].forEach(evt=>b.addEventListener(evt,()=>setMove(b.dataset.move,false)))});
@@ -188,5 +227,5 @@
   renderAvatarDesigner();
   $('#openSignalGuide').addEventListener('click',()=>$('#signalGuide').hidden=false); $('#closeSignalGuide').addEventListener('click',()=>$('#signalGuide').hidden=true);
   $('#pauseButton').addEventListener('click',()=>{paused=true;ui.pause.hidden=false}); $('#resumeButton').addEventListener('click',()=>{paused=false;ui.pause.hidden=true;last=performance.now()});
-  $('#soundToggle').addEventListener('click',e=>{soundOn=!soundOn;if(musicMaster&&audioContext)musicMaster.gain.setTargetAtTime(soundOn?.045:0,audioContext.currentTime,.18);e.currentTarget.textContent=soundOn?'♫':'×';e.currentTarget.setAttribute('aria-label',soundOn?'Mute music and sound':'Turn music and sound on')});
+  $('#soundToggle').addEventListener('click',e=>{soundOn=!soundOn;if(!soundOn)stopOriginalVoice();if(musicMaster&&audioContext)musicMaster.gain.setTargetAtTime(soundOn?.045:0,audioContext.currentTime,.18);e.currentTarget.textContent=soundOn?'♫':'×';e.currentTarget.setAttribute('aria-label',soundOn?'Mute music and sound':'Turn music and sound on')});
 })();
