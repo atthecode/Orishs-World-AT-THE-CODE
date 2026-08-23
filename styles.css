@@ -524,3 +524,9 @@ linear-gradient(180deg,#071c37 0%,#071326 54%,#030b19 100%);border:1px solid rgb
 .toy-play-world-card{color:inherit;text-decoration:none}
 .toy-play-world-card:visited{color:inherit}
 .toy-play-world-card:focus-visible{outline:3px solid var(--cyan,#38d9ff);outline-offset:3px}
+
+
+/* Azure picture alignment: Orish live chat */
+.orish-live-character{width:230px;height:300px;display:grid;place-items:end center;overflow:visible;filter:drop-shadow(0 20px 30px rgba(0,0,0,.3))}
+.orish-live-character-img{display:block;max-width:100%;max-height:300px;width:auto;height:auto;object-fit:contain;object-position:center bottom}
+@media(max-width:520px){.orish-live-character{width:200px;height:260px}.orish-live-character-img{max-height:260px}}
