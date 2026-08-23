@@ -6,6 +6,8 @@
   <meta name="theme-color" content="#07142f">
   <title>Space Signal — Orish's World</title>
   <link rel="stylesheet" href="space-signal.css">
+  <script src="modules/security-store.js" defer></script>
+  <script src="modules/parent-controls-engine.js" defer></script>
   <script src="modules/avatar-lab-engine.js" defer></script>
   <script src="modules/avatar-3d-viewer.js" defer></script>
   <script src="space-signal.js" defer></script>
@@ -94,9 +96,9 @@
       <div class="signal-meaning-clue"><span>BURST</span><b>▆</b><i>equal gap</i><b>▆</b><i>equal gap</i><b>▆</b></div>
       <button class="speak-button" type="button" data-speak="Which trace is the repeating signal? A pulse means one short burst of energy. A repeating signal sends pulses with the same amount of time between each burst. Look for equal gaps. Trace A has irregular energy. Trace B has equal pulse gaps. Trace C has rising energy.">🔊 Hear the meaning, question and answers</button>
       <div class="pattern-grid">
-        <div class="answer-card"><button type="button" data-answer="noise"><small>CHOICE A · TRACE A</small><span>▂ ▆ ▃ ▇ ▂ ▅</span><b>Irregular energy</b><em>The height and gaps keep changing.</em></button><button class="answer-speak" type="button" data-speak="Choice A. The letter A says ay. Irregular. I, R, R, E, G, U, L, A, R. Irregular means the heights and gaps keep changing without a steady pattern.">🔊 Hear choice A</button></div>
-        <div class="answer-card"><button type="button" data-answer="signal"><small>CHOICE B · TRACE B</small><span>▆ · ▆ · ▆ ·</span><b>Equal pulse gaps</b><em>Every pulse has the same space after it.</em></button><button class="answer-speak" type="button" data-speak="Choice B. The letter B says bee. Equal. E, Q, U, A, L. Equal means the same. Every pulse has the same amount of space after it.">🔊 Hear choice B</button></div>
-        <div class="answer-card"><button type="button" data-answer="drift"><small>CHOICE C · TRACE C</small><span>▂ ▃ ▄ ▅ ▆ ▇</span><b>Rising energy</b><em>The signal grows stronger each time.</em></button><button class="answer-speak" type="button" data-speak="Choice C. The letter C says see. Rising. R, I, S, I, N, G. Rising means the signal grows stronger each time, but it does not repeat evenly.">🔊 Hear choice C</button></div>
+        <div class="answer-card"><button type="button" data-answer="noise"><small>CHOICE A · TRACE A</small><span>▂ ▆ ▃ ▇ ▂ ▅</span><b>Irregular energy</b><em>The height and gaps keep changing.</em></button><button class="answer-speak" type="button" data-speak="Choice A. Irregular. Listen to the sounds: ih, reg, yuh, luh. The letters are I, R, R, E, G, U, L, A, R. Irregular. Irregular means the heights and gaps keep changing without a steady pattern." data-plain-speak="Choice A. Irregular energy. The height and gaps keep changing without a steady pattern.">🔊 Hear choice A</button></div>
+        <div class="answer-card"><button type="button" data-answer="signal"><small>CHOICE B · TRACE B</small><span>▆ · ▆ · ▆ ·</span><b>Equal pulse gaps</b><em>Every pulse has the same space after it.</em></button><button class="answer-speak" type="button" data-speak="Choice B. Equal. Listen to the sounds: ee, kw, ul. The letters are E, Q, U, A, L. Equal. Equal means the same. Every pulse has the same amount of space after it." data-plain-speak="Choice B. Equal pulse gaps. Every pulse has the same amount of space after it.">🔊 Hear choice B</button></div>
+        <div class="answer-card"><button type="button" data-answer="drift"><small>CHOICE C · TRACE C</small><span>▂ ▃ ▄ ▅ ▆ ▇</span><b>Rising energy</b><em>The signal grows stronger each time.</em></button><button class="answer-speak" type="button" data-speak="Choice C. Rising. Listen to the sounds: rrr, eye, zzz, ing. The letters are R, I, S, I, N, G. Rising. Rising means the signal grows stronger each time, but it does not repeat evenly." data-plain-speak="Choice C. Rising energy. The signal grows stronger each time, but it does not repeat evenly.">🔊 Hear choice C</button></div>
       </div>
       <p id="analysisFeedback" class="analysis-feedback" role="status"></p>
     </section>

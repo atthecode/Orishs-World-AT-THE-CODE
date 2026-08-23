@@ -15,6 +15,7 @@
     return {
       freeTextOrish: ageBand !== '0-2',
       spokenSupport: true,
+      phonicsGuide: ['0-2','2-4','4-6','7-9'].includes(ageBand),
       twoWayVoice: false,
       offlineActivities: true,
       learningEvidence: true,
@@ -40,6 +41,7 @@
     return {
       freeTextOrish: ageBand === '0-2' ? false : input.freeTextOrish !== false,
       spokenSupport: input.spokenSupport !== false,
+      phonicsGuide: typeof input.phonicsGuide === 'boolean' ? input.phonicsGuide : base.phonicsGuide,
       twoWayVoice: ageBand === '0-2' ? false : input.twoWayVoice === true,
       offlineActivities: input.offlineActivities !== false,
       learningEvidence: input.learningEvidence !== false,
@@ -96,6 +98,7 @@
     const enabled = [
       c.freeTextOrish && 'free-text Orish',
       c.spokenSupport && 'spoken support',
+      c.phonicsGuide && 'phonics & reading guide',
       c.twoWayVoice && 'two-way voice',
       c.offlineActivities && 'offline activities',
       c.learningEvidence && 'Learning Passport',

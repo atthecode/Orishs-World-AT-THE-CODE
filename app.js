@@ -1282,6 +1282,7 @@
     $('controlFreeTextOrish').checked = controls.freeTextOrish;
     $('controlFreeTextOrish').disabled = profile.ageBand === '0-2';
     $('controlSpokenSupport').checked = controls.spokenSupport;
+    $('controlPhonicsGuide').checked = controls.phonicsGuide;
     $('controlTwoWayVoice').checked = controls.twoWayVoice;
     $('controlTwoWayVoice').disabled = profile.ageBand === '0-2';
     $('controlOfflineActivities').checked = controls.offlineActivities;
@@ -1312,6 +1313,7 @@
     const controls = ParentControls.save(profile.id, profile.ageBand, {
       freeTextOrish: $('controlFreeTextOrish').checked,
       spokenSupport: $('controlSpokenSupport').checked,
+      phonicsGuide: $('controlPhonicsGuide').checked,
       twoWayVoice: $('controlTwoWayVoice').checked,
       offlineActivities: $('controlOfflineActivities').checked,
       learningEvidence: $('controlEvidence').checked,
