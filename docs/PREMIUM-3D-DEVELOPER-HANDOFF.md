@@ -19,7 +19,9 @@ Transform the existing prototype into a premium, subscription-ready, cinematic 3
 
 Do not make the whole application blue. Keep navy/cyan as part of the AT THE CODE identity but introduce turquoise, warm gold, lavender, violet, coral, peach, mint, soft pink highlights, warm cream, natural greens and cosmic purples. Different worlds should have distinct atmospheres. The experience must feel welcoming to girls and boys without stereotyped content.
 
-Orish must remain a consistent young Black boy with locs, expressive face, premium stylised 3D quality, warm personality, modern navy/cyan/black clothing, restrained gold AT THE CODE details, trainers and explorer styling. Do not replace Orish with random children and remove every old blue O/body placeholder.
+Orish must remain a consistent young Black boy with neat plaits/braids, expressive face, premium stylised 3D quality, warm personality, modern navy/cyan/black clothing, restrained gold AT THE CODE details, trainers and explorer styling. Do not replace Orish with random children and remove every old blue O/body placeholder.
+
+Orish’s World is an AT THE CODE children’s product. Never use Elegua’s Crossroads branding, wording, logos, watermarks or “Powered by Elegua’s Crossroads” anywhere in the children’s product.
 
 ## Reusable Orish character system
 
@@ -49,7 +51,7 @@ Use real Orish artwork/3D character on the Talk to Orish screen. Do not use the 
 
 ## Image rules
 
-Correct imagery systematically. Every major image must satisfy IMAGE ↔ ACTIVITY NAME ↔ SUBJECT ↔ GAMEPLAY. Do not reuse unrelated artwork. Prefer Orish doing the relevant activity. Maintain consistent face, hair, proportions, clothing language, lighting and premium animated-film-quality stylised 3D art. Avoid cheap clipart, stock photography, random children and inconsistent AI characters.
+Correct imagery systematically. Every major image must satisfy IMAGE ↔ ACTIVITY NAME ↔ SUBJECT ↔ GAMEPLAY. Do not reuse unrelated artwork. Prefer Orish doing the relevant activity. Maintain consistent face, plaits, proportions, clothing language, lighting and premium animated-film-quality stylised 3D art. Avoid cheap clipart, stock photography, random children and inconsistent AI characters.
 
 ## Age adaptation
 
