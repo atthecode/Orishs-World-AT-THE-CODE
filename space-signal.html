@@ -6,6 +6,8 @@
   <meta name="theme-color" content="#07142f">
   <title>Space Signal — Orish's World</title>
   <link rel="stylesheet" href="space-signal.css">
+  <script src="modules/avatar-lab-engine.js" defer></script>
+  <script src="modules/avatar-3d-viewer.js" defer></script>
   <script src="space-signal.js" defer></script>
 </head>
 <body>
@@ -29,7 +31,21 @@
         <div class="character-choice" aria-label="Choose your game character">
           <strong>Who will explore?</strong>
           <div><button class="character-button active" type="button" data-character="orish"><img src="assets/orish-approved-hq.webp" alt="">Play as Orish</button><button class="character-button custom-choice" type="button" data-character="explorer"><span class="avatar-preview" id="avatarPreview">★</span>My Explorer</button></div>
-          <div class="avatar-builder" id="avatarBuilder" hidden><small>Choose a skin tone</small><div class="swatches"><button type="button" data-skin="#6f3f2a" aria-label="Deep brown skin tone"></button><button type="button" data-skin="#9b5d3b" aria-label="Medium brown skin tone"></button><button type="button" data-skin="#d19163" aria-label="Light brown skin tone"></button></div><small>Choose a spacesuit colour</small><div class="swatches suit-swatches"><button type="button" data-suit="#1976d2" aria-label="Blue spacesuit"></button><button type="button" data-suit="#8e44ad" aria-label="Purple spacesuit"></button><button type="button" data-suit="#e05a24" aria-label="Orange spacesuit"></button></div><p>No photo, name or personal information is needed.</p></div>
+          <div class="avatar-builder" id="avatarBuilder" hidden>
+            <div class="avatar-designer-preview">
+              <div class="avatar-render-status"><span>Private on this device</span><b id="avatar3DStatus" data-state="loading">Loading local 3D character…</b></div>
+              <div id="avatarViewport" class="avatar-viewport" aria-label="Three-dimensional Explorer preview"><div id="avatar3DNote" class="sr-only" aria-live="polite"></div><div class="avatar-platform"><span></span></div><div class="avatar-placeholder" aria-hidden="true">★</div></div>
+            </div>
+            <div class="avatar-designer-controls">
+              <div class="avatar-mode-row"><button id="avatarRealMode" class="avatar-control active" type="button">Real-world tones</button><button id="avatarCreativeMode" class="avatar-control" type="button">Creative colours</button><button id="avatarSurprise" class="avatar-control" type="button">🎲 Surprise me</button></div>
+              <label>Skin tone</label><div id="avatarSkinPalette" class="designer-swatches" role="group" aria-label="Skin tone choices"></div>
+              <label>Hair style</label><div id="avatarHairStyles" class="designer-choices" role="group" aria-label="Hair style choices"></div>
+              <label>Hair colour</label><div id="avatarHairPalette" class="designer-swatches small" role="group" aria-label="Hair colour choices"></div>
+              <label>Outfit</label><div id="avatarOutfits" class="designer-choices" role="group" aria-label="Outfit choices"></div>
+              <label>Outfit accent colour</label><div id="avatarAccentPalette" class="designer-swatches small" role="group" aria-label="Outfit colour choices"></div>
+              <button id="avatarSave" class="primary-button" type="button">Use this Explorer</button><p id="avatarSaveStatus">No photo, name or personal information is needed.</p>
+            </div>
+          </div>
         </div>
         <div class="mission-tags"><span>Explore</span><span>Observe</span><span>Test evidence</span><span>Non-violent</span></div>
         <div class="briefing-actions"><button id="startMission" class="primary-button" type="button">Begin mission</button><button id="openSignalGuide" class="guide-button" type="button">〰 Learn signal waves</button><button class="speak-button" type="button" data-speak="The signal has returned. Move through the observatory, scan all three signal traces and work out which pattern is real. Watch the energy gates because they change direction.">🔊 Hear mission</button></div>
@@ -74,12 +90,13 @@
     <section class="analysis-panel" id="analysisPanel" hidden>
       <p class="eyebrow">EVIDENCE LAB</p>
       <h2>Which trace is the repeating signal?</h2>
-      <p>Use the evidence you collected. A real repeating signal should keep an equal gap between each pulse.</p>
-      <button class="speak-button" type="button" data-speak="Which trace is the repeating signal? Use the evidence you collected. A real repeating signal should keep an equal gap between each pulse. Trace A has irregular energy. Trace B has equal pulse gaps. Trace C has rising energy.">🔊 Hear question and answers</button>
+      <p>Use the evidence you collected. A pulse is one short burst of energy. A repeating signal sends pulses with the same time gap between them.</p>
+      <div class="signal-meaning-clue"><span>BURST</span><b>▆</b><i>equal gap</i><b>▆</b><i>equal gap</i><b>▆</b></div>
+      <button class="speak-button" type="button" data-speak="Which trace is the repeating signal? A pulse means one short burst of energy. A repeating signal sends pulses with the same amount of time between each burst. Look for equal gaps. Trace A has irregular energy. Trace B has equal pulse gaps. Trace C has rising energy.">🔊 Hear the meaning, question and answers</button>
       <div class="pattern-grid">
-        <div class="answer-card"><button type="button" data-answer="noise"><small>CHOICE A · TRACE A</small><span>▂ ▆ ▃ ▇ ▂ ▅</span><b>Irregular energy</b></button><button class="answer-speak" type="button" data-speak="Choice A. The letter A says ay. Irregular. I, R, R, E, G, U, L, A, R. Irregular energy.">🔊 Hear choice A</button></div>
-        <div class="answer-card"><button type="button" data-answer="signal"><small>CHOICE B · TRACE B</small><span>▆ · ▆ · ▆ ·</span><b>Equal pulse gaps</b></button><button class="answer-speak" type="button" data-speak="Choice B. The letter B says bee. Equal. E, Q, U, A, L. Equal pulse gaps.">🔊 Hear choice B</button></div>
-        <div class="answer-card"><button type="button" data-answer="drift"><small>CHOICE C · TRACE C</small><span>▂ ▃ ▄ ▅ ▆ ▇</span><b>Rising energy</b></button><button class="answer-speak" type="button" data-speak="Choice C. The letter C says see. Rising. R, I, S, I, N, G. Rising energy.">🔊 Hear choice C</button></div>
+        <div class="answer-card"><button type="button" data-answer="noise"><small>CHOICE A · TRACE A</small><span>▂ ▆ ▃ ▇ ▂ ▅</span><b>Irregular energy</b><em>The height and gaps keep changing.</em></button><button class="answer-speak" type="button" data-speak="Choice A. The letter A says ay. Irregular. I, R, R, E, G, U, L, A, R. Irregular means the heights and gaps keep changing without a steady pattern.">🔊 Hear choice A</button></div>
+        <div class="answer-card"><button type="button" data-answer="signal"><small>CHOICE B · TRACE B</small><span>▆ · ▆ · ▆ ·</span><b>Equal pulse gaps</b><em>Every pulse has the same space after it.</em></button><button class="answer-speak" type="button" data-speak="Choice B. The letter B says bee. Equal. E, Q, U, A, L. Equal means the same. Every pulse has the same amount of space after it.">🔊 Hear choice B</button></div>
+        <div class="answer-card"><button type="button" data-answer="drift"><small>CHOICE C · TRACE C</small><span>▂ ▃ ▄ ▅ ▆ ▇</span><b>Rising energy</b><em>The signal grows stronger each time.</em></button><button class="answer-speak" type="button" data-speak="Choice C. The letter C says see. Rising. R, I, S, I, N, G. Rising means the signal grows stronger each time, but it does not repeat evenly.">🔊 Hear choice C</button></div>
       </div>
       <p id="analysisFeedback" class="analysis-feedback" role="status"></p>
     </section>
@@ -105,6 +122,7 @@
       <p class="eyebrow" id="miniBadge">MINI MISSION</p>
       <h2 id="miniTitle">Station challenge</h2>
       <p id="miniQuestion"></p>
+      <div id="miniClue" class="mini-clue" aria-label="Visual clue"></div>
       <button id="miniSpeak" class="speak-button" type="button">🔊 Hear question and answers</button>
       <div class="mini-options" id="miniOptions"></div>
       <p class="analysis-feedback" id="miniFeedback" role="status"></p>

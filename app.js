@@ -284,7 +284,7 @@
   let avatarLastFrame = 0;
   let worldAvatarPreviewData = '';
 
-  const avatarHairLabels = {afro:'Afro',braids:'Braids',locs:'Locs',curls:'Curls',waves:'Waves',straight:'Straight'};
+  const avatarHairLabels = {afro:'Rounded afro',braids:'Beaded braids',locs:'Shoulder-length locs',curls:'Round curls',waves:'Close waves',straight:'Straight side panels'};
   const avatarOutfitLabels = {explorer:'Explorer',scientist:'Scientist',space:'Space',chef:'Chef',artist:'Artist'};
   const avatarOutfitIcons = {explorer:'🧭',scientist:'🔬',space:'🚀',chef:'🥣',artist:'🎨'};
 

@@ -5,6 +5,8 @@
   const ctx = canvas.getContext('2d');
   const characterImage = new Image();
   characterImage.src = 'assets/orish-game-walk.webp';
+  const customAvatarImage = new Image();
+  const AvatarLab = window.OrishAvatarLab;
   const ui = {
     briefing: $('#briefing'), stage: $('#gameStage'), analysis: $('#analysisPanel'), complete: $('#completePanel'),
     objective: $('#objectiveText'), evidence: $('#evidenceCount'), miniCount: $('#miniCount'), stars: $('#starCount'), scanner: $('#scannerFill'),
@@ -18,9 +20,9 @@
     { x: 790, y: 405, found: false, colour: '#a879ff', label: 'Direction trace' }
   ];
   const miniMissions = [
-    { x: 300, y: 430, complete: false, badge: 'MINI MISSION · POWER ROUTE', title: 'Complete the energy cell', question: 'The station battery is three quarters full. Which piece completes one whole battery?', speech: 'The station battery is three quarters full. Which piece completes one whole battery? Choice A: one quarter. Choice B: one half. Choice C: three quarters.', options: ['¼', '½', '¾'], choiceSpeech: ['one quarter','one half','three quarters'], answer: 0 },
-    { x: 525, y: 235, complete: false, badge: 'MINI MISSION · STAR MAP', title: 'Continue the signal pattern', question: 'The lights repeat blue, gold, blue, gold. Which colour comes next?', speech: 'The lights repeat blue, gold, blue, gold. Which colour comes next? Choice A: blue. Choice B: purple. Choice C: gold.', options: ['BLUE', 'PURPLE', 'GOLD'], choiceSpeech: ['Blue. B, L, U, E. Blue.','Purple. P, U, R, P, L, E. Purple.','Gold. G, O, L, D. Gold.'], answer: 0 },
-    { x: 820, y: 175, complete: false, badge: 'MINI MISSION · EVIDENCE CHECK', title: 'Choose the strongest clue', question: 'A sound happened twice at the same time. What should an investigator do next?', speech: 'A sound happened twice at the same time. What should an investigator do next? Choice A: decide now. Choice B: test again. Choice C: ignore it.', options: ['DECIDE NOW', 'TEST AGAIN', 'IGNORE IT'], choiceSpeech: ['Decide now. D, E, C, I, D, E. Decide.','Test again. T, E, S, T. Test.','Ignore it. I, G, N, O, R, E. Ignore.'], answer: 1 }
+    { x: 300, y: 430, complete: false, badge: 'MINI MISSION · POWER ROUTE', title: 'Complete the energy cell', question: 'The battery is three quarters full. Which piece completes one whole battery?', clue:'<div class="fraction-battery"><span class="filled">¼</span><span class="filled">¼</span><span class="filled">¼</span><span class="missing">?</span></div><p><b>Quarter</b> means one of four equal parts. Four quarters make one whole.</p>', speech: 'A quarter means one of four equal parts. The battery is divided into four equal boxes. Three boxes are filled, so it is three quarters full. Which piece completes one whole battery? Choice A: one quarter. Choice B: one half. Choice C: three quarters.', options: ['¼ · one quarter', '½ · one half', '¾ · three quarters'], choiceSpeech: ['One quarter. Quarter means one of four equal parts.','One half. Half means one of two equal parts.','Three quarters. Three quarters means three of four equal parts.'], answer: 0 },
+    { x: 525, y: 235, complete: false, badge: 'MINI MISSION · STAR MAP', title: 'Continue the signal pattern', question: 'The lights repeat blue, gold, blue, gold. Which colour comes next?', clue:'<div class="colour-pattern"><span class="blue"></span><span class="gold"></span><span class="blue"></span><span class="gold"></span><span class="unknown">?</span></div><p>A <b>pattern</b> is an order that repeats in the same way.</p>', speech: 'A pattern is an order that repeats in the same way. The lights repeat blue, gold, blue, gold. Which colour comes next? Choice A: blue. Choice B: purple. Choice C: gold.', options: ['BLUE', 'PURPLE', 'GOLD'], choiceSpeech: ['Blue. B, L, U, E. Blue.','Purple. P, U, R, P, L, E. Purple.','Gold. G, O, L, D. Gold.'], answer: 0 },
+    { x: 820, y: 175, complete: false, badge: 'MINI MISSION · EVIDENCE CHECK', title: 'Choose the strongest clue', question: 'A sound happened twice at the same time. What should an investigator do next?', clue:'<div class="evidence-steps"><span>👀 Observe</span><b>→</b><span>🔁 Test</span><b>→</b><span>✓ Check</span></div><p><b>Evidence</b> is information we can observe and check. Testing again helps us know whether it was a pattern or a coincidence.</p>', speech: 'Evidence is information we can observe and check. Testing again helps us know whether something is a pattern or a coincidence. A sound happened twice at the same time. What should an investigator do next? Choice A: decide now. Choice B: test again. Choice C: ignore it.', options: ['DECIDE NOW', 'TEST AGAIN', 'IGNORE IT'], choiceSpeech: ['Decide now. D, E, C, I, D, E. Decide.','Test again. T, E, S, T. Test.','Ignore it. I, G, N, O, R, E. Ignore.'], answer: 1 }
   ];
   const walls = [
     { x: 0, y: 0, w: 960, h: 34 }, { x: 0, y: 506, w: 960, h: 34 }, { x: 0, y: 0, w: 34, h: 540 }, { x: 926, y: 0, w: 34, h: 540 },
@@ -31,7 +33,31 @@
   const keys = new Set();
   let running = false, paused = false, last = 0, scannerPower = 8, foundCount = 0, miniComplete = 0, activeMini = null, soundOn = true, animationId, audioContext, musicMaster, blockedAt = 0;
   let selectedCharacter = 'orish';
-  const customAvatar = { skin: '#9b5d3b', suit: '#1976d2' };
+  let customAvatar = AvatarLab?.get('demo') || { mode:'real', skin:'#805141', hair:'afro', hairColor:'#17120f', outfit:'explorer', accent:'#17d7e8' };
+  const avatarLabels = {afro:'Rounded afro',braids:'Beaded braids',locs:'Shoulder-length locs',curls:'Round curls',waves:'Close waves',straight:'Straight side panels',explorer:'Explorer',scientist:'Scientist',space:'Space',chef:'Chef',artist:'Artist'};
+
+  window.__orishAvatarState = customAvatar;
+  function avatarColourButton(colour, selected, label, attribute) { return `<button type="button" class="${selected?'active':''}" style="--swatch:${colour}" ${attribute}="${colour}" aria-label="${label}" aria-pressed="${selected}"></button>`; }
+  function updateAvatarState(patch, announce = true) {
+    customAvatar = AvatarLab?.normalize({...customAvatar,...patch}) || {...customAvatar,...patch}; window.__orishAvatarState = customAvatar; window.OrishAvatar3D?.update(customAvatar); window.dispatchEvent(new CustomEvent('orish-avatar:update',{detail:customAvatar})); renderAvatarDesigner(); setTimeout(refreshAvatarSprite,140); if(announce) $('#avatarSaveStatus').textContent='Changed — press Use this Explorer when ready.';
+  }
+  function renderAvatarDesigner() {
+    if (!AvatarLab) return; const skins=customAvatar.mode==='creative'?[...AvatarLab.NATURAL_SKINS,...AvatarLab.FANTASY_SKINS]:AvatarLab.NATURAL_SKINS;
+    $('#avatarRealMode').classList.toggle('active',customAvatar.mode==='real'); $('#avatarCreativeMode').classList.toggle('active',customAvatar.mode==='creative');
+    $('#avatarSkinPalette').innerHTML=skins.map((colour,index)=>avatarColourButton(colour,customAvatar.skin===colour,`Skin tone ${index+1}`,'data-avatar-skin')).join('');
+    $('#avatarHairPalette').innerHTML=AvatarLab.HAIR_COLORS.map((colour,index)=>avatarColourButton(colour,customAvatar.hairColor===colour,`Hair colour ${index+1}`,'data-avatar-hair-colour')).join('');
+    $('#avatarAccentPalette').innerHTML=AvatarLab.ACCENTS.map((colour,index)=>avatarColourButton(colour,customAvatar.accent===colour,`Outfit accent ${index+1}`,'data-avatar-accent')).join('');
+    $('#avatarHairStyles').innerHTML=AvatarLab.HAIR.map(item=>`<button type="button" class="${customAvatar.hair===item?'active':''}" data-avatar-hair="${item}">${avatarLabels[item]||item}</button>`).join('');
+    $('#avatarOutfits').innerHTML=AvatarLab.OUTFITS.map(item=>`<button type="button" class="${customAvatar.outfit===item?'active':''}" data-avatar-outfit="${item}">${avatarLabels[item]||item}</button>`).join('');
+    $('#avatarSkinPalette').querySelectorAll('[data-avatar-skin]').forEach(b=>b.addEventListener('click',()=>updateAvatarState({skin:b.dataset.avatarSkin})));
+    $('#avatarHairPalette').querySelectorAll('[data-avatar-hair-colour]').forEach(b=>b.addEventListener('click',()=>updateAvatarState({hairColor:b.dataset.avatarHairColour})));
+    $('#avatarAccentPalette').querySelectorAll('[data-avatar-accent]').forEach(b=>b.addEventListener('click',()=>updateAvatarState({accent:b.dataset.avatarAccent})));
+    $('#avatarHairStyles').querySelectorAll('[data-avatar-hair]').forEach(b=>b.addEventListener('click',()=>updateAvatarState({hair:b.dataset.avatarHair})));
+    $('#avatarOutfits').querySelectorAll('[data-avatar-outfit]').forEach(b=>b.addEventListener('click',()=>updateAvatarState({outfit:b.dataset.avatarOutfit})));
+  }
+  function refreshAvatarSprite() {
+    if (!window.OrishAvatar3D?.ready) return; const shot=window.OrishAvatar3D.capture(); if(!shot)return; customAvatarImage.src=shot; $('#avatarPreview').style.backgroundImage=`url(${shot})`; $('#avatarPreview').style.backgroundSize='cover'; $('#avatarPreview').textContent='';
+  }
 
   function reset() {
     player.x = 105; player.y = 430; foundCount = 0; miniComplete = 0; scannerPower = 8;
@@ -89,7 +115,7 @@
     } else ui.comms.textContent = distance < 170 ? 'The trace is close. Follow the brighter scanner meter.' : 'No trace here. Explore another section.';
   }
   function openMiniMission(mission) {
-    activeMini = mission; paused = true; $('#miniBadge').textContent = mission.badge; $('#miniTitle').textContent = mission.title; $('#miniQuestion').textContent = mission.question; $('#miniFeedback').textContent = ''; $('#miniClose').style.display = 'none';
+    activeMini = mission; paused = true; $('#miniBadge').textContent = mission.badge; $('#miniTitle').textContent = mission.title; $('#miniQuestion').textContent = mission.question; $('#miniClue').innerHTML = mission.clue || ''; $('#miniFeedback').textContent = ''; $('#miniClose').style.display = 'none';
     const letters = ['A','B','C'];
     $('#miniOptions').innerHTML = mission.options.map((option,index) => `<div class="mini-option-row"><button type="button" data-mini-answer="${index}">${letters[index]} · ${option}</button><button class="mini-choice-speak" type="button" data-mini-speak="${index}" aria-label="Hear choice ${letters[index]}">🔊 Hear ${letters[index]}</button></div>`).join('');
     $('#miniModal').hidden = false; $('#miniOptions').querySelectorAll('[data-mini-answer]').forEach(button => button.addEventListener('click', () => answerMini(Number(button.dataset.miniAnswer)))); $('#miniOptions').querySelectorAll('[data-mini-speak]').forEach(button => button.addEventListener('click',()=>{const index=Number(button.dataset.miniSpeak);const letter=letters[index];const letterName={A:'ay',B:'bee',C:'see'}[letter];speak(`Choice ${letter}. The letter ${letter} says ${letterName}. ${mission.choiceSpeech[index]}.`)}));
@@ -122,19 +148,20 @@
     const bob = player.moving ? Math.sin(time / 85) * 2.5 : Math.sin(time / 420) * .8;
     ctx.save(); ctx.translate(player.x, player.y); ctx.fillStyle='rgba(0,0,0,.38)'; ctx.beginPath(); ctx.ellipse(0,16,20,8,0,0,Math.PI*2); ctx.fill(); ctx.strokeStyle='rgba(66,232,255,.35)'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(0,5,28+Math.sin(time/180)*2,0,Math.PI*2); ctx.stroke();
     if (selectedCharacter === 'orish' && characterImage.complete && characterImage.naturalWidth) { ctx.scale(player.facing,1); ctx.drawImage(characterImage,-29,-67+bob,58,87); }
+    else if (selectedCharacter === 'explorer' && customAvatarImage.complete && customAvatarImage.naturalWidth) { ctx.scale(player.facing,1); ctx.drawImage(customAvatarImage,-31,-70+bob,62,92); }
     else if (selectedCharacter === 'explorer') { drawCustomExplorer(bob); }
     else { ctx.fillStyle='#42e8ff';ctx.beginPath();ctx.arc(0,0,player.r,0,Math.PI*2);ctx.fill(); }
     ctx.restore();
   }
   function drawCustomExplorer(bob) {
-    ctx.scale(player.facing,1);ctx.translate(0,bob);ctx.fillStyle=customAvatar.suit;ctx.strokeStyle='rgba(255,255,255,.7)';ctx.lineWidth=1.5;ctx.beginPath();ctx.roundRect(-16,-34,32,38,10);ctx.fill();ctx.stroke();ctx.fillStyle=customAvatar.skin;ctx.beginPath();ctx.arc(0,-43,13,0,Math.PI*2);ctx.fill();ctx.fillStyle='#101b34';ctx.beginPath();ctx.arc(0,-47,13,Math.PI,Math.PI*2);ctx.fill();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(-4,-42,2.5,0,Math.PI*2);ctx.arc(4,-42,2.5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#15294b';ctx.fillRect(-15,2,12,19);ctx.fillRect(3,2,12,19);ctx.fillStyle='#fff36b';ctx.font='bold 15px system-ui';ctx.textAlign='center';ctx.fillText('★',0,-10);
+    ctx.scale(player.facing,1);ctx.translate(0,bob);ctx.fillStyle=customAvatar.accent;ctx.strokeStyle='rgba(255,255,255,.7)';ctx.lineWidth=1.5;ctx.beginPath();if(ctx.roundRect)ctx.roundRect(-16,-34,32,38,10);else ctx.rect(-16,-34,32,38);ctx.fill();ctx.stroke();ctx.fillStyle=customAvatar.skin;ctx.beginPath();ctx.arc(0,-43,13,0,Math.PI*2);ctx.fill();ctx.fillStyle=customAvatar.hairColor;ctx.beginPath();ctx.arc(0,-47,13,Math.PI,Math.PI*2);ctx.fill();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(-4,-42,2.5,0,Math.PI*2);ctx.arc(4,-42,2.5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#15294b';ctx.fillRect(-15,2,12,19);ctx.fillRect(3,2,12,19);ctx.fillStyle='#fff36b';ctx.font='bold 15px system-ui';ctx.textAlign='center';ctx.fillText('★',0,-10);
   }
   function update(dt) {
     let dx=0,dy=0;if(keys.has('ArrowUp')||keys.has('w'))dy--;if(keys.has('ArrowDown')||keys.has('s'))dy++;if(keys.has('ArrowLeft')||keys.has('a'))dx--;if(keys.has('ArrowRight')||keys.has('d'))dx++;player.moving=Boolean(dx||dy);if(dx)player.facing=dx>0?1:-1;if(dx||dy)move(dx,dy,dt);
     const n=nearestTrace();const traceDistance=n?Math.hypot(player.x-n.x,player.y-n.y):400;const miniDistances=miniMissions.filter(m=>!m.complete).map(m=>Math.hypot(player.x-m.x,player.y-m.y));const d=Math.min(traceDistance,...miniDistances,400);scannerPower=Math.max(8,Math.min(100,112-d/2));ui.scanner.style.width=`${scannerPower}%`;ui.scan.classList.toggle('ready',scannerPower>70);
   }
   function loop(time) { if(!running)return;const dt=Math.min(.035,(time-last)/1000||0);last=time;if(!paused)update(dt);drawGrid(time);drawWalls(time);drawMiniMissions(time);drawTraces(time);drawPlayer(time);animationId=requestAnimationFrame(loop); }
-  function start() { reset(); startMusic(); ui.briefing.hidden=true;ui.analysis.hidden=true;ui.complete.hidden=true;ui.stage.hidden=false;running=true;paused=false;last=performance.now();animationId=requestAnimationFrame(loop); }
+  function start() { reset(); if(selectedCharacter==='explorer')refreshAvatarSprite(); startMusic(); ui.briefing.hidden=true;ui.analysis.hidden=true;ui.complete.hidden=true;ui.stage.hidden=false;running=true;paused=false;last=performance.now();animationId=requestAnimationFrame(loop); }
   function setMove(direction,on){const map={up:'ArrowUp',down:'ArrowDown',left:'ArrowLeft',right:'ArrowRight'};on?keys.add(map[direction]):keys.delete(map[direction]);}
   $('#startMission').addEventListener('click',start); $('#replayMission').addEventListener('click',start); ui.scan.addEventListener('click',scan);
   document.addEventListener('keydown',e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' ','w','a','s','d'].includes(e.key))e.preventDefault();if(e.key===' ')scan();else keys.add(e.key.toLowerCase()==='w'?'w':e.key.toLowerCase()==='a'?'a':e.key.toLowerCase()==='s'?'s':e.key.toLowerCase()==='d'?'d':e.key)});
@@ -145,9 +172,13 @@
   $('.comms-speak').addEventListener('click',()=>speak(ui.comms.textContent));
   $('#miniSpeak').addEventListener('click',()=>activeMini&&speak(activeMini.speech));
   $('#miniClose').addEventListener('click',()=>{ $('#miniModal').hidden=true; paused=false; activeMini=null; last=performance.now(); ui.comms.textContent='Mini mission complete. Keep exploring for more clues.'; });
-  document.querySelectorAll('[data-character]').forEach(button=>button.addEventListener('click',()=>{selectedCharacter=button.dataset.character;document.querySelectorAll('[data-character]').forEach(item=>item.classList.toggle('active',item===button));$('#avatarBuilder').hidden=selectedCharacter!=='explorer';}));
-  document.querySelectorAll('[data-skin]').forEach(button=>button.addEventListener('click',()=>{customAvatar.skin=button.dataset.skin;$('#avatarPreview').style.background=`linear-gradient(145deg,${customAvatar.skin} 0 43%,${customAvatar.suit} 44%)`;}));
-  document.querySelectorAll('[data-suit]').forEach(button=>button.addEventListener('click',()=>{customAvatar.suit=button.dataset.suit;$('#avatarPreview').style.background=`linear-gradient(145deg,${customAvatar.skin} 0 43%,${customAvatar.suit} 44%)`;}));
+  document.querySelectorAll('[data-character]').forEach(button=>button.addEventListener('click',()=>{selectedCharacter=button.dataset.character;document.querySelectorAll('[data-character]').forEach(item=>item.classList.toggle('active',item===button));$('#avatarBuilder').hidden=selectedCharacter!=='explorer';if(selectedCharacter==='explorer'){renderAvatarDesigner();updateAvatarState({},false);}}));
+  $('#avatarRealMode').addEventListener('click',()=>updateAvatarState({mode:'real',skin:AvatarLab?.NATURAL_SKINS.includes(customAvatar.skin)?customAvatar.skin:AvatarLab?.defaults.skin}));
+  $('#avatarCreativeMode').addEventListener('click',()=>updateAvatarState({mode:'creative'}));
+  $('#avatarSurprise').addEventListener('click',()=>{customAvatar=AvatarLab?.surprise(customAvatar.mode)||customAvatar;updateAvatarState({},true);});
+  $('#avatarSave').addEventListener('click',()=>{customAvatar=AvatarLab?.save('demo',customAvatar)||customAvatar;updateAvatarState({},false);refreshAvatarSprite();$('#avatarSaveStatus').textContent='Saved privately on this device. This Explorer will enter the mission.';});
+  window.addEventListener('orish-avatar:3d-ready',()=>{updateAvatarState({},false);refreshAvatarSprite();});
+  renderAvatarDesigner();
   $('#openSignalGuide').addEventListener('click',()=>$('#signalGuide').hidden=false); $('#closeSignalGuide').addEventListener('click',()=>$('#signalGuide').hidden=true);
   $('#pauseButton').addEventListener('click',()=>{paused=true;ui.pause.hidden=false}); $('#resumeButton').addEventListener('click',()=>{paused=false;ui.pause.hidden=true;last=performance.now()});
   $('#soundToggle').addEventListener('click',e=>{soundOn=!soundOn;if(musicMaster&&audioContext)musicMaster.gain.setTargetAtTime(soundOn?.045:0,audioContext.currentTime,.18);e.currentTarget.textContent=soundOn?'♫':'×';e.currentTarget.setAttribute('aria-label',soundOn?'Mute music and sound':'Turn music and sound on')});
