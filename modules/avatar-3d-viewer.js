@@ -4,7 +4,7 @@
   const MODEL_URL = './assets/models/explorer-premium-v1.glb';
   const statusText = {
     loading: 'Loading local 3D model…',
-    ready: 'New 3D Explorer • local GLB',
+    ready: 'Approved design • 3D rebuild',
     fallback: '3D unavailable • safe fallback active'
   };
 
@@ -203,14 +203,7 @@
       const sway=Math.sin(t*0.78)*0.8*deg;
       m=mul(aroundPivot([0,2.42,0], rotateZ(sway)),m);
     }
-    if (name.startsWith('EyeWhite_') || name.startsWith('Iris_')) {
-      const phase=(time%4300)/4300;
-      const blink=phase>0.94 ? Math.sin(((phase-.94)/.06)*Math.PI) : 0;
-      if (blink>0) {
-        const x=name.endsWith('_L')?-.22:.22;
-        m=mul(aroundPivot([x,3.16,.54], scale(1,Math.max(.08,1-blink*.92),1)),m);
-      }
-    }
+    // Facial blink disabled until the production facial rig is available.
     const isLeftArm=name.startsWith('BaseOutfit_UpperArm_L')||name.startsWith('BaseOutfit_Forearm_L')||name.startsWith('Skin_Hand_L')||name.startsWith('Skin_Finger_L')||name.startsWith('Skin_Thumb_L');
     const isRightArm=name.startsWith('BaseOutfit_UpperArm_R')||name.startsWith('BaseOutfit_Forearm_R')||name.startsWith('Skin_Hand_R')||name.startsWith('Skin_Finger_R')||name.startsWith('Skin_Thumb_R');
     const idleSwing=Math.sin(t*1.18)*1.8*deg;
