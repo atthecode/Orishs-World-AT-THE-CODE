@@ -13,13 +13,13 @@
   <header class="game-header">
     <a class="back-link" href="premium-preview.html">← World map</a>
     <div class="mission-title"><small>ORISH'S WORLD</small><strong>SPACE SIGNAL</strong></div>
-    <button id="soundToggle" class="icon-button" type="button" aria-label="Toggle sound">♪</button>
+    <button id="soundToggle" class="icon-button" type="button" aria-label="Mute music and sound">♫</button>
   </header>
 
   <main class="game-shell">
     <section class="briefing" id="briefing">
       <div class="briefing-orish">
-        <img src="assets/orish-profile-approved.svg?v=working-160-2" alt="Orish">
+        <img src="assets/orish-approved-hq.webp" alt="Orish">
         <span>ORISH</span>
       </div>
       <div class="briefing-copy">
@@ -27,7 +27,7 @@
         <h1>The signal has returned.</h1>
         <p>Move through the observatory, scan all three signal traces and work out which pattern is real. Watch the energy gates—they change direction.</p>
         <div class="mission-tags"><span>Explore</span><span>Observe</span><span>Test evidence</span><span>Non-violent</span></div>
-        <button id="startMission" class="primary-button" type="button">Begin mission</button>
+        <div class="briefing-actions"><button id="startMission" class="primary-button" type="button">Begin mission</button><button class="speak-button" type="button" data-speak="The signal has returned. Move through the observatory, scan all three signal traces and work out which pattern is real. Watch the energy gates because they change direction.">🔊 Hear mission</button></div>
       </div>
     </section>
 
@@ -42,8 +42,9 @@
         <canvas id="gameCanvas" width="960" height="540" aria-label="Top-down space station exploration game"></canvas>
         <div class="scan-vignette" id="scanVignette" aria-hidden="true"></div>
         <div class="orish-comms" id="orishComms" role="status" aria-live="polite">
-          <img src="assets/orish-profile-approved.svg?v=working-160-2" alt="">
+          <img src="assets/orish-approved-hq.webp" alt="">
           <p><small>ORISH</small><span id="commsText">Use the controls to explore. Scan when the meter glows.</span></p>
+          <button class="comms-speak" type="button" aria-label="Hear Orish's message">🔊</button>
         </div>
         <button id="pauseButton" class="pause-button" type="button" aria-label="Pause mission">Ⅱ</button>
       </div>
@@ -67,6 +68,7 @@
       <p class="eyebrow">EVIDENCE LAB</p>
       <h2>Which trace is the repeating signal?</h2>
       <p>Use the evidence you collected. A real repeating signal should keep an equal gap between each pulse.</p>
+      <button class="speak-button" type="button" data-speak="Which trace is the repeating signal? Use the evidence you collected. A real repeating signal should keep an equal gap between each pulse. Trace A has irregular energy. Trace B has equal pulse gaps. Trace C has rising energy.">🔊 Hear question and answers</button>
       <div class="pattern-grid">
         <button type="button" data-answer="noise"><small>TRACE A</small><span>▂ ▆ ▃ ▇ ▂ ▅</span><b>Irregular energy</b></button>
         <button type="button" data-answer="signal"><small>TRACE B</small><span>▆ · ▆ · ▆ ·</span><b>Equal pulse gaps</b></button>

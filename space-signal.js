@@ -3,13 +3,15 @@
   const $ = (selector) => document.querySelector(selector);
   const canvas = $('#gameCanvas');
   const ctx = canvas.getContext('2d');
+  const characterImage = new Image();
+  characterImage.src = 'assets/orish-game-walk.webp';
   const ui = {
     briefing: $('#briefing'), stage: $('#gameStage'), analysis: $('#analysisPanel'), complete: $('#completePanel'),
     objective: $('#objectiveText'), evidence: $('#evidenceCount'), stars: $('#starCount'), scanner: $('#scannerFill'),
     comms: $('#commsText'), scan: $('#scanButton'), vignette: $('#scanVignette'), pause: $('#pauseModal')
   };
   const world = { width: 960, height: 540 };
-  const player = { x: 105, y: 430, r: 15, speed: 190 };
+  const player = { x: 105, y: 430, r: 19, speed: 190, facing: 1, moving: false };
   const traces = [
     { x: 230, y: 128, found: false, colour: '#42e8ff', label: 'Pulse timing' },
     { x: 710, y: 148, found: false, colour: '#ffc857', label: 'Signal strength' },
@@ -22,7 +24,7 @@
     { x: 730, y: 250, w: 145, h: 28 }
   ];
   const keys = new Set();
-  let running = false, paused = false, last = 0, scannerPower = 8, foundCount = 0, soundOn = true, animationId;
+  let running = false, paused = false, last = 0, scannerPower = 8, foundCount = 0, soundOn = true, animationId, audioContext, musicMaster;
 
   function reset() {
     player.x = 105; player.y = 430; foundCount = 0; scannerPower = 8;
@@ -32,7 +34,27 @@
   }
   function beep(freq = 440, duration = .08) {
     if (!soundOn) return;
-    try { const AudioCtx = window.AudioContext || window.webkitAudioContext; const ac = beep.ac || (beep.ac = new AudioCtx()); const o = ac.createOscillator(); const g = ac.createGain(); o.frequency.value = freq; g.gain.setValueAtTime(.035, ac.currentTime); g.gain.exponentialRampToValueAtTime(.001, ac.currentTime + duration); o.connect(g).connect(ac.destination); o.start(); o.stop(ac.currentTime + duration); } catch (_) {}
+    try { const ac = getAudio(); const o = ac.createOscillator(); const g = ac.createGain(); o.frequency.value = freq; g.gain.setValueAtTime(.035, ac.currentTime); g.gain.exponentialRampToValueAtTime(.001, ac.currentTime + duration); o.connect(g).connect(ac.destination); o.start(); o.stop(ac.currentTime + duration); } catch (_) {}
+  }
+  function getAudio() {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    audioContext ||= new AudioCtx();
+    if (audioContext.state === 'suspended') audioContext.resume();
+    return audioContext;
+  }
+  function startMusic() {
+    if (musicMaster) { musicMaster.gain.setTargetAtTime(soundOn ? .045 : 0, getAudio().currentTime, .25); return; }
+    try {
+      const ac = getAudio(); musicMaster = ac.createGain(); musicMaster.gain.value = soundOn ? .045 : 0; musicMaster.connect(ac.destination);
+      const filter = ac.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = 780; filter.Q.value = 1.2; filter.connect(musicMaster);
+      [82.41, 123.47, 164.81].forEach((frequency, index) => { const oscillator = ac.createOscillator(); const gain = ac.createGain(); oscillator.type = index === 1 ? 'triangle' : 'sine'; oscillator.frequency.value = frequency; gain.gain.value = index === 0 ? .42 : .16; oscillator.connect(gain).connect(filter); oscillator.start(); });
+      const shimmer = ac.createOscillator(); const shimmerGain = ac.createGain(); const lfo = ac.createOscillator(); const lfoGain = ac.createGain(); shimmer.type = 'sine'; shimmer.frequency.value = 659.25; shimmerGain.gain.value = .025; lfo.frequency.value = .075; lfoGain.gain.value = .018; lfo.connect(lfoGain).connect(shimmerGain.gain); shimmer.connect(shimmerGain).connect(filter); lfo.start(); shimmer.start();
+    } catch (_) {}
+  }
+  function speak(text) {
+    if (!('speechSynthesis' in window)) { ui.comms.textContent = 'Read-aloud is not available in this browser.'; return; }
+    window.speechSynthesis.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-GB'; utterance.rate = .92; utterance.pitch = 1.04;
+    const voice = window.speechSynthesis.getVoices().find(item => item.lang === 'en-GB' || item.lang.startsWith('en-GB')); if (voice) utterance.voice = voice; window.speechSynthesis.speak(utterance);
   }
   function collides(x, y) { return walls.some(w => x + player.r > w.x && x - player.r < w.x + w.w && y + player.r > w.y && y - player.r < w.y + w.h); }
   function move(dx, dy, dt) {
@@ -65,20 +87,26 @@
     traces.forEach((t,i)=>{if(t.found)return;const d=Math.hypot(player.x-t.x,player.y-t.y);const alpha=Math.max(.08,1-d/380);ctx.save();ctx.translate(t.x,t.y);ctx.strokeStyle=t.colour;ctx.globalAlpha=alpha;ctx.lineWidth=2;for(let r=14;r<50;r+=12){ctx.beginPath();ctx.arc(0,0,r+Math.sin(time/300+i)*3,0,Math.PI*2);ctx.stroke()}ctx.fillStyle=t.colour;ctx.shadowBlur=22;ctx.shadowColor=t.colour;ctx.beginPath();ctx.arc(0,0,6,0,Math.PI*2);ctx.fill();ctx.restore()});
   }
   function drawPlayer(time) {
-    ctx.save();ctx.translate(player.x,player.y);ctx.shadowBlur=22;ctx.shadowColor='#42e8ff';ctx.fillStyle='#e6fbff';ctx.beginPath();ctx.arc(0,0,player.r,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='#173f73';ctx.beginPath();ctx.arc(0,0,9,0,Math.PI*2);ctx.fill();ctx.fillStyle='#42e8ff';ctx.beginPath();ctx.arc(4,-3,3+Math.sin(time/150),0,Math.PI*2);ctx.fill();ctx.strokeStyle='rgba(66,232,255,.4)';ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,22+Math.sin(time/180)*3,0,Math.PI*2);ctx.stroke();ctx.restore();
+    const bob = player.moving ? Math.sin(time / 85) * 2.5 : Math.sin(time / 420) * .8;
+    ctx.save(); ctx.translate(player.x, player.y); ctx.fillStyle='rgba(0,0,0,.38)'; ctx.beginPath(); ctx.ellipse(0,16,20,8,0,0,Math.PI*2); ctx.fill(); ctx.strokeStyle='rgba(66,232,255,.35)'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(0,5,28+Math.sin(time/180)*2,0,Math.PI*2); ctx.stroke();
+    if (characterImage.complete && characterImage.naturalWidth) { ctx.scale(player.facing,1); ctx.drawImage(characterImage,-29,-67+bob,58,87); }
+    else { ctx.fillStyle='#42e8ff';ctx.beginPath();ctx.arc(0,0,player.r,0,Math.PI*2);ctx.fill(); }
+    ctx.restore();
   }
   function update(dt) {
-    let dx=0,dy=0;if(keys.has('ArrowUp')||keys.has('w'))dy--;if(keys.has('ArrowDown')||keys.has('s'))dy++;if(keys.has('ArrowLeft')||keys.has('a'))dx--;if(keys.has('ArrowRight')||keys.has('d'))dx++;if(dx||dy)move(dx,dy,dt);
+    let dx=0,dy=0;if(keys.has('ArrowUp')||keys.has('w'))dy--;if(keys.has('ArrowDown')||keys.has('s'))dy++;if(keys.has('ArrowLeft')||keys.has('a'))dx--;if(keys.has('ArrowRight')||keys.has('d'))dx++;player.moving=Boolean(dx||dy);if(dx)player.facing=dx>0?1:-1;if(dx||dy)move(dx,dy,dt);
     const n=nearestTrace();const d=n?Math.hypot(player.x-n.x,player.y-n.y):400;scannerPower=Math.max(8,Math.min(100,112-d/2));ui.scanner.style.width=`${scannerPower}%`;ui.scan.classList.toggle('ready',scannerPower>70);
   }
   function loop(time) { if(!running)return;const dt=Math.min(.035,(time-last)/1000||0);last=time;if(!paused)update(dt);drawGrid();drawWalls(time);drawTraces(time);drawPlayer(time);animationId=requestAnimationFrame(loop); }
-  function start() { reset(); ui.briefing.hidden=true;ui.analysis.hidden=true;ui.complete.hidden=true;ui.stage.hidden=false;running=true;paused=false;last=performance.now();animationId=requestAnimationFrame(loop); }
+  function start() { reset(); startMusic(); ui.briefing.hidden=true;ui.analysis.hidden=true;ui.complete.hidden=true;ui.stage.hidden=false;running=true;paused=false;last=performance.now();animationId=requestAnimationFrame(loop); }
   function setMove(direction,on){const map={up:'ArrowUp',down:'ArrowDown',left:'ArrowLeft',right:'ArrowRight'};on?keys.add(map[direction]):keys.delete(map[direction]);}
   $('#startMission').addEventListener('click',start); $('#replayMission').addEventListener('click',start); ui.scan.addEventListener('click',scan);
   document.addEventListener('keydown',e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' ','w','a','s','d'].includes(e.key))e.preventDefault();if(e.key===' ')scan();else keys.add(e.key.toLowerCase()==='w'?'w':e.key.toLowerCase()==='a'?'a':e.key.toLowerCase()==='s'?'s':e.key.toLowerCase()==='d'?'d':e.key)});
   document.addEventListener('keyup',e=>keys.delete(e.key.length===1?e.key.toLowerCase():e.key));
   document.querySelectorAll('[data-move]').forEach(b=>{['pointerdown','touchstart'].forEach(evt=>b.addEventListener(evt,e=>{e.preventDefault();setMove(b.dataset.move,true)}));['pointerup','pointerleave','pointercancel','touchend'].forEach(evt=>b.addEventListener(evt,()=>setMove(b.dataset.move,false)))});
   document.querySelectorAll('[data-answer]').forEach(button=>button.addEventListener('click',()=>{const feedback=$('#analysisFeedback');if(button.dataset.answer==='signal'){feedback.textContent='Correct—the equal gaps show a repeating pulse. Mission solved.';feedback.style.color='#70f0bd';beep(980,.25);setTimeout(()=>{ui.analysis.hidden=true;ui.complete.hidden=false},700)}else{feedback.textContent='Good test, but that trace does not repeat evenly. Compare the gaps and try again.';feedback.style.color='#ffc857';beep(260,.16)}}));
+  document.querySelectorAll('[data-speak]').forEach(button=>button.addEventListener('click',()=>speak(button.dataset.speak)));
+  $('.comms-speak').addEventListener('click',()=>speak(ui.comms.textContent));
   $('#pauseButton').addEventListener('click',()=>{paused=true;ui.pause.hidden=false}); $('#resumeButton').addEventListener('click',()=>{paused=false;ui.pause.hidden=true;last=performance.now()});
-  $('#soundToggle').addEventListener('click',e=>{soundOn=!soundOn;e.currentTarget.textContent=soundOn?'♪':'×';e.currentTarget.setAttribute('aria-label',soundOn?'Mute sound':'Turn sound on')});
+  $('#soundToggle').addEventListener('click',e=>{soundOn=!soundOn;if(musicMaster&&audioContext)musicMaster.gain.setTargetAtTime(soundOn?.045:0,audioContext.currentTime,.18);e.currentTarget.textContent=soundOn?'♫':'×';e.currentTarget.setAttribute('aria-label',soundOn?'Mute music and sound':'Turn music and sound on')});
 })();
