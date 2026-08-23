@@ -4,7 +4,7 @@
   const MODEL_URL = './assets/models/avatar-base.glb';
   const statusText = {
     loading: 'Loading local 3D model…',
-    ready: 'Real 3D • local GLB',
+    ready: 'Prototype 3D • rebuild underway',
     fallback: '3D unavailable • safe fallback active'
   };
 
