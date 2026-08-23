@@ -35,6 +35,7 @@
       <div class="hud">
         <div class="hud-card"><small>MISSION</small><strong id="objectiveText">Find the first trace</strong></div>
         <div class="hud-card evidence-hud"><small>EVIDENCE</small><strong><span id="evidenceCount">0</span> / 3</strong></div>
+        <div class="hud-card mini-hud"><small>MINI MISSIONS</small><strong>✦ <span id="miniCount">0</span> / 3</strong></div>
         <div class="hud-card"><small>STARS</small><strong>★ <span id="starCount">300</span></strong></div>
       </div>
 
@@ -92,6 +93,17 @@
 
   <div class="pause-modal" id="pauseModal" hidden>
     <div><p class="eyebrow">MISSION PAUSED</p><h2>Ready when you are.</h2><p>Taking a break is part of playing well.</p><button id="resumeButton" class="primary-button" type="button">Resume</button><a href="premium-preview.html">Leave mission</a></div>
+  </div>
+  <div class="mini-modal" id="miniModal" hidden>
+    <div class="mini-card">
+      <p class="eyebrow" id="miniBadge">MINI MISSION</p>
+      <h2 id="miniTitle">Station challenge</h2>
+      <p id="miniQuestion"></p>
+      <button id="miniSpeak" class="speak-button" type="button">🔊 Hear question and answers</button>
+      <div class="mini-options" id="miniOptions"></div>
+      <p class="analysis-feedback" id="miniFeedback" role="status"></p>
+      <button id="miniClose" class="secondary-button" type="button">Continue exploring</button>
+    </div>
   </div>
 </body>
 </html>

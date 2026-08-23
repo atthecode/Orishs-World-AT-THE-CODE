@@ -7,7 +7,7 @@
   characterImage.src = 'assets/orish-game-walk.webp';
   const ui = {
     briefing: $('#briefing'), stage: $('#gameStage'), analysis: $('#analysisPanel'), complete: $('#completePanel'),
-    objective: $('#objectiveText'), evidence: $('#evidenceCount'), stars: $('#starCount'), scanner: $('#scannerFill'),
+    objective: $('#objectiveText'), evidence: $('#evidenceCount'), miniCount: $('#miniCount'), stars: $('#starCount'), scanner: $('#scannerFill'),
     comms: $('#commsText'), scan: $('#scanButton'), vignette: $('#scanVignette'), pause: $('#pauseModal')
   };
   const world = { width: 960, height: 540 };
@@ -17,6 +17,11 @@
     { x: 710, y: 148, found: false, colour: '#ffc857', label: 'Signal strength' },
     { x: 790, y: 405, found: false, colour: '#a879ff', label: 'Direction trace' }
   ];
+  const miniMissions = [
+    { x: 300, y: 430, complete: false, badge: 'MINI MISSION · POWER ROUTE', title: 'Complete the energy cell', question: 'The station battery is three quarters full. Which piece completes one whole battery?', speech: 'The station battery is three quarters full. Which piece completes one whole battery? Option one: one quarter. Option two: one half. Option three: three quarters.', options: ['¼', '½', '¾'], answer: 0 },
+    { x: 525, y: 235, complete: false, badge: 'MINI MISSION · STAR MAP', title: 'Continue the signal pattern', question: 'The lights repeat blue, gold, blue, gold. Which colour comes next?', speech: 'The lights repeat blue, gold, blue, gold. Which colour comes next? Option one: blue. Option two: purple. Option three: gold.', options: ['BLUE', 'PURPLE', 'GOLD'], answer: 0 },
+    { x: 820, y: 175, complete: false, badge: 'MINI MISSION · EVIDENCE CHECK', title: 'Choose the strongest clue', question: 'A sound happened twice at the same time. What should an investigator do next?', speech: 'A sound happened twice at the same time. What should an investigator do next? Option one: decide immediately. Option two: test it again. Option three: ignore it.', options: ['DECIDE NOW', 'TEST AGAIN', 'IGNORE IT'], answer: 1 }
+  ];
   const walls = [
     { x: 0, y: 0, w: 960, h: 34 }, { x: 0, y: 506, w: 960, h: 34 }, { x: 0, y: 0, w: 34, h: 540 }, { x: 926, y: 0, w: 34, h: 540 },
     { x: 165, y: 70, w: 34, h: 220 }, { x: 165, y: 400, w: 34, h: 106 }, { x: 410, y: 34, w: 34, h: 150 }, { x: 410, y: 300, w: 34, h: 206 },
@@ -24,12 +29,13 @@
     { x: 730, y: 250, w: 145, h: 28 }
   ];
   const keys = new Set();
-  let running = false, paused = false, last = 0, scannerPower = 8, foundCount = 0, soundOn = true, animationId, audioContext, musicMaster;
+  let running = false, paused = false, last = 0, scannerPower = 8, foundCount = 0, miniComplete = 0, activeMini = null, soundOn = true, animationId, audioContext, musicMaster;
 
   function reset() {
-    player.x = 105; player.y = 430; foundCount = 0; scannerPower = 8;
+    player.x = 105; player.y = 430; foundCount = 0; miniComplete = 0; scannerPower = 8;
     traces.forEach(t => t.found = false);
-    ui.evidence.textContent = '0'; ui.stars.textContent = '300'; ui.objective.textContent = 'Find the first trace';
+    miniMissions.forEach(m => m.complete = false);
+    ui.evidence.textContent = '0'; ui.miniCount.textContent = '0'; ui.stars.textContent = '300'; ui.objective.textContent = 'Find the first trace';
     ui.comms.textContent = 'Use the controls to explore. Scan when the meter glows.';
   }
   function beep(freq = 440, duration = .08) {
@@ -65,12 +71,24 @@
   function scan() {
     if (!running || paused) return;
     ui.vignette.classList.remove('active'); void ui.vignette.offsetWidth; ui.vignette.classList.add('active'); beep(620,.15);
+    const mini = miniMissions.find(mission => !mission.complete && Math.hypot(player.x-mission.x,player.y-mission.y) < 82);
+    if (mini) { openMiniMission(mini); return; }
     const trace = nearestTrace(); const distance = trace ? Math.hypot(player.x-trace.x,player.y-trace.y) : Infinity;
     if (trace && distance < 88) {
       trace.found = true; foundCount++; scannerPower = 8; ui.evidence.textContent = String(foundCount); ui.stars.textContent = String(300 - (3-foundCount)*10);
       ui.comms.textContent = `${trace.label} secured. Evidence ${foundCount} of 3.`; ui.objective.textContent = foundCount < 3 ? `Find trace ${foundCount + 1}` : 'Return to the evidence lab'; beep(880,.22);
       if (foundCount === 3) setTimeout(openAnalysis, 950);
     } else ui.comms.textContent = distance < 170 ? 'The trace is close. Follow the brighter scanner meter.' : 'No trace here. Explore another section.';
+  }
+  function openMiniMission(mission) {
+    activeMini = mission; paused = true; $('#miniBadge').textContent = mission.badge; $('#miniTitle').textContent = mission.title; $('#miniQuestion').textContent = mission.question; $('#miniFeedback').textContent = ''; $('#miniClose').style.display = 'none';
+    $('#miniOptions').innerHTML = mission.options.map((option,index) => `<button type="button" data-mini-answer="${index}">${option}</button>`).join('');
+    $('#miniModal').hidden = false; $('#miniOptions').querySelectorAll('button').forEach(button => button.addEventListener('click', () => answerMini(Number(button.dataset.miniAnswer))));
+  }
+  function answerMini(answer) {
+    if (!activeMini) return; const feedback = $('#miniFeedback');
+    if (answer !== activeMini.answer) { feedback.textContent = 'Good try. Look at the information again and test another answer.'; feedback.style.color = '#ffc857'; beep(260,.15); return; }
+    activeMini.complete = true; miniComplete += 1; ui.miniCount.textContent = String(miniComplete); ui.stars.textContent = String(Number(ui.stars.textContent) + 40); feedback.textContent = 'Mini mission complete! You earned 40 extra stars.'; feedback.style.color = '#70f0bd'; $('#miniOptions').querySelectorAll('button').forEach(button => button.disabled = true); $('#miniClose').style.display = 'inline-flex'; beep(980,.24);
   }
   function openAnalysis() { running = false; cancelAnimationFrame(animationId); ui.stage.hidden = true; ui.analysis.hidden = false; }
   function drawGrid() {
@@ -86,6 +104,9 @@
   function drawTraces(time) {
     traces.forEach((t,i)=>{if(t.found)return;const d=Math.hypot(player.x-t.x,player.y-t.y);const alpha=Math.max(.08,1-d/380);ctx.save();ctx.translate(t.x,t.y);ctx.strokeStyle=t.colour;ctx.globalAlpha=alpha;ctx.lineWidth=2;for(let r=14;r<50;r+=12){ctx.beginPath();ctx.arc(0,0,r+Math.sin(time/300+i)*3,0,Math.PI*2);ctx.stroke()}ctx.fillStyle=t.colour;ctx.shadowBlur=22;ctx.shadowColor=t.colour;ctx.beginPath();ctx.arc(0,0,6,0,Math.PI*2);ctx.fill();ctx.restore()});
   }
+  function drawMiniMissions(time) {
+    miniMissions.forEach((mission,index) => { ctx.save(); ctx.translate(mission.x,mission.y); const pulse=1+Math.sin(time/260+index)*.08; ctx.scale(pulse,pulse); ctx.fillStyle=mission.complete?'rgba(112,240,189,.18)':'rgba(168,121,255,.22)'; ctx.strokeStyle=mission.complete?'#70f0bd':'#c69cff'; ctx.lineWidth=2; ctx.beginPath(); for(let i=0;i<6;i++){const a=Math.PI/3*i-Math.PI/6;const x=Math.cos(a)*22,y=Math.sin(a)*22;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.closePath();ctx.fill();ctx.stroke();ctx.fillStyle=mission.complete?'#70f0bd':'#efe2ff';ctx.font='bold 19px system-ui';ctx.textAlign='center';ctx.fillText(mission.complete?'✓':'✦',0,7);ctx.restore(); });
+  }
   function drawPlayer(time) {
     const bob = player.moving ? Math.sin(time / 85) * 2.5 : Math.sin(time / 420) * .8;
     ctx.save(); ctx.translate(player.x, player.y); ctx.fillStyle='rgba(0,0,0,.38)'; ctx.beginPath(); ctx.ellipse(0,16,20,8,0,0,Math.PI*2); ctx.fill(); ctx.strokeStyle='rgba(66,232,255,.35)'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(0,5,28+Math.sin(time/180)*2,0,Math.PI*2); ctx.stroke();
@@ -95,9 +116,9 @@
   }
   function update(dt) {
     let dx=0,dy=0;if(keys.has('ArrowUp')||keys.has('w'))dy--;if(keys.has('ArrowDown')||keys.has('s'))dy++;if(keys.has('ArrowLeft')||keys.has('a'))dx--;if(keys.has('ArrowRight')||keys.has('d'))dx++;player.moving=Boolean(dx||dy);if(dx)player.facing=dx>0?1:-1;if(dx||dy)move(dx,dy,dt);
-    const n=nearestTrace();const d=n?Math.hypot(player.x-n.x,player.y-n.y):400;scannerPower=Math.max(8,Math.min(100,112-d/2));ui.scanner.style.width=`${scannerPower}%`;ui.scan.classList.toggle('ready',scannerPower>70);
+    const n=nearestTrace();const traceDistance=n?Math.hypot(player.x-n.x,player.y-n.y):400;const miniDistances=miniMissions.filter(m=>!m.complete).map(m=>Math.hypot(player.x-m.x,player.y-m.y));const d=Math.min(traceDistance,...miniDistances,400);scannerPower=Math.max(8,Math.min(100,112-d/2));ui.scanner.style.width=`${scannerPower}%`;ui.scan.classList.toggle('ready',scannerPower>70);
   }
-  function loop(time) { if(!running)return;const dt=Math.min(.035,(time-last)/1000||0);last=time;if(!paused)update(dt);drawGrid();drawWalls(time);drawTraces(time);drawPlayer(time);animationId=requestAnimationFrame(loop); }
+  function loop(time) { if(!running)return;const dt=Math.min(.035,(time-last)/1000||0);last=time;if(!paused)update(dt);drawGrid();drawWalls(time);drawMiniMissions(time);drawTraces(time);drawPlayer(time);animationId=requestAnimationFrame(loop); }
   function start() { reset(); startMusic(); ui.briefing.hidden=true;ui.analysis.hidden=true;ui.complete.hidden=true;ui.stage.hidden=false;running=true;paused=false;last=performance.now();animationId=requestAnimationFrame(loop); }
   function setMove(direction,on){const map={up:'ArrowUp',down:'ArrowDown',left:'ArrowLeft',right:'ArrowRight'};on?keys.add(map[direction]):keys.delete(map[direction]);}
   $('#startMission').addEventListener('click',start); $('#replayMission').addEventListener('click',start); ui.scan.addEventListener('click',scan);
@@ -107,6 +128,8 @@
   document.querySelectorAll('[data-answer]').forEach(button=>button.addEventListener('click',()=>{const feedback=$('#analysisFeedback');if(button.dataset.answer==='signal'){feedback.textContent='Correct—the equal gaps show a repeating pulse. Mission solved.';feedback.style.color='#70f0bd';beep(980,.25);setTimeout(()=>{ui.analysis.hidden=true;ui.complete.hidden=false},700)}else{feedback.textContent='Good test, but that trace does not repeat evenly. Compare the gaps and try again.';feedback.style.color='#ffc857';beep(260,.16)}}));
   document.querySelectorAll('[data-speak]').forEach(button=>button.addEventListener('click',()=>speak(button.dataset.speak)));
   $('.comms-speak').addEventListener('click',()=>speak(ui.comms.textContent));
+  $('#miniSpeak').addEventListener('click',()=>activeMini&&speak(activeMini.speech));
+  $('#miniClose').addEventListener('click',()=>{ $('#miniModal').hidden=true; paused=false; activeMini=null; last=performance.now(); ui.comms.textContent='Mini mission complete. Keep exploring for more clues.'; });
   $('#pauseButton').addEventListener('click',()=>{paused=true;ui.pause.hidden=false}); $('#resumeButton').addEventListener('click',()=>{paused=false;ui.pause.hidden=true;last=performance.now()});
   $('#soundToggle').addEventListener('click',e=>{soundOn=!soundOn;if(musicMaster&&audioContext)musicMaster.gain.setTargetAtTime(soundOn?.045:0,audioContext.currentTime,.18);e.currentTarget.textContent=soundOn?'♫':'×';e.currentTarget.setAttribute('aria-label',soundOn?'Mute music and sound':'Turn music and sound on')});
 })();
