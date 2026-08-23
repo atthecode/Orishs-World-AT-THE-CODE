@@ -4,7 +4,9 @@ This file controls the Phase A image pass. No major image should be added withou
 
 ## Character continuity
 
-Every Orish image must depict the same young Black boy with locs, the same facial identity/proportions and the same core navy/cyan/black visual language with restrained gold AT THE CODE details. Clothing may change by world but the character must remain unmistakably Orish.
+Every Orish image must depict the same young Black boy with neat plaits/braids, the same facial identity/proportions and the same core navy/cyan/black visual language with restrained gold AT THE CODE details. Clothing may change by world but the character must remain unmistakably Orish.
+
+Never use Elegua’s Crossroads branding, wording, logos, watermarks or “Powered by Elegua’s Crossroads” in any Orish’s World asset.
 
 ## Priority 1 — live product essentials
 
@@ -90,6 +92,7 @@ Dynamic action Orish for mission/reward moments.
 ## Visual quality rules
 
 - Premium animated-film-quality stylised 3D.
+- Orish hair is the approved neat plaits/braids, not locs/dreadlocks.
 - Avoid flat clipart and generic stock imagery.
 - Avoid unrelated/random children as the lead image.
 - Use inclusive supporting characters when a scene genuinely benefits from them, including girls naturally as scientists, explorers, builders and leaders.
