@@ -178,6 +178,7 @@
   function answerMini(success) {
     if (!activeMini) return; const feedback = $('#miniFeedback');
     if (!success) return;
+    window.speechSynthesis?.cancel(); stopOriginalVoice();
     activeMini.complete = true; miniComplete += 1; ui.miniCount.textContent = String(miniComplete); ui.stars.textContent = String(Number(ui.stars.textContent) + 40); feedback.textContent = 'Mini mission complete! You earned 40 extra stars.'; feedback.style.color = '#70f0bd'; $('#miniOptions').querySelectorAll('button').forEach(button => button.disabled = true); $('#miniClose').style.display = 'inline-flex'; beep(980,.24);
   }
   function openAnalysis() { running = false; cancelAnimationFrame(animationId); ui.stage.hidden = true; ui.analysis.hidden = false; }
@@ -236,7 +237,7 @@
   document.querySelectorAll('[data-speak]').forEach(button=>button.addEventListener('click',()=>speak(button.dataset.speak)));
   $('.comms-speak').addEventListener('click',()=>speak(ui.comms.textContent));
   $('#miniSpeak').addEventListener('click',()=>activeMini&&speak(activeMini.speech));
-  $('#miniClose').addEventListener('click',()=>{ $('#miniModal').hidden=true; paused=false; activeMini=null; last=performance.now(); ui.comms.textContent='Mini mission complete. Keep exploring for more clues.'; });
+  $('#miniClose').addEventListener('click',()=>{ window.speechSynthesis?.cancel(); stopOriginalVoice(); $('#miniModal').hidden=true; paused=false; activeMini=null; last=performance.now(); ui.comms.textContent='Mini mission complete. Keep exploring for more clues.'; });
   document.querySelectorAll('[data-character]').forEach(button=>button.addEventListener('click',()=>{selectedCharacter=button.dataset.character;document.querySelectorAll('[data-character]').forEach(item=>item.classList.toggle('active',item===button));$('#avatarBuilder').hidden=selectedCharacter!=='explorer';if(selectedCharacter==='explorer'){renderAvatarDesigner();updateAvatarState({},false);}}));
   $('#avatarRealMode').addEventListener('click',()=>updateAvatarState({mode:'real',skin:AvatarLab?.NATURAL_SKINS.includes(customAvatar.skin)?customAvatar.skin:AvatarLab?.defaults.skin}));
   $('#avatarCreativeMode').addEventListener('click',()=>updateAvatarState({mode:'creative'}));
