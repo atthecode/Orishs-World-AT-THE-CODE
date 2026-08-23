@@ -1,15 +1,15 @@
 (() => {
   'use strict';
 
-  const MODEL_URL = './assets/models/avatar-base.glb';
+  const MODEL_URL = './assets/models/explorer-premium-v1.glb';
   const statusText = {
     loading: 'Loading local 3D model…',
-    ready: 'Prototype 3D • rebuild underway',
+    ready: 'New 3D Explorer • local GLB',
     fallback: '3D unavailable • safe fallback active'
   };
 
   const DEFAULT_STATE = {
-    skin: '#805141', hair: 'afro', hairColor: '#17120f', outfit: 'explorer', accent: '#17d7e8', angle: -8
+    skin: '#805141', hair: 'locs', hairColor: '#17120f', outfit: 'explorer', accent: '#17d7e8', angle: -8
   };
 
   let host, canvas, gl, program, parts = [], state = {...DEFAULT_STATE};
@@ -211,8 +211,8 @@
         m=mul(aroundPivot([x,3.16,.54], scale(1,Math.max(.08,1-blink*.92),1)),m);
       }
     }
-    const isLeftArm=name==='BaseOutfit_Arm_L'||name==='Skin_Hand_L';
-    const isRightArm=name==='BaseOutfit_Arm_R'||name==='Skin_Hand_R';
+    const isLeftArm=name.startsWith('BaseOutfit_UpperArm_L')||name.startsWith('BaseOutfit_Forearm_L')||name.startsWith('Skin_Hand_L')||name.startsWith('Skin_Finger_L')||name.startsWith('Skin_Thumb_L');
+    const isRightArm=name.startsWith('BaseOutfit_UpperArm_R')||name.startsWith('BaseOutfit_Forearm_R')||name.startsWith('Skin_Hand_R')||name.startsWith('Skin_Finger_R')||name.startsWith('Skin_Thumb_R');
     const idleSwing=Math.sin(t*1.18)*1.8*deg;
     if (isLeftArm) m=mul(aroundPivot([-.73,2.12,0],rotateZ(idleSwing)),m);
     if (isRightArm) m=mul(aroundPivot([.73,2.12,0],rotateZ(-idleSwing)),m);
@@ -265,6 +265,8 @@
 
   function visible(name) {
     if (name.startsWith('Hair_')) return name.startsWith(`Hair_${state.hair}_`);
+    if (name.startsWith('Accent_LocCuff')) return state.hair === 'locs';
+    if (name.startsWith('Accent_PackStrap')) return state.outfit === 'explorer';
     if (name.startsWith('Outfit_')) return name.startsWith(`Outfit_${state.outfit}_`);
     if (name === 'Accent_FloorMarker') return false;
     return true;
@@ -274,9 +276,12 @@
     if (name.startsWith('Skin_')) return state.skin;
     if (name.startsWith('Hair_') || name.startsWith('Brow_')) return state.hairColor;
     if (name.startsWith('EyeWhite_')) return '#f9fbff';
-    if (name.startsWith('Iris_')) return '#3a241c';
+    if (name.startsWith('Iris_')) return '#6d4229';
+    if (name.startsWith('Pupil_')) return '#100b0a';
+    if (name.startsWith('Mouth_SmileHighlight')) return '#f7c9b5';
     if (name === 'Mouth') return '#6f3341';
     if (name.startsWith('Boot_')) return '#06101e';
+    if (name.startsWith('Accent_LocCuff')) return '#e0ad43';
     if (name.startsWith('Accent_')) return state.accent;
     if (name.startsWith('BaseOutfit_')) return '#0d263d';
     if (name.startsWith('Outfit_scientist_Coat')) return '#e8f4f4';
