@@ -46,8 +46,8 @@
   let running = false, paused = false, last = 0, scannerPower = 8, foundCount = 0, miniComplete = 0, energyCount = 0, boostUntil = 0, activeMini = null, soundOn = true, animationId, audioContext, musicMaster, blockedAt = 0, originalVoiceAudio = null, voiceSequenceId = 0;
   let selectedCharacter = 'orish';
   let movementMode = 'walk';
-  let customAvatar = AvatarLab?.get('demo') || { mode:'real', skin:'#805141', hair:'afro', hairColor:'#17120f', outfit:'explorer', accent:'#17d7e8' };
-  const avatarLabels = {afro:'Rounded afro',braids:'Beaded braids',locs:'Shoulder-length locs',curls:'Round curls',waves:'Close waves',straight:'Straight side panels',explorer:'Explorer',scientist:'Scientist',space:'Space',chef:'Chef',artist:'Artist'};
+  let customAvatar = AvatarLab?.get('demo') || { mode:'real', skin:'#805141', hair:'locs', hairColor:'#17120f', outfit:'explorer', accent:'#17d7e8' };
+  const avatarLabels = {afro:'Rounded afro',braids:'Beaded braids',locs:'Shoulder-length locs',curls:'Round curls',waves:'Close waves',straight:'Straight side-swept',explorer:'Explorer',scientist:'Scientist',space:'Space',chef:'Chef',artist:'Artist'};
 
   window.__orishAvatarState = customAvatar;
   function avatarColourButton(colour, selected, label, attribute) { return `<button type="button" class="${selected?'active':''}" style="--swatch:${colour}" ${attribute}="${colour}" aria-label="${label}" aria-pressed="${selected}"></button>`; }
