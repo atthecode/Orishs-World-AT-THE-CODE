@@ -11,7 +11,7 @@
     comms: $('#commsText'), scan: $('#scanButton'), vignette: $('#scanVignette'), pause: $('#pauseModal')
   };
   const world = { width: 960, height: 540 };
-  const player = { x: 105, y: 430, r: 19, speed: 190, facing: 1, moving: false };
+  const player = { x: 105, y: 430, r: 13, speed: 190, facing: 1, moving: false };
   const traces = [
     { x: 230, y: 128, found: false, colour: '#42e8ff', label: 'Pulse timing' },
     { x: 710, y: 148, found: false, colour: '#ffc857', label: 'Signal strength' },
@@ -19,8 +19,8 @@
   ];
   const walls = [
     { x: 0, y: 0, w: 960, h: 34 }, { x: 0, y: 506, w: 960, h: 34 }, { x: 0, y: 0, w: 34, h: 540 }, { x: 926, y: 0, w: 34, h: 540 },
-    { x: 165, y: 70, w: 34, h: 260 }, { x: 165, y: 370, w: 34, h: 136 }, { x: 410, y: 34, w: 34, h: 180 }, { x: 410, y: 260, w: 34, h: 246 },
-    { x: 650, y: 80, w: 34, h: 230 }, { x: 650, y: 350, w: 34, h: 156 }, { x: 240, y: 300, w: 120, h: 28 }, { x: 495, y: 355, w: 110, h: 28 },
+    { x: 165, y: 70, w: 34, h: 220 }, { x: 165, y: 400, w: 34, h: 106 }, { x: 410, y: 34, w: 34, h: 150 }, { x: 410, y: 300, w: 34, h: 206 },
+    { x: 650, y: 80, w: 34, h: 205 }, { x: 650, y: 390, w: 34, h: 116 }, { x: 240, y: 300, w: 120, h: 28 }, { x: 495, y: 355, w: 110, h: 28 },
     { x: 730, y: 250, w: 145, h: 28 }
   ];
   const keys = new Set();
