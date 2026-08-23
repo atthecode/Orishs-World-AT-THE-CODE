@@ -7,6 +7,8 @@
   <title>Orish's World — Premium Visual Preview</title>
   <link rel="stylesheet" href="premium-preview.css">
   <link rel="stylesheet" href="premium-preview-fixes.css">
+  <link rel="stylesheet" href="premium-preview-additions.css">
+  <script src="premium-preview.js" defer></script>
 </head>
 <body>
   <div class="premium-shell">
@@ -69,7 +71,7 @@
         </div>
 
         <div class="flagship-row">
-          <a class="flagship-card space-card" href="index.html">
+          <a class="flagship-card space-card" href="#signal-lab">
             <span class="flagship-icon">🚀</span><div><small>FLAGSHIP MISSION</small><strong>Space Signal</strong><p>Tune signals, explore the station and collect evidence.</p></div><b>125 ★</b>
           </a>
           <a class="flagship-card fossil-card" href="index.html">
@@ -91,9 +93,77 @@
         </div>
       </section>
 
+      <section id="signal-lab" class="signal-lab preview-panel">
+        <div class="preview-panel-copy">
+          <p class="premium-kicker">FIRST PLAYABLE FLAGSHIP</p>
+          <h2>Space Signal Mission</h2>
+          <p>Train with Orish, tune the unknown signal, collect evidence and decide what the station should do next.</p>
+          <div class="level-track" aria-label="Space Signal level journey">
+            <button class="level-chip active" type="button" data-signal-level="0"><b>Training</b><span>Learn the controls</span></button>
+            <button class="level-chip" type="button" data-signal-level="1"><b>Level 1</b><span>Find the signal</span></button>
+            <button class="level-chip" type="button" data-signal-level="2"><b>Level 2</b><span>Collect evidence</span></button>
+            <button class="level-chip" type="button" data-signal-level="3"><b>Level 3</b><span>Test patterns</span></button>
+            <button class="level-chip" type="button" data-signal-level="4"><b>Level 4</b><span>Make a decision</span></button>
+            <button class="level-chip" type="button" data-signal-level="5"><b>Level 5</b><span>Solve the case</span></button>
+          </div>
+          <div class="signal-briefing" aria-live="polite">
+            <span id="signalLevelBadge">TRAINING MISSION</span>
+            <h3 id="signalLevelTitle">Calibrate Orish's scanner</h3>
+            <p id="signalLevelCopy">Tap the signal nodes in order. Orish will show you how movement, scanning and evidence collection work.</p>
+          </div>
+        </div>
+        <div class="signal-console" aria-label="Interactive signal tuning preview">
+          <div class="console-top"><span>ORISH STATION 01</span><b id="signalStatus">SIGNAL: UNCALIBRATED</b></div>
+          <div class="signal-screen">
+            <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+            <button class="signal-node node-one" type="button" data-signal-node="1" aria-label="Tune first signal node">1</button>
+            <button class="signal-node node-two" type="button" data-signal-node="2" aria-label="Tune second signal node">2</button>
+            <button class="signal-node node-three" type="button" data-signal-node="3" aria-label="Tune third signal node">3</button>
+            <div class="signal-core">◉</div>
+          </div>
+          <div class="console-readout">
+            <div><small>EVIDENCE</small><strong id="evidenceCount">0 / 3</strong></div>
+            <div><small>ORISH SAYS</small><strong id="orishSignalMessage">Let's calibrate the scanner.</strong></div>
+          </div>
+          <button id="resetSignal" class="console-reset" type="button">Reset training</button>
+        </div>
+      </section>
+
+      <section id="age-journey" class="age-journey preview-panel">
+        <div class="section-heading">
+          <div><p class="premium-kicker">A WORLD THAT GROWS WITH THEM</p><h2>Choose an age journey.</h2></div>
+          <span class="world-count">Birth to 16</span>
+        </div>
+        <div class="age-tabs" role="tablist" aria-label="Age-adaptive journeys">
+          <button class="age-tab active" type="button" data-age="parent">Birth–3 <small>Parent & Me</small></button>
+          <button class="age-tab" type="button" data-age="early">4–6 <small>Early Explorers</small></button>
+          <button class="age-tab" type="button" data-age="explorer">7–10 <small>Explorers</small></button>
+          <button class="age-tab" type="button" data-age="investigator">11–13 <small>Investigators</small></button>
+          <button class="age-tab" type="button" data-age="advanced">14–16 <small>Advanced</small></button>
+        </div>
+        <div class="age-display">
+          <div><span id="ageIcon">🌱</span><p class="premium-kicker" id="ageLabel">PARENT & ME</p><h3 id="ageTitle">Shared discovery starts here.</h3><p id="ageCopy">Parent-led sound, rhythm, visual tracking, movement, early words and tiny real-world missions—never independent baby AI.</p></div>
+          <ul id="ageFeatures"><li>Notice and explore together</li><li>Simple cause and effect</li><li>Copy, choose and celebrate</li><li>Short off-screen family activities</li></ul>
+        </div>
+      </section>
+
       <section id="missions" class="mission-banner">
         <div><span class="mission-star">★</span><div><small>NEW MISSION AVAILABLE</small><strong>Help Orish investigate the Space Signal.</strong></div></div>
-        <a href="index.html">Go now →</a>
+        <a href="#signal-lab">Try training →</a>
+      </section>
+
+      <section id="cinema-studio" class="cinema-studio preview-panel">
+        <div class="section-heading">
+          <div><p class="premium-kicker">CHILDREN'S LEARNING CINEMA</p><h2>Watch it. Play it. Create it.</h2></div>
+          <span class="world-count">Parent controlled</span>
+        </div>
+        <div class="cinema-flow">
+          <article class="cinema-card watch-card"><span>🎬</span><small>1 · WATCH</small><h3>The Signal in the Sky</h3><p>A short cinematic mystery introduces the clue.</p></article>
+          <article class="cinema-card play-card"><span>🛰️</span><small>2 · PLAY</small><h3>Enter the mission</h3><p>Explore, investigate and collect evidence with Orish.</p></article>
+          <article class="cinema-card return-card"><span>🔓</span><small>3 · RETURN</small><h3>Unlock the ending</h3><p>The story responds to discoveries made in the mission.</p></article>
+          <article class="cinema-card create-card"><span>✨</span><small>4 · CREATE</small><h3>Movie Studio</h3><p>Speak or type, learn through the words, then build a safe cartoon scene.</p></article>
+        </div>
+        <div class="studio-safety"><strong>PRIVATE BY DEFAULT</strong><span>Movie Vault → Parent approval → Safety review → Optional Showcase</span><b>No child downloads or open sharing</b></div>
       </section>
 
       <section class="progress-bar" aria-label="Explorer progress preview">
