@@ -45,6 +45,7 @@
   const keys = new Set();
   let running = false, paused = false, last = 0, scannerPower = 8, foundCount = 0, miniComplete = 0, energyCount = 0, boostUntil = 0, activeMini = null, soundOn = true, animationId, audioContext, musicMaster, blockedAt = 0, originalVoiceAudio = null, voiceSequenceId = 0;
   let selectedCharacter = 'orish';
+  let movementMode = 'walk';
   let customAvatar = AvatarLab?.get('demo') || { mode:'real', skin:'#805141', hair:'afro', hairColor:'#17120f', outfit:'explorer', accent:'#17d7e8' };
   const avatarLabels = {afro:'Rounded afro',braids:'Beaded braids',locs:'Shoulder-length locs',curls:'Round curls',waves:'Close waves',straight:'Straight side panels',explorer:'Explorer',scientist:'Scientist',space:'Space',chef:'Chef',artist:'Artist'};
 
@@ -139,7 +140,8 @@
     beep(210,.12); setTimeout(()=>beep(145,.18),110);
   }
   function move(dx, dy, dt) {
-    const speed = performance.now() < boostUntil ? 305 : player.speed;
+    const baseSpeed = movementMode === 'run' ? 285 : player.speed;
+    const speed = performance.now() < boostUntil ? 370 : baseSpeed;
     const length = Math.hypot(dx, dy) || 1; const nx = player.x + dx / length * speed * dt; const ny = player.y + dy / length * speed * dt;
     if (!collides(nx, player.y)) player.x = nx; else if (dx) blockedRoute();
     if (!collides(player.x, ny)) player.y = ny; else if (dy) blockedRoute();
@@ -232,7 +234,9 @@
     boostPads.forEach((pad,index)=>{if(Math.hypot(player.x-pad.x,player.y-pad.y)>29||time<boostUntil-900)return;boostUntil=time+1250;ui.comms.textContent=`BOOST ${index+1}! Super speed!`;beep(420,.08);setTimeout(()=>beep(660,.08),65);setTimeout(()=>beep(920,.12),130)});
   }
   function drawPlayer(time) {
-    const bob = player.moving ? Math.sin(time / 85) * 2.5 : Math.sin(time / 420) * .8;
+    const stride = movementMode === 'run' ? 52 : 85;
+    const lift = movementMode === 'run' ? 4.2 : 2.5;
+    const bob = player.moving ? Math.sin(time / stride) * lift : Math.sin(time / 420) * .8;
     ctx.save(); ctx.translate(player.x, player.y); ctx.fillStyle='rgba(0,0,0,.38)'; ctx.beginPath(); ctx.ellipse(0,16,20,8,0,0,Math.PI*2); ctx.fill(); ctx.strokeStyle='rgba(66,232,255,.35)'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(0,5,28+Math.sin(time/180)*2,0,Math.PI*2); ctx.stroke();
     if (selectedCharacter === 'orish' && characterImage.complete && characterImage.naturalWidth) { ctx.scale(player.facing,1); ctx.drawImage(characterImage,-29,-67+bob,58,87); }
     else if (selectedCharacter === 'explorer' && customAvatarImage.complete && customAvatarImage.naturalWidth) { ctx.scale(player.facing,1); ctx.drawImage(customAvatarImage,-31,-70+bob,62,92); }
@@ -262,6 +266,7 @@
   $('#miniSpeak').addEventListener('click',()=>activeMini&&speak(activeMini.speech));
   $('#miniClose').addEventListener('click',()=>{ window.speechSynthesis?.cancel(); stopOriginalVoice(); $('#miniModal').hidden=true; paused=false; activeMini=null; last=performance.now(); ui.comms.textContent='Mini mission complete. Keep exploring for more clues.'; });
   document.querySelectorAll('[data-character]').forEach(button=>button.addEventListener('click',()=>{selectedCharacter=button.dataset.character;document.querySelectorAll('[data-character]').forEach(item=>item.classList.toggle('active',item===button));$('#avatarBuilder').hidden=selectedCharacter!=='explorer';if(selectedCharacter==='explorer'){renderAvatarDesigner();updateAvatarState({},false);}}));
+  document.querySelectorAll('[data-movement-mode]').forEach(button=>button.addEventListener('click',()=>{movementMode=button.dataset.movementMode;document.querySelectorAll('[data-movement-mode]').forEach(item=>{const active=item===button;item.classList.toggle('active',active);item.setAttribute('aria-pressed',String(active))});ui.comms.textContent=movementMode==='run'?'Run mode ready. Move fast, Explorer!':'Walk mode ready. Take your time and investigate.';beep(movementMode==='run'?760:520,.1)}));
   $('#avatarRealMode').addEventListener('click',()=>updateAvatarState({mode:'real',skin:AvatarLab?.NATURAL_SKINS.includes(customAvatar.skin)?customAvatar.skin:AvatarLab?.defaults.skin}));
   $('#avatarCreativeMode').addEventListener('click',()=>updateAvatarState({mode:'creative'}));
   $('#avatarSurprise').addEventListener('click',()=>{customAvatar=AvatarLab?.surprise(customAvatar.mode)||customAvatar;updateAvatarState({},true);});
