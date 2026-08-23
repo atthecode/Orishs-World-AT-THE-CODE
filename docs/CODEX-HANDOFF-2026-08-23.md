@@ -12,6 +12,33 @@ Do not introduce Elegua’s Crossroads, adult products, adult spirituality, adul
 
 Do not rebuild the application from scratch. Inspect the existing repository and preserve working V1.28 functionality, parent controls, safety architecture, age adaptation, Toy Play World, PWA behaviour and existing learning systems.
 
+## CORE PRODUCT INSTRUCTION — INSPECT FIRST, THEN UNIFY THE BEST IDEAS
+
+Before making major changes, Codex must **look at and understand the current build that is already being worked on**. Do not treat this handoff as permission to replace the product with a new template, generic redesign or disconnected set of features.
+
+Inspect the actual current application, including the existing V1.28 build, the Azure-ready branch, the premium visual branch, Toy Play World, current games, parent/guardian areas, safety controls, navigation, learning systems, cinema ideas, Orish interaction and any working features already in the repository.
+
+The goal is to take the **strongest ideas from the existing build plus the strongest approved ideas from the premium direction and combine them into one coherent product**.
+
+Do not simply bolt every idea onto the app as separate cards or pages. Decide how the features connect so Orish’s World feels like one living universe with a clear journey for the child and family.
+
+The finished direction should be:
+
+- outstanding rather than generic
+- recognisable as Orish’s World rather than a copy of another children’s app
+- visually premium and memorable
+- genuinely fun to play, not just an educational dashboard
+- rich in exploration, discovery, interaction and story
+- age-adaptive from birth to 16 while still feeling like one connected universe
+- safe and parent-controlled without making the child experience feel clinical
+- built around Orish as a character, guide and personality
+- a strong combination of **PLAY + LEARNING + REAL LIFE + AI + FAMILY + CINEMA + CURIOSITY**
+- designed so games, missions, stories, cinema, rewards, real-life activities and safe Orish interaction reinforce one another
+
+Codex should actively look for opportunities to **merge overlapping ideas into stronger experiences** instead of duplicating them. For example, a cinema scene can lead into a playable mission; a parent-set real-life goal can become an Orish mission; a science topic can connect to a game, investigation, practical activity and follow-up story.
+
+Preserve what already works. Improve what is weak. Remove or consolidate only when there is a genuine product reason. Every major change should move the existing build toward an **outstanding, distinctive, subscription-ready Orish’s World**, not away from it.
+
 ## 2. Protected branch / deployment state
 
 - Existing Azure-ready application branch: `feature/azure-mvp-v128`
@@ -218,17 +245,19 @@ Use Azure credits only when genuinely valuable and explicitly approved.
 ## 12. What Codex should do when it starts
 
 1. Check out / inspect `feature/premium-orish-world` first.
-2. Inspect PR #6 and the actual current files before writing code.
-3. Do NOT work from `feature/orish-hires-staging`.
-4. Do NOT merge `feature/premium-orish-world-image-motion` wholesale.
-5. Obtain the exact approved high-resolution Orish image from the user/current supplied asset.
-6. Add it as a genuine binary web asset, preferably WebP/AVIF with suitable dimensions.
-7. Point the large premium hero to the high-resolution asset.
-8. Keep a sensible smaller avatar asset for profile use.
-9. Test locally/browser first, then deploy preview.
-10. Specifically test iPhone Safari rendering.
-11. Add only a subtle non-distorting idle movement after the image is verified sharp.
-12. Keep PR #6 unmerged until the user visually approves the result.
+2. Inspect `feature/azure-mvp-v128`, PR #6 and the actual current working application before writing major code.
+3. Inventory the strongest existing features and the strongest approved premium ideas, then plan how to combine them into one coherent Orish’s World rather than replacing the current build.
+4. Do NOT work from `feature/orish-hires-staging`.
+5. Do NOT merge `feature/premium-orish-world-image-motion` wholesale.
+6. Obtain the exact approved high-resolution Orish image from the user/current supplied asset.
+7. Add it as a genuine binary web asset, preferably WebP/AVIF with suitable dimensions.
+8. Point the large premium hero to the high-resolution asset.
+9. Keep a sensible smaller avatar asset for profile use.
+10. Test locally/browser first, then deploy preview.
+11. Specifically test iPhone Safari rendering.
+12. Add only a subtle non-distorting idle movement after the image is verified sharp.
+13. Keep PR #6 unmerged until the user visually approves the result.
+14. After the immediate image fix, continue by integrating the strongest ideas into an outstanding, unique, connected product while preserving working functionality.
 
 ## 13. Definition of done for the next Codex session
 
