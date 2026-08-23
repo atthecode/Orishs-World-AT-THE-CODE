@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#07142f">
   <title>Space Signal — Orish's World</title>
-  <link rel="stylesheet" href="space-signal.css">
+  <link rel="stylesheet" href="space-signal.css?v=20260824-explorer2">
   <script src="modules/security-store.js" defer></script>
   <script src="modules/parent-controls-engine.js" defer></script>
-  <script src="modules/avatar-lab-engine.js?v=20260824-explorer1" defer></script>
-  <script src="modules/avatar-3d-viewer.js?v=20260824-explorer1" defer></script>
-  <script src="space-signal.js?v=20260824-explorer1" defer></script>
+  <script src="modules/avatar-lab-engine.js?v=20260824-explorer2" defer></script>
+  <script src="modules/avatar-3d-viewer.js?v=20260824-explorer2" defer></script>
+  <script src="space-signal.js?v=20260824-explorer2" defer></script>
 </head>
 <body>
   <div class="starfield" aria-hidden="true"></div>
@@ -36,7 +36,7 @@
           <div class="avatar-builder" id="avatarBuilder" hidden>
             <div class="avatar-designer-preview">
               <div class="avatar-render-status"><span>Private on this device</span><b id="avatar3DStatus" data-state="loading">Loading local 3D character…</b></div>
-              <div id="avatarViewport" class="avatar-viewport" aria-label="Three-dimensional Explorer preview"><div id="avatar3DNote" class="sr-only" aria-live="polite"></div><div class="avatar-platform"><span></span></div><div class="avatar-placeholder" aria-hidden="true">★</div></div>
+              <div id="avatarViewport" class="avatar-viewport concept-preview-active" aria-label="Approved Explorer character design"><img class="approved-explorer-preview" src="assets/explorer-approved-front.webp?v=20260824-explorer2" alt="Approved premium Explorer character design with shoulder-length locs and navy exploration outfit"><div class="concept-preview-label">APPROVED CHARACTER DESIGN</div><div id="avatar3DNote" class="sr-only" aria-live="polite"></div><div class="avatar-platform"><span></span></div><div class="avatar-placeholder" aria-hidden="true">★</div></div>
             </div>
             <div class="avatar-designer-controls">
               <div class="avatar-mode-row"><button id="avatarRealMode" class="avatar-control active" type="button">Real-world tones</button><button id="avatarCreativeMode" class="avatar-control" type="button">Creative colours</button><button id="avatarSurprise" class="avatar-control" type="button">🎲 Surprise me</button></div>
