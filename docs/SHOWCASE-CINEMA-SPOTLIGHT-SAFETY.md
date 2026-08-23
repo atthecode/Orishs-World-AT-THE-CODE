@@ -14,9 +14,32 @@ The platform owner may select exceptional submissions as **Spotlight Films** for
 
 ## Required flow
 
-PRIVATE MOVIE VAULT → CHILD CHOOSES “SUBMIT TO SHOWCASE” → PARENT/GUARDIAN REVIEW & APPROVAL → AUTOMATED SAFETY CHECK → HUMAN/OWNER MODERATION → SHOWCASE CINEMA → OPTIONAL SPOTLIGHT SELECTION → SEPARATE PARENT/GUARDIAN APPROVAL FOR EXTERNAL SOCIAL SHARING → PLATFORM EXPORT / SOCIAL POST
+PRIVATE MOVIE VAULT → CHILD CHOOSES “SUBMIT TO SHOWCASE” → PARENT/GUARDIAN REVIEW & APPROVAL → AUTOMATED SAFETY CHECK → HUMAN/OWNER MODERATION → SHOWCASE CINEMA → OPTIONAL SPOTLIGHT SELECTION → SEPARATE PARENT/GUARDIAN APPROVAL FOR EXTERNAL SOCIAL SHARING → PLATFORM-OWNER SOCIAL EXPORT
 
 A child must never be able to publish a film publicly or externally by themselves.
+
+## NON-DOWNLOAD RULE — CHILDREN, PARENTS AND VIEWERS
+
+**Children, parents/guardians and Showcase viewers must NOT be given a download-video function.**
+
+Parent/guardian control is for consent, review, deletion requests, Showcase approval and external-sharing permission. It does **not** give the parent a downloadable copy of the media file.
+
+Reasons include reducing the risk that child-created media, character assets, voices or scenes are copied outside the protected environment, reconstructed, manipulated, re-uploaded or reused for harmful purposes.
+
+Required product rules:
+
+- no child-facing Download button
+- no parent-facing Download button
+- no Showcase-viewer Download button
+- no public raw Blob Storage URLs
+- use authenticated/authorised playback and short-lived access where practical
+- keep original masters private
+- do not expose source assets, individual character layers, voice stems, editable project packages or generation files to end users
+- prevent ordinary UI actions from exposing direct permanent media URLs where practical
+- log sensitive media access and platform-owner exports
+- remove unnecessary metadata from any approved external export
+
+No web/app system can guarantee that a determined viewer will never screen-record visible content, so the design must combine technical controls, minimal exposure and strict permissions rather than claiming absolute prevention.
 
 ## Showcase Cinema rules
 
@@ -28,6 +51,7 @@ A child must never be able to publish a film publicly or externally by themselve
 - Prefer broad age band rather than exact age where age context is useful.
 - Strip unnecessary file metadata before publication/export.
 - Child-created films remain private by default unless the parent explicitly approves a Showcase submission.
+- Showcase playback must not provide a downloadable master file.
 
 ## External Orish’s World social sharing
 
@@ -44,6 +68,8 @@ The parent should be shown:
 - whether the Orish’s World logo/watermark will be added
 - how long permission applies
 - how to withdraw future use where applicable
+
+The parent approves or declines the platform’s use; **approval does not unlock a parent download**.
 
 Do not rely on vague blanket wording hidden in general terms.
 
@@ -76,18 +102,22 @@ Safer recognition can include:
 - “Best Remix”
 - “Brilliant Storytelling”
 
-## Download/export for the platform owner
+## Download/export for the PLATFORM OWNER ONLY
 
-The owner/admin interface may provide a secure **Download Spotlight Export** action only for films that have the required parent/guardian external-sharing permission.
+Only an authorised Orish’s World owner/admin role may have a secure **Create Spotlight Export** / **Download Spotlight Export** action, and only for films that have the required parent/guardian external-sharing permission.
 
-The export version should automatically:
+This privilege must not be inherited by parent accounts, child accounts, moderators without export permission, or ordinary Showcase viewers.
 
+Where practical, export a **social-safe derivative** rather than exposing the private master. The export process should automatically:
+
+- render only the approved version
 - remove unnecessary metadata
 - use safe attribution only
 - avoid exposing private child/account identifiers
+- use generated character voices rather than raw child voice by default
 - add optional Orish’s World branding/watermark
-- preserve the original creator credit according to the parent-approved display name
-- record the consent status and export audit event
+- preserve the creator credit according to the parent-approved safe display name
+- record the consent state, admin identity, purpose, timestamp and export audit event
 
 Do not make every child-created film freely downloadable by admins for promotional use without the correct permission state.
 
@@ -107,11 +137,13 @@ Use fictional characters, approved avatars and stylised cartoon assets.
 
 ## Reuse and remix
 
-A child can continue editing and remixing their private film after submitting a version to Showcase.
+A child can continue editing and remixing their private film after submitting a version to Showcase **inside Orish’s World**, without downloading the source video.
 
 The Showcase submission should be treated as a versioned snapshot so later edits do not silently change an already approved public film.
 
 If the child creates a materially different version and wants it showcased, it should go through submission and parent approval again.
+
+Movie Vault reuse should happen through controlled in-app scene, character, wardrobe, dialogue and editing tools rather than exporting raw files to the device.
 
 ## Safety over virality
 
@@ -127,10 +159,12 @@ The platform should make it easy for a parent to:
 - request deletion
 - review previous approvals
 
+These controls do not require media-download access.
+
 ## Product opportunity
 
 This gives Orish’s World a powerful loop:
 
-CREATE → LEARN → EDIT → SAVE → SUBMIT → SHOWCASE → CELEBRATE → INSPIRE OTHER CHILDREN
+CREATE → LEARN → EDIT IN APP → SAVE → SUBMIT → SHOWCASE → CELEBRATE → INSPIRE OTHER CHILDREN
 
-Exceptional parent-approved Spotlight Films can then become official Orish’s World social content, trailers, montages or campaign clips without treating children’s private creative work as automatically available for marketing.
+Exceptional parent-approved Spotlight Films can then become official Orish’s World social content, trailers, montages or campaign clips through the restricted platform-owner export process, without treating children’s private creative work as automatically available for marketing or downloadable by family/viewer accounts.
