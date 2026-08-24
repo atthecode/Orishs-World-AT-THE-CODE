@@ -1,4 +1,4 @@
-const CACHE='orish-world-v144-living-world-map';
+const CACHE='orish-world-v145-aligned-world-traffic';
 const SHELL=[
   './','./index.html','./styles.css','./app.js','./manifest.webmanifest','./world-map.html','./world-map.css','./world-map.js','./fossil-detective.html','./fossil-detective.css','./fossil-detective-fixes.css','./fossil-detective.js','./assets/orish-world-map-v1.webp','./assets/orish-fossil-detective-v2.webp','./assets/fossil-dig-bed-v3.webp',
   './toy-portal/index.html','./toy-portal/styles.css','./toy-portal/app.js',

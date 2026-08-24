@@ -117,12 +117,14 @@ footer a{color:var(--cyan)}
 .cloud-one{left:24%;top:5%}.cloud-two{left:55%;top:9%;font-size:3rem;animation-duration:31s;animation-delay:-16s}.cloud-three{left:72%;top:3%;font-size:2.2rem;animation-duration:27s;animation-delay:-8s}
 .flying-rocket{font-size:1.8rem;offset-path:path("M 820 165 C 900 70 1010 75 1080 10");offset-rotate:auto;animation:rocketFlight 9s ease-in-out infinite}
 .sailing-boat{font-size:1.55rem;animation:boatBob 1.8s ease-in-out infinite alternate}
-.boat-one{offset-path:path("M 470 520 C 590 555 710 540 850 505");offset-rotate:auto;animation:boatSail 18s linear infinite}
-.boat-two{offset-path:path("M 1010 560 C 900 590 800 585 680 550");offset-rotate:auto;animation:boatSail 23s linear infinite;animation-delay:-11s}
+.sailing-boat::after{content:"";position:absolute;left:-18px;top:72%;width:28px;height:7px;border-bottom:2px solid rgba(220,255,255,.88);border-radius:50%;filter:drop-shadow(0 0 3px #6cf7f0);opacity:.8}
+.boat-one{offset-path:path("M 520 552 C 650 574 790 558 930 520");offset-rotate:auto;animation:boatSail 18s linear infinite}
+.boat-two{offset-path:path("M 650 490 C 760 512 870 500 965 458");offset-rotate:auto;animation:boatSail 23s linear infinite;animation-delay:-11s}
 .world-car{font-size:1.05rem;offset-rotate:auto;filter:drop-shadow(0 2px 3px rgba(0,0,0,.6))}
-.car-one{offset-path:path("M 190 390 C 350 330 480 390 610 330 S 820 260 930 190");animation:carDrive 14s linear infinite}
-.car-two{offset-path:path("M 510 430 C 650 470 790 440 960 380");animation:carDrive 12s linear infinite;animation-delay:-6s}
-.car-three{offset-path:path("M 320 300 C 460 265 610 270 760 235");animation:carDrive 18s linear infinite;animation-delay:-12s}
+.world-car::after{content:"";position:absolute;left:10%;right:10%;bottom:-2px;height:4px;border-radius:50%;background:rgba(20,14,10,.42);filter:blur(2px)}
+.car-one{offset-path:path("M 118 370 C 215 344 310 336 395 360 S 485 392 545 392");animation:carDrive 14s linear infinite}
+.car-two{offset-path:path("M 555 400 C 640 427 760 421 895 386");animation:carDrive 12s linear infinite;animation-delay:-6s}
+.car-three{offset-path:path("M 727 269 C 765 235 805 195 850 162");animation:carDrive 11s linear infinite;animation-delay:-5s}
 .portal-live{width:48px;height:48px;border:4px solid rgba(108,248,239,.8);border-radius:50%;box-shadow:0 0 12px #54f4e9,0 0 28px #8a61ff,inset 0 0 16px #f7fdff;animation:portalBreathe 1.8s ease-in-out infinite}.portal-left{left:6.7%;top:54%}.portal-right{left:89.2%;top:54%}.portal-centre{left:42.7%;top:34%;width:34px;height:34px;animation-delay:-.8s}
 .water-light{width:90px;height:12px;border-radius:50%;background:rgba(134,255,250,.38);box-shadow:0 0 20px #58e5e5;animation:waterFlow 3s ease-in-out infinite}.water-one{left:46%;top:74%;transform:rotate(12deg)}.water-two{left:69%;top:63%;animation-delay:-1.2s}.water-three{left:30%;top:39%;width:65px;animation-delay:-2s}
 .world-beacon{width:8px;height:8px;border-radius:50%;background:#fff8a0;box-shadow:0 0 12px 5px #ffd962;animation:beaconFlash 1.4s ease-in-out infinite}.beacon-space{left:81%;top:14%}.beacon-cinema{left:49%;top:61%;animation-delay:-.6s}.beacon-maker{left:80%;top:67%;animation-delay:-1s}
