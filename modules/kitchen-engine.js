@@ -2,7 +2,7 @@
   'use strict';
 
   const KEY = 'orish.v1.kitchen';
-  const categories = ['Bread','Homemade Butter','Cakes','Microwave Cakes','No-Heat','Family Baking'];
+  const categories = ['Bread','Homemade Butter','Cakes','Old School Bakes','Microwave Cakes','No-Heat','Family Baking'];
 
   const m = (name, key, metricQty, metricUnit, imperialQty, imperialUnit, cupsQty, cupsUnit, noScaleQty, noScaleUnit) => ({
     name, key,
@@ -98,6 +98,40 @@
       objective:'Use ratios, combine dry/wet ingredients and observe structural change during baking.',
       amounts:[m('plain flour','flour',180,'g',6.35,'oz',1.5,'cups',12,'level tbsp'),m('sugar','sugar',120,'g',4.25,'oz',0.6,'cup',9,'level tbsp'),m('cocoa','cocoa',25,'g',0.9,'oz',0.25,'cup',4,'tbsp'),m('milk','milk',150,'ml',5,'fl oz',0.63,'cup',10,'tbsp'),m('oil','oil',60,'ml',2,'fl oz',0.25,'cup',4,'tbsp'),m('egg','egg',1,'egg',1,'egg',1,'egg',1,'egg'),m('baking powder','baking powder',8,'g',0.28,'oz',2,'tsp',2,'tsp')],
       steps:[['child','Measure flour, sugar, cocoa and baking powder.',0],['together','Add milk, oil and egg and mix until smooth.',0],['adult','A grown-up transfers the batter and uses the oven.',1800],['adult','A grown-up checks it is cooked through and cools it before cutting.',0]]
+    },
+
+    {
+      id:'school-concrete-cake', title:'Old School Concrete Cake', category:'Old School Bakes', icon:'🟨', baseServings:12, time:'40 min', difficulty:'Explorer', heat:true,
+      ingredients:['flour','sugar','butter','egg','vanilla'], equipment:['bowl','spoon','oven','baking tin'], allergens:['wheat','milk','egg'],
+      objective:'Explore why a low-moisture mixture becomes a firm, crunchy school-style traybake while practising equal measures and fractions.',
+      history:'Concrete cake is a well-known British school-dinner traybake. Its nickname comes from its firm, crunchy texture—not from any concrete ingredient. It is traditionally cut into squares and often served with custard.',
+      servingNote:'Optional serving idea: a grown-up may add warm custard after checking allergies and temperature.',
+      amounts:[m('plain flour','flour',250,'g',8.8,'oz',2.1,'cups',17,'level tbsp'),m('caster or granulated sugar','sugar',250,'g',8.8,'oz',1.25,'cups',19,'level tbsp'),m('soft butter','butter',250,'g',8.8,'oz',1.1,'cups',17.5,'tbsp'),m('egg','egg',1,'egg',1,'egg',1,'egg',1,'egg'),m('vanilla','vanilla',5,'ml',0.17,'fl oz',1,'tsp',1,'tsp')],
+      steps:[['adult','A grown-up prepares the lined tin and preheats the oven.',0],['child','Measure the flour and sugar into a large bowl.',0],['together','Rub or mix in the soft butter until the mixture looks like crumbs.',0],['together','Add the egg and vanilla, then bring the crumbly mixture together without making it runny.',0],['together','Press the mixture evenly into the lined tin. Compare the corners and centre to check the depth.',0],['adult','A grown-up uses the oven and bakes until firm and lightly golden.',1500],['adult','A grown-up checks it is cooked, lets it cool, then cuts it into equal squares.',0]]
+    },
+    {
+      id:'chocolate-concrete-cake', title:'Chocolate Concrete Cake', category:'Old School Bakes', icon:'🟫', baseServings:12, time:'40 min', difficulty:'Explorer', heat:true,
+      ingredients:['flour','sugar','butter','egg','cocoa'], equipment:['bowl','spoon','oven','baking tin'], allergens:['wheat','milk','egg'],
+      objective:'Measure a chocolate variation, compare dry and wet ingredients and divide a tray into equal portions.',
+      history:'Chocolate concrete cake is a cocoa version of the firm British school-dinner traybake. The crunchy top and dense square shape are part of its traditional style.',
+      amounts:[m('plain flour','flour',225,'g',7.9,'oz',1.9,'cups',15,'level tbsp'),m('cocoa powder','cocoa',25,'g',0.9,'oz',0.25,'cup',4,'tbsp'),m('caster or granulated sugar','sugar',250,'g',8.8,'oz',1.25,'cups',19,'level tbsp'),m('soft butter','butter',250,'g',8.8,'oz',1.1,'cups',17.5,'tbsp'),m('egg','egg',1,'egg',1,'egg',1,'egg',1,'egg')],
+      steps:[['adult','A grown-up lines the tin and preheats the oven.',0],['child','Measure the flour, cocoa and sugar.',0],['together','Mix in the soft butter until crumbly.',0],['together','Add the egg and bring the mixture together.',0],['child','Press the mixture flat using the back of a clean spoon.',0],['adult','A grown-up bakes it until firm, then cools it completely.',1500],['together','Work out how to divide the tray into twelve equal pieces before a grown-up cuts it.',0]]
+    },
+    {
+      id:'jam-coconut-school-sponge', title:'Jam & Coconut School Sponge', category:'Old School Bakes', icon:'🥥', baseServings:12, time:'45 min', difficulty:'Explorer', heat:true,
+      ingredients:['flour','sugar','butter','egg','milk','baking powder','jam','coconut'], equipment:['bowl','spoon','oven','baking tin'], allergens:['wheat','milk','egg'],
+      objective:'Make a classic tray sponge, observe rising and use area/fractions when spreading the topping and dividing portions.',
+      history:'Jam and coconut sponge is a familiar British school-dinner traybake. A light sponge is topped with a thin layer of jam and desiccated coconut after baking.',
+      amounts:[m('plain flour','flour',220,'g',7.8,'oz',1.85,'cups',15,'level tbsp'),m('caster sugar','sugar',180,'g',6.35,'oz',0.9,'cup',14,'level tbsp'),m('soft butter','butter',180,'g',6.35,'oz',0.8,'cup',12.5,'tbsp'),m('eggs','egg',3,'eggs',3,'eggs',3,'eggs',3,'eggs'),m('milk','milk',45,'ml',1.5,'fl oz',3,'tbsp',3,'tbsp'),m('baking powder','baking powder',8,'g',0.28,'oz',2,'tsp',2,'tsp'),m('smooth jam','jam',100,'g',3.5,'oz',0.4,'cup',7,'tbsp'),m('desiccated coconut','coconut',30,'g',1.05,'oz',0.33,'cup',5,'tbsp')],
+      steps:[['adult','A grown-up lines the tin and preheats the oven.',0],['together','Mix the soft butter and sugar until lighter.',0],['together','Add the eggs a little at a time and mix.',0],['child','Measure the flour and baking powder.',0],['together','Fold in the dry ingredients and milk to make a smooth batter.',0],['adult','A grown-up fills the tin, uses the oven and checks the sponge is cooked.',1500],['together','When safely cooled, spread a thin, even jam layer and sprinkle over the coconut.',0],['adult','A grown-up checks allergens and cuts the tray into equal pieces.',0]]
+    },
+    {
+      id:'school-sprinkle-traybake', title:'School Sprinkle Traybake', category:'Old School Bakes', icon:'🌈', baseServings:12, time:'50 min', difficulty:'Explorer', heat:true,
+      ingredients:['flour','sugar','butter','egg','milk','baking powder','icing sugar','sprinkles'], equipment:['bowl','spoon','oven','baking tin'], allergens:['wheat','milk','egg'],
+      objective:'Bake a simple sponge, measure a two-ingredient icing and design a colourful topping without wasting ingredients.',
+      history:'Sprinkle traybake is a popular school-style vanilla sponge topped with simple water icing and coloured sprinkles. It is made as one tray so it can be divided and shared.',
+      amounts:[m('plain flour','flour',220,'g',7.8,'oz',1.85,'cups',15,'level tbsp'),m('caster sugar','sugar',180,'g',6.35,'oz',0.9,'cup',14,'level tbsp'),m('soft butter','butter',180,'g',6.35,'oz',0.8,'cup',12.5,'tbsp'),m('eggs','egg',3,'eggs',3,'eggs',3,'eggs',3,'eggs'),m('milk','milk',45,'ml',1.5,'fl oz',3,'tbsp',3,'tbsp'),m('baking powder','baking powder',8,'g',0.28,'oz',2,'tsp',2,'tsp'),m('icing sugar','icing sugar',150,'g',5.3,'oz',1.25,'cups',12,'level tbsp'),m('water for icing','water',20,'ml',0.7,'fl oz',1.3,'tbsp',1.3,'tbsp'),m('approved cake sprinkles','sprinkles',20,'g',0.7,'oz',2,'tbsp',2,'tbsp')],
+      steps:[['adult','A grown-up lines the tin and preheats the oven.',0],['together','Mix butter and sugar, then add the eggs gradually.',0],['child','Measure the flour and baking powder.',0],['together','Fold in the flour and milk, then spread the batter evenly.',0],['adult','A grown-up uses the oven and cools the baked sponge completely.',1500],['together','Add water to the icing sugar a little at a time until spreadable.',0],['child','Spread the icing and add sprinkles in a pattern.',0],['adult','A grown-up checks the topping labels for allergens and cuts the cake.',0]]
     },
 
     {
@@ -198,7 +232,8 @@
     'microwave mug':'microwave-safe mug','tray':'baking tray','sheet pan':'baking tray','pan':'frying pan','herb':'herbs','mixed herbs':'herbs',
     'sunflower butter':'sunflower seed butter','seed butter':'sunflower seed butter','tomato puree':'tomato sauce','passata':'tomato sauce',
     'grated cheese':'cheese','lemon juice':'lemon','lemon zest':'lemon','bicarbonate of soda':'baking soda','bicarb':'baking soda',
-    'baking powder':'baking powder','egg':'egg','eggs':'egg','apple':'apple','berries':'fruit','strawberries':'fruit','banana':'banana'
+    'baking powder':'baking powder','egg':'egg','eggs':'egg','apple':'apple','berries':'fruit','strawberries':'fruit','banana':'banana',
+    'strawberry jam':'jam','raspberry jam':'jam','desiccated coconut':'coconut','powdered sugar':'icing sugar','confectioners sugar':'icing sugar','hundreds and thousands':'sprinkles','cake sprinkles':'sprinkles'
   };
 
   function cleanList(value) {
@@ -249,7 +284,8 @@
       const quantity=chosen.qty*factor;
       let note='';
       if (/egg/.test(chosen.unit) && !Number.isInteger(quantity)) note=' — beat first and use the needed portion with an adult';
-      return `${fmtNumber(quantity)} ${chosen.unit} ${item.name}${note}`.replace(/\s+/g,' ').trim();
+      const displayName=/\beggs?\b/i.test(chosen.unit) && /\beggs?\b/i.test(item.name) ? '' : item.name;
+      return `${fmtNumber(quantity)} ${chosen.unit} ${displayName}${note}`.replace(/\s+/g,' ').trim();
     });
   }
 
