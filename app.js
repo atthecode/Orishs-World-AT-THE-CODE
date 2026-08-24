@@ -1384,12 +1384,20 @@
 
   function configureGate() {
     const setup = !Store.hasParentPin();
+    const pin = $('parentPin');
+    const confirm = $('parentPinConfirm');
     $('gateModeTitle').textContent = setup ? 'Create an adult PIN' : 'Unlock Parent Studio';
     $('gateHelp').textContent = setup
-      ? 'Choose a 6–8 digit PIN. This local gate helps stop casual child access to parent-only controls.'
-      : 'Enter the adult PIN to open parent-only controls on this device.';
+      ? 'Choose a 6–8 digit PIN for this beta device. A verified online parent account will replace this local-only step before subscriptions launch.'
+      : 'Enter the adult PIN created on this device to open parent-only controls.';
     $('pinConfirmWrap').classList.toggle('hidden', !setup);
-    $('parentPin').value=''; $('parentPinConfirm').value=''; $('gateStatus').textContent='';
+    confirm.required = setup;
+    pin.autocomplete = setup ? 'new-password' : 'current-password';
+    pin.value = '';
+    confirm.value = '';
+    $('gateStatus').textContent = '';
+    $('unlockParent').disabled = false;
+    $('unlockParent').textContent = setup ? 'Create beta access' : 'Unlock Parent Studio';
   }
 
   function openParentGate() {
@@ -1400,20 +1408,31 @@
     }
     configureGate();
     show('parentGateScreen');
-    $('parentPin').focus();
+    window.setTimeout(() => $('parentPin').focus({ preventScroll: true }), 80);
   }
 
-  async function handleGateSubmit() {
+  async function handleGateSubmit(event) {
+    event?.preventDefault();
     const now = Date.now();
+    const status = $('gateStatus');
+    const submit = $('unlockParent');
     if (now < gateBlockedUntil) {
-      $('gateStatus').textContent = `Please wait ${Math.ceil((gateBlockedUntil-now)/1000)} seconds before trying again.`;
+      status.textContent = `Please wait ${Math.ceil((gateBlockedUntil-now)/1000)} seconds before trying again.`;
       return;
     }
-    const pin = $('parentPin').value;
+    const pin = $('parentPin').value.trim();
     const setup = !Store.hasParentPin();
+    if (!/^\d{6,8}$/.test(pin)) {
+      status.textContent = 'Enter 6–8 numbers for the adult PIN.';
+      $('parentPin').focus();
+      return;
+    }
+    submit.disabled = true;
+    submit.textContent = setup ? 'Securing this device…' : 'Checking PIN…';
+    status.textContent = setup ? 'Creating protected beta access…' : 'Opening Parent Studio…';
     try {
       if (setup) {
-        if (pin !== $('parentPinConfirm').value) throw new Error('The two PIN entries do not match.');
+        if (pin !== $('parentPinConfirm').value.trim()) throw new Error('The two PIN entries do not match.');
         await Store.setParentPin(pin);
       } else {
         const ok = await Store.verifyParentPin(pin);
@@ -1428,7 +1447,10 @@
       fillProfileForm(Store.getActiveProfile());
       show('parentPanel');
     } catch (error) {
-      $('gateStatus').textContent = error.message || 'Parent Gate could not be unlocked.';
+      status.textContent = error.message || 'Parent access could not be opened on this device.';
+    } finally {
+      submit.disabled = false;
+      submit.textContent = setup ? 'Create beta access' : 'Unlock Parent Studio';
     }
   }
 
@@ -3164,9 +3186,7 @@
   $('accessibilityButton').addEventListener('click', () => { renderAccessibilityCentre(); show('accessibilityPanel'); });
   $('parentGateButton').addEventListener('click', openParentGate);
   $('cancelParentGate').addEventListener('click', () => show('landing'));
-  $('unlockParent').addEventListener('click', handleGateSubmit);
-  $('parentPin').addEventListener('keydown', event => { if (event.key === 'Enter') handleGateSubmit(); });
-  $('parentPinConfirm').addEventListener('keydown', event => { if (event.key === 'Enter') handleGateSubmit(); });
+  $('parentGateForm').addEventListener('submit', handleGateSubmit);
   document.querySelectorAll('.back-to-world').forEach(button => button.addEventListener('click', () => show('childWorld')));
   $('ageBand').addEventListener('change', updateChildExperience);
 
