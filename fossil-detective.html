@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#10283a">
+  <title>Fossil Detective — Orish's World</title>
+  <link rel="stylesheet" href="fossil-detective.css?v=20260824-1">
+  <script src="fossil-detective.js?v=20260824-1" defer></script>
+</head>
+<body>
+  <div class="sky" aria-hidden="true"><i></i><i></i><i></i></div>
+  <header class="topbar">
+    <a href="premium-preview.html">← World map</a>
+    <div><small>ORISH'S WORLD</small><strong>FOSSIL DETECTIVE</strong></div>
+    <button id="soundToggle" type="button" aria-label="Turn music and sounds on">♫</button>
+  </header>
+
+  <main>
+    <section class="mission-card" id="introPanel">
+      <div class="hero-art"><img src="assets/fossil-detective.webp" alt="Orish exploring a colourful fossil excavation site"><span>DISCOVERY DIG 01</span></div>
+      <div class="briefing">
+        <p class="eyebrow">TRAINING MISSION · CANYON LAB</p>
+        <h1>The canyon wall has cracked open.</h1>
+        <p>Something ancient is hidden beneath the sand. Learn to brush carefully, uncover five fossil pieces and use the evidence to identify the creature.</p>
+        <div class="safety-strip"><b>🔎 Explore</b><b>🦴 Investigate</b><b>🧩 Rebuild</b><b>🌿 No violence</b></div>
+        <div class="character-choice" aria-label="Choose your game character">
+          <strong>Who will lead the dig?</strong>
+          <button class="character active" data-character="orish" type="button"><img src="assets/orish-explorer.webp" alt=""> Play as Orish</button>
+          <button class="character" data-character="explorer" type="button"><span>★</span> My Explorer</button>
+        </div>
+        <div class="briefing-actions">
+          <button class="primary" id="startMission" type="button">Start training dig</button>
+          <button class="speaker" data-speak="The canyon wall has cracked open. Brush the glowing practice squares gently. Then uncover five fossil pieces and use the clues to identify the creature." type="button">🔉 Hear mission</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="game-shell" id="gameShell" hidden>
+      <div class="hud">
+        <div><small>MISSION</small><strong id="missionName">Brush training</strong></div>
+        <div><small>FOSSILS</small><strong><span id="fossilCount">0</span>/5</strong></div>
+        <div><small>STARS</small><strong id="starCount">0 ★</strong></div>
+        <div class="progress-wrap"><small>PROGRESS</small><span><i id="progressBar"></i></span></div>
+      </div>
+
+      <div class="play-stage">
+        <aside class="orish-guide">
+          <div class="guide-face"><img src="assets/orish-explorer.webp" alt="Orish"><span id="playerBadge">ORISH</span></div>
+          <div><small>ORISH SAYS</small><p id="guideText">Tap the three glowing squares. Each careful brush removes one layer of sand.</p></div>
+          <button id="guideSpeak" class="round-speaker" type="button" aria-label="Read Orish's guidance aloud">🔉</button>
+        </aside>
+
+        <div class="dig-zone" id="digZone">
+          <div class="dig-heading"><div><small>LIVE EXCAVATION GRID</small><h2 id="stageTitle">Brush practice</h2></div><div class="tool-meter"><span>BRUSH POWER</span><b id="brushPower">100%</b></div></div>
+          <div class="dig-grid" id="digGrid" aria-label="Fossil excavation grid"></div>
+          <div class="tool-row"><button id="scanButton" type="button">✦ Pulse scan <small>reveals one clue</small></button><p id="statusLine" aria-live="polite">Find the glowing practice squares.</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal" id="miniModal" hidden>
+    <section class="mini-card" role="dialog" aria-modal="true" aria-labelledby="miniTitle">
+      <p class="eyebrow" id="miniEyebrow">MINI MISSION</p>
+      <h2 id="miniTitle">Evidence check</h2>
+      <p id="miniCopy"></p>
+      <button class="speaker mini-speak" id="miniSpeak" type="button">🔉 Hear the clue</button>
+      <div id="visualClue" class="visual-clue"></div>
+      <div id="miniOptions" class="mini-options"></div>
+      <p id="miniFeedback" class="feedback" aria-live="polite"></p>
+    </section>
+  </div>
+
+  <div class="completion" id="completion" hidden>
+    <section>
+      <div class="reward-burst" aria-hidden="true">🦕</div>
+      <p class="eyebrow">FOSSIL CASE SOLVED</p>
+      <h2>You rebuilt the Canyon Leafback!</h2>
+      <p>You uncovered the fossil, checked the teeth and used plant evidence to identify a gentle plant-eater.</p>
+      <div class="final-reward"><strong>110 ★</strong><span>Fossil Detective badge unlocked</span></div>
+      <button class="speaker" data-speak="Case solved. You rebuilt the Canyon Leafback and used evidence to identify a plant eater. Great detective work. That is enough screen time for now. Can you build a dinosaur skeleton with paper or blocks?" type="button">🔉 Hear Orish celebrate</button>
+      <a class="primary next-link" href="premium-preview.html">Return to World Map</a>
+      <p class="away-prompt">REAL-WORLD MISSION: build a dinosaur skeleton using paper, sticks or blocks.</p>
+    </section>
+  </div>
+</body>
+</html>
