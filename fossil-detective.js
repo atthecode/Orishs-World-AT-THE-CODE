@@ -1,15 +1,16 @@
 (() => {
   'use strict';
   const SAVE_KEY='orish-fossil-detective-v1';
-  const fossilIcons=['🦴','🦷','🦴','🦴','🌿'];
+  const fossilIcons=['🦷','🦴','🦴','🦴','🌿'];
+  const fossilNames=['flat tooth','strong leg bone','spine piece','tail bone','fossil leaf'];
   const guide=document.getElementById('guideText'), status=document.getElementById('statusLine');
   const grid=document.getElementById('digGrid'), modal=document.getElementById('miniModal');
-  let character='orish', phase='intro', stars=0, fossils=0, trainingHits=0, found=[], tileState=[];
+  let character='orish', phase='intro', stars=0, fossils=0, trainingHits=0, found=[], tileState=[], currentTarget=-1;
   let audioCtx=null, musicTimer=0, musicOn=false, currentSpeech='';
 
   const messages={
-    training:'Tap the three glowing squares. Each careful brush removes one layer of sand.',
-    dig:'Brush each patch carefully. A fossil needs three gentle brushes. Use the pulse scan if you need one clue.',
+    training:'Brush the one glowing practice patch three times. Watch one sand layer disappear with every brush.',
+    dig:'Press Pulse Scan. Brush only the glowing patch three times. Examine the fossil, then scan for the next signal.',
     identify:'Look at the shape and purpose of each fossil. Evidence tells us more than guessing.',
     assemble:'Build from the centre outward: skull, spine, legs and tail.',
     evidence:'Flat teeth and fossil leaves are clues. What kind of food did this animal eat?'
@@ -38,29 +39,29 @@
   }
 
   function renderTraining(){
-    grid.innerHTML=''; trainingHits=0; guide.textContent=messages.training; status.textContent='Find the three glowing practice squares.';
+    grid.innerHTML=''; trainingHits=0; guide.textContent=messages.training; status.textContent='Brush the one glowing patch three times.';
     document.getElementById('missionName').textContent='Brush training'; document.getElementById('stageTitle').textContent='Brush practice';
     for(let i=0;i<12;i++){
-      const b=document.createElement('button'); b.type='button'; b.className='dig-tile'+([1,6,10].includes(i)?' training':'');
-      b.innerHTML='<span>·</span>'; b.setAttribute('aria-label',`Sand square ${i+1}`);
-      b.addEventListener('click',()=>brushTraining(b,[1,6,10].includes(i))); grid.appendChild(b);
+      const b=document.createElement('button'); b.type='button'; b.className='dig-tile'+(i===6?' training':'');
+      b.innerHTML='<span>≈</span>'; b.setAttribute('aria-label',`Practice sand patch ${i+1}`);
+      b.addEventListener('click',()=>brushTraining(b,i===6)); grid.appendChild(b);
     }
   }
 
   function brushTraining(tile,target){
     dust(tile);
-    if(!target){wrong(tile,'That square is stable. Try one with a cyan glow.');return;}
+    if(!target){wrong(tile,'Not this patch. Brush the one with the cyan glow.');return;}
     if(tile.classList.contains('cleared'))return;
-    tile.classList.remove('training'); tile.classList.add('cleared'); tile.innerHTML='<span>✓</span>'; trainingHits++; stars+=5; tone(620,.1,'triangle');
-    status.textContent=`Careful brushes: ${trainingHits} of 3`;
-    if(trainingHits===3){guide.textContent='Training complete. Now the real excavation begins!';stars+=10;updateHud();setTimeout(beginDig,700);} else updateHud();
+    trainingHits++; stars+=5; tone(620,.1,'triangle'); tile.innerHTML=`<span>${trainingHits===1?'◌':trainingHits===2?'·':'✓'}</span>`;
+    status.textContent=`Careful brushes: ${trainingHits} of 3. ${3-trainingHits?`${3-trainingHits} more to go.`:'Practice fossil uncovered!'}`;
+    if(trainingHits===3){tile.classList.remove('training');tile.classList.add('cleared','found');guide.textContent='Training complete. In the real dig, scan first and brush the glowing patch three times.';stars+=10;updateHud();setTimeout(beginDig,950);} else updateHud();
   }
 
   function beginDig(){
-    phase='dig'; found=[]; fossils=0; tileState=Array.from({length:20},()=>({layers:3,fossil:-1}));
-    const spots=shuffle([...Array(20).keys()]).slice(0,5); spots.forEach((spot,i)=>tileState[spot].fossil=i);
+    phase='dig'; found=[]; fossils=0; currentTarget=-1; tileState=Array.from({length:20},()=>({layers:3,fossil:-1}));
+    [2,8,14,17,5].forEach((spot,i)=>tileState[spot].fossil=i);
     document.getElementById('missionName').textContent='Canyon excavation';document.getElementById('stageTitle').textContent='Uncover five clues';
-    guide.textContent=messages.dig;status.textContent='Each patch needs three careful brushes.';renderDig();updateHud();
+    guide.textContent=messages.dig;status.textContent='Step 1: press Pulse Scan to locate fossil signal 1.';renderDig();updateHud();
   }
 
   function renderDig(){
@@ -71,17 +72,20 @@
   }
 
   function brushDig(tile,index){
-    const state=tileState[index]; if(state.layers<=0)return; dust(tile);state.layers--;stars+=1;tone(180+state.layers*55,.045,'sine');
+    const state=tileState[index]; if(state.layers<=0)return;
+    if(index!==currentTarget){wrong(tile,currentTarget<0?'Press Pulse Scan before brushing.':'That patch has no signal. Brush the glowing patch.');return;}
+    dust(tile);state.layers--;stars+=1;tone(180+state.layers*55,.045,'sine');
     tile.classList.add('brushed');tile.innerHTML=`<span>${state.layers?['','◌','≈'][state.layers-1]:'·'}</span>`;tile.setAttribute('aria-label',`Excavation patch ${index+1}, ${state.layers} sand layers`);
     document.getElementById('brushPower').textContent=`${Math.max(36,100-Math.round(tileState.filter(t=>t.layers<3).length*2.4))}%`;
-    if(state.layers===0){tile.classList.add('cleared');if(state.fossil>=0){tile.classList.add('found');tile.innerHTML=`<span>${fossilIcons[state.fossil]}</span>`;found.push(state.fossil);fossils++;stars+=12;tone(760,.18,'triangle');status.textContent=`Fossil clue ${fossils} found!`;guide.textContent=fossils<5?'Excellent. Keep checking nearby layers.':'All five pieces found. Time to investigate the evidence.';}}
+    if(state.layers===0){tile.classList.remove('training');tile.classList.add('cleared','found');tile.innerHTML=`<span>${fossilIcons[state.fossil]}</span>`;found.push(state.fossil);fossils++;stars+=12;currentTarget=-1;tone(760,.18,'triangle');status.textContent=`Clue ${fossils}: ${fossilNames[state.fossil]} found.`;guide.textContent=fossils<5?`You found a ${fossilNames[state.fossil]}. Press Scan to find signal ${fossils+1}.`:'All five clues are collected. Now use them to solve the fossil case.';}
     updateHud(); if(fossils===5)setTimeout(showIdentify,800);
   }
 
   function scan(){
-    if(phase!=='dig'){status.textContent='The pulse scan becomes available during the full excavation.';tone(120,.09,'square');return;}
-    const target=tileState.findIndex(t=>t.fossil>=0&&t.layers>0);if(target<0){status.textContent='Every fossil signal has already been uncovered.';return;}
-    const tile=grid.children[target];tile.classList.add('training');setTimeout(()=>tile.classList.remove('training'),2200);status.textContent='Pulse detected! Check the glowing patch.';tone(440,.1,'sine');setTimeout(()=>tone(660,.1,'sine'),130);
+    if(phase!=='dig'){status.textContent='Finish the short brush training first.';tone(120,.09,'square');return;}
+    if(currentTarget>=0){status.textContent='The scanner has already marked a patch. Brush the glowing patch three times.';return;}
+    currentTarget=tileState.findIndex(t=>t.fossil>=0&&t.layers>0);if(currentTarget<0){status.textContent='Every fossil signal has been uncovered.';return;}
+    const tile=grid.children[currentTarget];tile.classList.add('training');status.textContent=`Signal ${fossils+1} found. Brush the glowing patch three times.`;guide.textContent=`The cyan glow marks signal ${fossils+1}. One brush removes one sand layer.`;tone(440,.1,'sine');setTimeout(()=>tone(660,.1,'sine'),130);
   }
 
   function showIdentify(){
