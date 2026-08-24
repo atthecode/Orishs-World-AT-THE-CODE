@@ -12,7 +12,8 @@
     skin: '#805141', hair: 'afro', hairColor: '#17120f', outfit: 'explorer', accent: '#17d7e8', angle: -8
   };
 
-  let host, canvas, gl, program, parts = [], state = {...DEFAULT_STATE};\n  let isWebGL2 = false, vaoExt = null;
+  let host, canvas, gl, program, parts = [], state = {...DEFAULT_STATE};
+  let isWebGL2 = false, vaoExt = null;
   let projection = ident(), view = ident(), raf = 0, ready = false, reducedMotion = false;
   let pose = 'idle', poseUntil = 0, poseStarted = 0, lastCapture = '';
   const POSE_DURATIONS = {wave:2200, celebrate:1900, power:1700, idle:0};
@@ -35,8 +36,15 @@
     canvas.setAttribute('aria-hidden', 'true');
     canvas.setAttribute('data-renderer', 'at-the-code-webgl-glb');
     host.prepend(canvas);
-    gl = canvas.getContext('webgl2', {alpha:true, antialias:true, premultipliedAlpha:true, preserveDrawingBuffer:true, powerPreference:'high-performance'});
-    if (!gl) return fallback('WebGL2 is not supported on this device.');
+    const contextOptions = {alpha:true, antialias:true, premultipliedAlpha:true, preserveDrawingBuffer:true, powerPreference:'high-performance'};
+    gl = canvas.getContext('webgl2', contextOptions);
+    isWebGL2 = Boolean(gl);
+    if (!gl) gl = canvas.getContext('webgl', contextOptions) || canvas.getContext('experimental-webgl', contextOptions);
+    if (!gl) return fallback('3D graphics are not available in this browser.');
+    if (!isWebGL2) {
+      vaoExt = gl.getExtension('OES_vertex_array_object');
+      if (!vaoExt) return fallback('This browser cannot prepare the 3D character.');
+    }
 
     try {
       program = makeProgram(isWebGL2 ? VERT : VERT_WEBGL1, isWebGL2 ? FRAG : FRAG_WEBGL1);
@@ -317,7 +325,10 @@
     console.warn('[Orish Avatar 3D]', message);
   }
 
-  function createVAO(){return isWebGL2 ? gl.createVertexArray() : vaoExt.createVertexArrayOES();}\n  function bindVAO(vao){if(isWebGL2) gl.bindVertexArray(vao); else vaoExt.bindVertexArrayOES(vao);}\n\n  function makeProgram(vsSource, fsSource) {
+  function createVAO(){return isWebGL2 ? gl.createVertexArray() : vaoExt.createVertexArrayOES();}
+  function bindVAO(vao){if(isWebGL2) gl.bindVertexArray(vao); else vaoExt.bindVertexArrayOES(vao);}
+
+  function makeProgram(vsSource, fsSource) {
     const p=gl.createProgram(), vs=shader(gl.VERTEX_SHADER,vsSource), fs=shader(gl.FRAGMENT_SHADER,fsSource);
     gl.attachShader(p,vs);gl.attachShader(p,fs);gl.linkProgram(p);
     if(!gl.getProgramParameter(p,gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p)||'3D shader link failed');
@@ -341,6 +352,9 @@
 
   const VERT=`#version 300 es\nprecision highp float;\nin vec3 aPosition;\nin vec3 aNormal;\nuniform mat4 uMVP;\nuniform mat4 uModel;\nout vec3 vNormal;\nout vec3 vWorld;\nvoid main(){vec4 world=uModel*vec4(aPosition,1.0);vWorld=world.xyz;vNormal=mat3(uModel)*aNormal;gl_Position=uMVP*vec4(aPosition,1.0);}`;
   const FRAG=`#version 300 es\nprecision highp float;\nin vec3 vNormal;\nin vec3 vWorld;\nuniform vec3 uColor;\nuniform vec3 uCamera;\nout vec4 outColor;\nvoid main(){vec3 n=normalize(vNormal);vec3 l=normalize(vec3(-0.55,0.9,0.75));float d=max(dot(n,l),0.0);vec3 v=normalize(uCamera-vWorld);float rim=pow(1.0-max(dot(n,v),0.0),2.2);vec3 col=uColor*(0.48+0.62*d)+vec3(0.10,0.18,0.22)*rim;outColor=vec4(col,1.0);}`;
+
+  const VERT_WEBGL1=`precision highp float;\nattribute vec3 aPosition;\nattribute vec3 aNormal;\nuniform mat4 uMVP;\nuniform mat4 uModel;\nvarying vec3 vNormal;\nvarying vec3 vWorld;\nvoid main(){vec4 world=uModel*vec4(aPosition,1.0);vWorld=world.xyz;vNormal=mat3(uModel)*aNormal;gl_Position=uMVP*vec4(aPosition,1.0);}`;
+  const FRAG_WEBGL1=`precision highp float;\nvarying vec3 vNormal;\nvarying vec3 vWorld;\nuniform vec3 uColor;\nuniform vec3 uCamera;\nvoid main(){vec3 n=normalize(vNormal);vec3 l=normalize(vec3(-0.55,0.9,0.75));float d=max(dot(n,l),0.0);vec3 v=normalize(uCamera-vWorld);float rim=pow(1.0-max(dot(n,v),0.0),2.2);vec3 col=uColor*(0.48+0.62*d)+vec3(0.10,0.18,0.22)*rim;gl_FragColor=vec4(col,1.0);}`;
 
   window.addEventListener('orish-avatar:update', e => update(e.detail));
   window.addEventListener('DOMContentLoaded', init, {once:true});
