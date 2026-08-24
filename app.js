@@ -2981,13 +2981,21 @@
   function exportEvidence() {
     const data = Store.exportActiveProfileData();
     if (!data) { window.alert('Select a child profile first.'); return; }
-    const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+    const report = [
+      "ORISH'S WORLD @ THE CODE — LEARNING PASSPORT",
+      'Private copy prepared for the parent or guardian.',
+      '',
+      JSON.stringify(data, null, 2)
+    ].join('\n');
+    const blob = new Blob(['\uFEFF', report], {type:'text/plain;charset=utf-8'});
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href=url;
-    a.download=`orish-learning-passport-${data.profile.nickname.toLowerCase().replace(/[^a-z0-9]+/g,'-') || 'explorer'}.json`;
+    a.download=`orish-learning-passport-${data.profile.nickname.toLowerCase().replace(/[^a-z0-9]+/g,'-') || 'explorer'}.txt`;
+    document.body.appendChild(a);
     a.click();
-    URL.revokeObjectURL(url);
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
   }
 
   const showcaseScenes = {
