@@ -27,7 +27,7 @@
       <div class="top-actions">
         <span class="prototype-pill">£0 build</span>
         <button id="accessibilityButton" class="ghost-button" type="button" aria-controls="accessibilityPanel">Accessibility</button>
-        <button id="parentGateButton" class="ghost-button" type="button" aria-controls="parentPanel">Parent Gate</button>
+        <button id="parentGateButton" class="ghost-button" type="button" aria-controls="parentGateScreen">Parent Account</button>
       </div>
     </header>
 
@@ -1016,27 +1016,47 @@
       <section id="parentGateScreen" class="screen hidden" aria-labelledby="gateTitle">
         <div class="screen-header">
           <div>
-            <p class="eyebrow">ADULT ACCESS</p>
-            <h2 id="gateTitle">Parent Gate</h2>
+            <p class="eyebrow">ADULT-OWNED ACCESS</p>
+            <h2 id="gateTitle">Parent Account</h2>
           </div>
           <button class="ghost-button back-to-world" type="button">Back</button>
         </div>
+        <div class="parent-account-notice" role="note">
+          <strong>Beta now:</strong> use a private device PIN to protect Parent Studio.
+          <strong>Subscription launch:</strong> the adult will create and verify a secure online account before creating any child profile or paying.
+        </div>
         <div class="gate-shell">
           <div class="gate-icon" aria-hidden="true">🔐</div>
-          <div>
+          <form id="parentGateForm">
+            <p class="gate-step">BETA DEVICE ACCESS</p>
             <h3 id="gateModeTitle">Create an adult PIN</h3>
             <p id="gateHelp">This local PIN helps stop a child casually opening Parent Studio. It is not a replacement for production account authentication.</p>
             <label for="parentPin">Adult PIN</label>
-            <input id="parentPin" type="password" inputmode="numeric" pattern="[0-9]*" minlength="6" maxlength="8" autocomplete="current-password" aria-describedby="gateHelp gateStatus">
-            <div id="pinConfirmWrap" class="hidden"><label for="parentPinConfirm">Confirm adult PIN</label><input id="parentPinConfirm" type="password" inputmode="numeric" pattern="[0-9]*" minlength="6" maxlength="8" autocomplete="new-password"></div>
+            <input id="parentPin" type="password" inputmode="numeric" pattern="[0-9]{6,8}" minlength="6" maxlength="8" autocomplete="current-password" aria-describedby="gateHelp gateStatus" required>
+            <div id="pinConfirmWrap" class="hidden"><label for="parentPinConfirm">Confirm adult PIN</label><input id="parentPinConfirm" type="password" inputmode="numeric" pattern="[0-9]{6,8}" minlength="6" maxlength="8" autocomplete="new-password"></div>
             <div class="gate-actions">
-              <button id="unlockParent" class="primary-button" type="button">Continue</button>
+              <button id="unlockParent" class="primary-button" type="submit">Continue securely</button>
               <button id="cancelParentGate" class="ghost-button" type="button">Cancel</button>
             </div>
             <p id="gateStatus" class="gate-status" aria-live="polite"></p>
             <p class="privacy-note">The PIN itself is never stored. On HTTPS/localhost, the browser stores only a salted PBKDF2 verification value.</p>
-          </div>
+          </form>
         </div>
+        <article class="launch-account-card" aria-labelledby="launchAccountTitle">
+          <div>
+            <p class="gate-step">REQUIRED FOR THE PAID PILOT</p>
+            <h3 id="launchAccountTitle">Secure parent sign-up</h3>
+            <p>This is the next account milestone—not a pretend local email form. The verified adult account will own child profiles, permissions, privacy choices and subscriptions.</p>
+          </div>
+          <ol class="account-flow-list">
+            <li>Adult creates and verifies an account</li>
+            <li>Adult accepts privacy information and terms</li>
+            <li>Adult creates subordinate child profile</li>
+            <li>Adult controls voice, camera, AI and time settings</li>
+            <li>Adult manages payment, export and deletion</li>
+          </ol>
+          <span class="account-roadmap-pill">Azure identity connection planned before subscriptions</span>
+        </article>
       </section>
 
       <section id="parentPanel" class="screen hidden" aria-labelledby="parentTitle">
