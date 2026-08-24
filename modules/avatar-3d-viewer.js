@@ -12,7 +12,7 @@
     skin: '#805141', hair: 'afro', hairColor: '#17120f', outfit: 'explorer', accent: '#17d7e8', angle: -8
   };
 
-  let host, canvas, gl, program, parts = [], state = {...DEFAULT_STATE};
+  let host, canvas, gl, program, parts = [], state = {...DEFAULT_STATE};\n  let isWebGL2 = false, vaoExt = null;
   let projection = ident(), view = ident(), raf = 0, ready = false, reducedMotion = false;
   let pose = 'idle', poseUntil = 0, poseStarted = 0, lastCapture = '';
   const POSE_DURATIONS = {wave:2200, celebrate:1900, power:1700, idle:0};
@@ -39,7 +39,7 @@
     if (!gl) return fallback('WebGL2 is not supported on this device.');
 
     try {
-      program = makeProgram(VERT, FRAG);
+      program = makeProgram(isWebGL2 ? VERT : VERT_WEBGL1, isWebGL2 ? FRAG : FRAG_WEBGL1);
       positionLoc = gl.getAttribLocation(program, 'aPosition');
       normalLoc = gl.getAttribLocation(program, 'aNormal');
       mvpLoc = gl.getUniformLocation(program, 'uMVP');
@@ -144,13 +144,13 @@
   }
 
   function createPart(name, positions, normals, indices, nodeMatrixValue) {
-    const vao = gl.createVertexArray(); gl.bindVertexArray(vao);
+    const vao = createVAO(); bindVAO(vao);
     const pbo = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, pbo); gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
     gl.enableVertexAttribArray(positionLoc); gl.vertexAttribPointer(positionLoc, 3, gl.FLOAT, false, 0, 0);
     const nbo = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, nbo); gl.bufferData(gl.ARRAY_BUFFER, normals || makeFlatNormals(positions, indices), gl.STATIC_DRAW);
     gl.enableVertexAttribArray(normalLoc); gl.vertexAttribPointer(normalLoc, 3, gl.FLOAT, false, 0, 0);
     const ibo = gl.createBuffer(); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
-    gl.bindVertexArray(null);
+    bindVAO(null);
     const indexType = indices instanceof Uint32Array ? gl.UNSIGNED_INT : indices instanceof Uint16Array ? gl.UNSIGNED_SHORT : gl.UNSIGNED_BYTE;
     return {name, vao, count:indices.length, indexType, nodeMatrix:nodeMatrixValue};
   }
@@ -188,10 +188,10 @@
       gl.uniformMatrix4fv(mvpLoc, false, mvp);
       gl.uniformMatrix4fv(modelLoc, false, model);
       gl.uniform3fv(colorLoc, rgb(colorFor(part.name)));
-      gl.bindVertexArray(part.vao);
+      bindVAO(part.vao);
       gl.drawElements(gl.TRIANGLES, part.count, part.indexType, 0);
     }
-    gl.bindVertexArray(null);
+    bindVAO(null);
   }
 
   function animationTransform(name, time) {
@@ -317,7 +317,7 @@
     console.warn('[Orish Avatar 3D]', message);
   }
 
-  function makeProgram(vsSource, fsSource) {
+  function createVAO(){return isWebGL2 ? gl.createVertexArray() : vaoExt.createVertexArrayOES();}\n  function bindVAO(vao){if(isWebGL2) gl.bindVertexArray(vao); else vaoExt.bindVertexArrayOES(vao);}\n\n  function makeProgram(vsSource, fsSource) {
     const p=gl.createProgram(), vs=shader(gl.VERTEX_SHADER,vsSource), fs=shader(gl.FRAGMENT_SHADER,fsSource);
     gl.attachShader(p,vs);gl.attachShader(p,fs);gl.linkProgram(p);
     if(!gl.getProgramParameter(p,gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p)||'3D shader link failed');
