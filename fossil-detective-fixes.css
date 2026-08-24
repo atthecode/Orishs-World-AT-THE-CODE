@@ -1,0 +1,19 @@
+.mission-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 11px;
+  background: rgba(55, 30, 28, .5);
+  color: #fff1bc;
+  font-size: .68rem;
+  letter-spacing: .08em;
+}
+.mission-rule b {
+  padding: 7px 10px;
+  border: 1px solid rgba(255, 217, 93, .3);
+  border-radius: 999px;
+  background: rgba(7, 29, 42, .72);
+}
+.mission-rule span { color: var(--cyan); font-weight: 1000; }
