@@ -1,6 +1,6 @@
-const CACHE='orish-world-v133-azure-original-character';
+const CACHE='orish-world-v134-fossil-detective';
 const SHELL=[
-  './','./index.html','./styles.css','./app.js','./manifest.webmanifest',
+  './','./index.html','./styles.css','./app.js','./manifest.webmanifest','./fossil-detective.html','./fossil-detective.css','./fossil-detective.js',
   './toy-portal/index.html','./toy-portal/styles.css','./toy-portal/app.js',
   './modules/security-store.js','./modules/curriculum-engine.js','./modules/age-game-engine.js','./modules/rewards-engine.js','./modules/profile-ui.js',
   './modules/mission-engine.js','./modules/routines-engine.js','./modules/kitchen-engine.js','./modules/maker-engine.js','./modules/creative-engine.js','./modules/visual-game-engine.js','./modules/family-engine.js',
