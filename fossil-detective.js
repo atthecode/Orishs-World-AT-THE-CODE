@@ -19,7 +19,7 @@
   ];
   let character='orish', phase='intro', stars=0, fossils=0, found=[], currentTarget=-1;
   let brushing=false, clearedAmount=0, lastPoint=null, wrongBrushWarned=false, pendingReveal=-1, selectedMatch='';
-  let audioCtx=null, musicTimer=0, musicOn=false, currentSpeech='';
+  let audioCtx=null, musicTimer=0, musicOn=false, currentSpeech='', sandNoiseBuffer=null, lastSandSound=0;
 
   const messages={
     training:'Move your finger gently over the glowing sand. Keep brushing until the practice fossil appears.',
@@ -54,6 +54,7 @@
 
   function startTraining(){
     if(phase!=='intro')return;
+    enableSound();
     phase='training'; document.getElementById('introPanel').hidden=true; document.getElementById('gameShell').hidden=false;
     document.getElementById('missionName').textContent='Brush training';
     document.getElementById('stageTitle').textContent='Try the fossil brush';
@@ -104,17 +105,19 @@
     if(currentTarget<0)return;
     const target=targets[currentTarget],tx=target.x*canvas.width,ty=target.y*canvas.height;
     const distance=Math.hypot(point.x-tx,point.y-ty);
-    if(distance>185){
+    if(distance>225){
       if(!wrongBrushWarned){wrongBrushWarned=true;wrong(pit,'The scanner glow shows where to brush. Move your finger inside the glowing circle.');}
       return;
     }
     const from=lastPoint||point, travelled=Math.max(10,Math.hypot(point.x-from.x,point.y-from.y));
-    ctx.save();ctx.globalCompositeOperation='destination-out';ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=92;
+    ctx.save();ctx.globalCompositeOperation='destination-out';ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=120;
     ctx.beginPath();ctx.moveTo(from.x,from.y);ctx.lineTo(point.x,point.y);ctx.stroke();
-    ctx.beginPath();ctx.arc(point.x,point.y,48,0,Math.PI*2);ctx.fill();ctx.restore();
-    clearedAmount+=isStart?12:Math.min(42,travelled*.55); stars+=travelled>18?1:0;
-    dustAt(point); updateBrushMeter(); tone(145+Math.random()*34,.035,'sine',.012);
-    const needed=phase==='training'?470:600;
+    ctx.beginPath();ctx.arc(point.x,point.y,62,0,Math.PI*2);ctx.fill();ctx.restore();
+    clearedAmount+=isStart?18:Math.min(58,travelled*.72); stars+=travelled>18?1:0;
+    dustAt(point); updateBrushMeter(); sandBrushSound(Math.min(1,travelled/55));
+    const needed=phase==='training'?275:390;
+    const percent=Math.min(100,Math.round(clearedAmount/needed*100));
+    status.textContent=percent<100?`Sand cleared: ${percent}%. Keep brushing gently inside the glow.`:'Fossil uncovered!';
     if(clearedAmount>=needed)finishReveal();
   }
 
@@ -160,7 +163,7 @@
     if(currentTarget<0)return;const t=targets[currentTarget];marker.style.left=`${t.x*100}%`;marker.style.top=`${t.y*100}%`;
   }
   function updateBrushMeter(){
-    const needed=phase==='training'?470:600;document.getElementById('brushPower').textContent=`${Math.min(100,Math.round(clearedAmount/needed*100))}%`;
+    const needed=phase==='training'?275:390;document.getElementById('brushPower').textContent=`${Math.min(100,Math.round(clearedAmount/needed*100))}%`;
   }
   function showBrushCursor(event){const rect=pit.getBoundingClientRect(),c=document.getElementById('brushCursor');c.hidden=false;c.style.left=`${event.clientX-rect.left}px`;c.style.top=`${event.clientY-rect.top}px`;}
   function dustAt(point){
@@ -250,9 +253,22 @@
 
   function toggleSound(){
     musicOn=!musicOn;const b=document.getElementById('soundToggle');b.classList.toggle('active',musicOn);b.setAttribute('aria-label',musicOn?'Turn music and sounds off':'Turn music and sounds on');
+    b.textContent=musicOn?'🔊':'🔇';
     if(musicOn){ensureAudio();playMusic();}else{clearInterval(musicTimer);musicTimer=0;audioCtx?.suspend();}
   }
+  function enableSound(){
+    if(musicOn)return;musicOn=true;const b=document.getElementById('soundToggle');b.classList.add('active');b.textContent='🔊';b.setAttribute('aria-label','Turn music and sounds off');ensureAudio();playMusic();
+  }
   function ensureAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();}
+  function makeSandNoise(){
+    ensureAudio();if(sandNoiseBuffer)return sandNoiseBuffer;const length=Math.floor(audioCtx.sampleRate*.12),buffer=audioCtx.createBuffer(1,length,audioCtx.sampleRate),data=buffer.getChannelData(0);let smooth=0;
+    for(let i=0;i<length;i++){const grain=Math.random()*2-1;smooth=smooth*.72+grain*.28;data[i]=smooth*(1-i/length);}
+    sandNoiseBuffer=buffer;return buffer;
+  }
+  function sandBrushSound(strength=.5){
+    if(!musicOn)return;const now=performance.now();if(now-lastSandSound<72)return;lastSandSound=now;ensureAudio();
+    const source=audioCtx.createBufferSource(),filter=audioCtx.createBiquadFilter(),gain=audioCtx.createGain();source.buffer=makeSandNoise();filter.type='bandpass';filter.frequency.value=920+Math.random()*420;filter.Q.value=.55;gain.gain.setValueAtTime(.018+.025*strength,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.12);source.connect(filter).connect(gain).connect(audioCtx.destination);source.start();source.stop(audioCtx.currentTime+.13);
+  }
   function tone(freq,duration=.08,type='sine',volume=.035){if(!musicOn)return;ensureAudio();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(volume,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);o.connect(g).connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+duration);}
   function playMusic(){clearInterval(musicTimer);let n=0;const notes=[196,247,294,330,294,247,220,247];const pulse=()=>{tone(notes[n++%notes.length],.34,'sine',.018);};pulse();musicTimer=setInterval(pulse,620);}
 
