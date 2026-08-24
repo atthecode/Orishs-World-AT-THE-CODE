@@ -22,6 +22,7 @@
   levelButtons.forEach((button) => button.addEventListener('click', () => {
     levelButtons.forEach((item) => item.classList.remove('active'));
     button.classList.add('active');
+    levelButtons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
     const selected = signalLevels[Number(button.dataset.signalLevel)] || signalLevels[0];
     document.getElementById('signalLevelBadge').textContent = selected[0];
     document.getElementById('signalLevelTitle').textContent = selected[1];
@@ -33,6 +34,7 @@
     const selected = ageJourneys[button.dataset.age] || ageJourneys.parent;
     ageTabs.forEach((item) => item.classList.remove('active'));
     button.classList.add('active');
+    ageTabs.forEach((item) => item.setAttribute('aria-selected', String(item === button)));
     document.getElementById('ageIcon').textContent = selected[0];
     document.getElementById('ageLabel').textContent = selected[1];
     document.getElementById('ageTitle').textContent = selected[2];
@@ -64,4 +66,21 @@
     document.getElementById('orishSignalMessage').textContent = "Let's calibrate the scanner.";
     document.getElementById('signalStatus').textContent = 'SIGNAL: UNCALIBRATED';
   });
+
+  function readProgress() {
+    try {
+      const fossil = JSON.parse(localStorage.getItem('orish-fossil-detective-v1') || '{}');
+      const space = JSON.parse(localStorage.getItem('orish-space-signal-v1') || '{}');
+      const completed = [fossil, space].filter(item => item.phase === 'complete').length;
+      const stars = Number(fossil.stars || 0) + Number(space.stars || 0);
+      document.getElementById('headerStars').textContent = `★ ${stars}`;
+      document.getElementById('progressStars').textContent = `★ ${stars}`;
+      document.getElementById('progressBadges').textContent = `🛡️ ${completed}`;
+      document.getElementById('progressMissions').textContent = `📖 ${completed}`;
+    } catch (_) {}
+  }
+  levelButtons.forEach((item, index) => item.setAttribute('aria-pressed', String(index === 0)));
+  ageTabs.forEach((item, index) => item.setAttribute('aria-selected', String(index === 0)));
+  readProgress();
+  addEventListener('storage', readProgress);
 })();

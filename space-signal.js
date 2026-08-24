@@ -1,5 +1,6 @@
 (() => {
   'use strict';
+  const SAVE_KEY = 'orish-space-signal-v1';
   const $ = (selector) => document.querySelector(selector);
   const canvas = $('#gameCanvas');
   const ctx = canvas.getContext('2d');
@@ -46,10 +47,22 @@
   let running = false, paused = false, last = 0, scannerPower = 8, foundCount = 0, miniComplete = 0, energyCount = 0, boostUntil = 0, activeMini = null, soundOn = true, animationId, audioContext, musicMaster, blockedAt = 0, originalVoiceAudio = null, voiceSequenceId = 0;
   let selectedCharacter = 'orish';
   let movementMode = 'walk';
-  let customAvatar = AvatarLab?.get('demo') || { mode:'real', skin:'#805141', hair:'locs', hairColor:'#17120f', outfit:'explorer', accent:'#17d7e8' };
-  const avatarLabels = {afro:'Rounded afro',braids:'Beaded braids',locs:'Shoulder-length locs',curls:'Round curls',waves:'Close waves',straight:'Straight side-swept',explorer:'Explorer',scientist:'Scientist',space:'Space',chef:'Chef',artist:'Artist'};
+  let customAvatar = AvatarLab?.get('demo') || { mode:'real', skin:'#805141', hair:'afro', hairColor:'#17120f', outfit:'explorer', accent:'#17d7e8' };
+  const avatarLabels = {afro:'Rounded afro',braids:'Beaded braids',locs:'Shoulder-length locs',curls:'Round curls',waves:'Close waves',straight:'Straight side panels',explorer:'Explorer',scientist:'Scientist',space:'Space',chef:'Chef',artist:'Artist'};
 
   window.__orishAvatarState = customAvatar;
+  function saveProgress(phase) {
+    try { localStorage.setItem(SAVE_KEY, JSON.stringify({phase,stars:Number(ui.stars.textContent)||0,evidence:foundCount,miniMissions:miniComplete,energy:energyCount,character:selectedCharacter,updated:Date.now()})); } catch (_) {}
+  }
+  function restoreCompletion() {
+    if (new URLSearchParams(location.search).has('replay')) return;
+    try {
+      const saved=JSON.parse(localStorage.getItem(SAVE_KEY)||'{}');
+      if(saved.phase!=='complete')return;
+      ui.briefing.hidden=true;ui.stage.hidden=true;ui.analysis.hidden=true;ui.complete.hidden=false;
+      ui.stars.textContent=String(Number(saved.stars)||300);$('#spaceFinalStars').textContent=`★ ${Number(saved.stars)||300}`;
+    } catch (_) {}
+  }
   function avatarColourButton(colour, selected, label, attribute) { return `<button type="button" class="${selected?'active':''}" style="--swatch:${colour}" ${attribute}="${colour}" aria-label="${label}" aria-pressed="${selected}"></button>`; }
   function updateAvatarState(patch, announce = true) {
     customAvatar = AvatarLab?.normalize({...customAvatar,...patch}) || {...customAvatar,...patch}; window.__orishAvatarState = customAvatar; window.OrishAvatar3D?.update(customAvatar); window.dispatchEvent(new CustomEvent('orish-avatar:update',{detail:customAvatar})); renderAvatarDesigner(); setTimeout(refreshAvatarSprite,140); if(announce) $('#avatarSaveStatus').textContent='Changed — press Use this Explorer when ready.';
@@ -156,6 +169,7 @@
     if (trace && distance < 88) {
       trace.found = true; foundCount++; scannerPower = 8; ui.evidence.textContent = String(foundCount); ui.stars.textContent = String(300 - (3-foundCount)*10);
       ui.comms.textContent = `${trace.label} secured. Evidence ${foundCount} of 3.`; ui.objective.textContent = foundCount < 3 ? `Find trace ${foundCount + 1}` : 'Return to the evidence lab'; beep(880,.22);
+      saveProgress('playing');
       if (foundCount === 3) setTimeout(openAnalysis, 950);
     } else ui.comms.textContent = distance < 170 ? 'The trace is close. Follow the brighter scanner meter.' : 'No trace here. Explore another section.';
   }
@@ -181,9 +195,9 @@
     if (!activeMini) return; const feedback = $('#miniFeedback');
     if (!success) return;
     window.speechSynthesis?.cancel(); stopOriginalVoice();
-    activeMini.complete = true; miniComplete += 1; ui.miniCount.textContent = String(miniComplete); ui.stars.textContent = String(Number(ui.stars.textContent) + 40); feedback.textContent = 'Mini mission complete! You earned 40 extra stars.'; feedback.style.color = '#70f0bd'; $('#miniOptions').querySelectorAll('button').forEach(button => button.disabled = true); $('#miniClose').style.display = 'inline-flex'; beep(980,.24);
+    activeMini.complete = true; miniComplete += 1; ui.miniCount.textContent = String(miniComplete); ui.stars.textContent = String(Number(ui.stars.textContent) + 40); feedback.textContent = 'Mini mission complete! You earned 40 extra stars.'; feedback.style.color = '#70f0bd'; $('#miniOptions').querySelectorAll('button').forEach(button => button.disabled = true); $('#miniClose').style.display = 'inline-flex'; beep(980,.24); saveProgress('playing');
   }
-  function openAnalysis() { running = false; cancelAnimationFrame(animationId); ui.stage.hidden = true; ui.analysis.hidden = false; }
+  function openAnalysis() { running = false; cancelAnimationFrame(animationId); ui.stage.hidden = true; ui.analysis.hidden = false; saveProgress('analysis'); ui.analysis.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'}); }
   function drawGrid(time) {
     const floor = ctx.createLinearGradient(0,0,world.width,world.height); floor.addColorStop(0,'#071b3b'); floor.addColorStop(.35,'#0d2850'); floor.addColorStop(.7,'#171d50'); floor.addColorStop(1,'#092d45'); ctx.fillStyle=floor;ctx.fillRect(0,0,world.width,world.height);
     [[120,120,'rgba(28,208,255,.18)'],[500,420,'rgba(171,83,255,.18)'],[825,135,'rgba(255,103,54,.16)']].forEach(([x,y,colour],index)=>{const g=ctx.createRadialGradient(x,y,5,x,y,180+Math.sin(time/700+index)*20);g.addColorStop(0,colour);g.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=g;ctx.fillRect(x-210,y-210,420,420)});
@@ -252,7 +266,7 @@
     const n=nearestTrace();const traceDistance=n?Math.hypot(player.x-n.x,player.y-n.y):400;const miniDistances=miniMissions.filter(m=>!m.complete).map(m=>Math.hypot(player.x-m.x,player.y-m.y));const d=Math.min(traceDistance,...miniDistances,400);scannerPower=Math.max(8,Math.min(100,112-d/2));ui.scanner.style.width=`${scannerPower}%`;ui.scan.classList.toggle('ready',scannerPower>70);
   }
   function loop(time) { if(!running)return;const dt=Math.min(.035,(time-last)/1000||0);last=time;if(!paused)update(dt);drawGrid(time);drawSpaceStationDecor(time);drawWalls(time);drawEnergyFun(time);drawMiniMissions(time);drawTraces(time);drawPlayer(time);animationId=requestAnimationFrame(loop); }
-  function start() { reset(); if(selectedCharacter==='explorer')refreshAvatarSprite(); startMusic(); playOriginalSequence(['letsGo'], 'Let’s go!'); ui.briefing.hidden=true;ui.analysis.hidden=true;ui.complete.hidden=true;ui.stage.hidden=false;running=true;paused=false;last=performance.now();animationId=requestAnimationFrame(loop); }
+  function start() { reset(); if(selectedCharacter==='explorer')refreshAvatarSprite(); startMusic(); playOriginalSequence(['letsGo'], 'Let’s go!'); ui.briefing.hidden=true;ui.analysis.hidden=true;ui.complete.hidden=true;ui.stage.hidden=false;running=true;paused=false;last=performance.now();saveProgress('playing');animationId=requestAnimationFrame(loop); }
   function setMove(direction,on){const map={up:'ArrowUp',down:'ArrowDown',left:'ArrowLeft',right:'ArrowRight'};on?keys.add(map[direction]):keys.delete(map[direction]);}
   $('#startMission').addEventListener('click',start); $('#replayMission').addEventListener('click',start); ui.scan.addEventListener('click',scan);
   $('#playOrishWelcome').addEventListener('click',()=>playOriginalSequence(['welcomeOrishWorld','welcomeMyWorld','funAndLearn'], 'Welcome to Orish’s World. Welcome to my world. You can have fun and learn as you explore.'));
@@ -260,7 +274,7 @@
   document.addEventListener('keydown',e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' ','w','a','s','d'].includes(e.key))e.preventDefault();if(e.key===' ')scan();else keys.add(e.key.toLowerCase()==='w'?'w':e.key.toLowerCase()==='a'?'a':e.key.toLowerCase()==='s'?'s':e.key.toLowerCase()==='d'?'d':e.key)});
   document.addEventListener('keyup',e=>keys.delete(e.key.length===1?e.key.toLowerCase():e.key));
   document.querySelectorAll('[data-move]').forEach(b=>{['pointerdown','touchstart'].forEach(evt=>b.addEventListener(evt,e=>{e.preventDefault();setMove(b.dataset.move,true)}));['pointerup','pointerleave','pointercancel','touchend'].forEach(evt=>b.addEventListener(evt,()=>setMove(b.dataset.move,false)))});
-  document.querySelectorAll('[data-answer]').forEach(button=>button.addEventListener('click',()=>{const feedback=$('#analysisFeedback');if(button.dataset.answer==='signal'){feedback.textContent='Correct—the equal gaps show a repeating pulse. Mission solved.';feedback.style.color='#70f0bd';beep(980,.25);setTimeout(()=>{ui.analysis.hidden=true;ui.complete.hidden=false},700)}else{feedback.textContent='Good test, but that trace does not repeat evenly. Compare the gaps and try again.';feedback.style.color='#ffc857';beep(260,.16)}}));
+  document.querySelectorAll('[data-answer]').forEach(button=>button.addEventListener('click',()=>{const feedback=$('#analysisFeedback');if(button.dataset.answer==='signal'){feedback.textContent='Correct—the equal gaps show a repeating pulse. Mission solved.';feedback.style.color='#70f0bd';beep(980,.25);setTimeout(()=>{ui.analysis.hidden=true;ui.complete.hidden=false;$('#spaceFinalStars').textContent=`★ ${Number(ui.stars.textContent)||300}`;saveProgress('complete');ui.complete.scrollIntoView({block:'start'});},700)}else{feedback.textContent='Good test, but that trace does not repeat evenly. Compare the gaps and try again.';feedback.style.color='#ffc857';beep(260,.16)}}));
   document.querySelectorAll('[data-speak]').forEach(button=>button.addEventListener('click',()=>speak(button.dataset.speak)));
   $('.comms-speak').addEventListener('click',()=>speak(ui.comms.textContent));
   $('#miniSpeak').addEventListener('click',()=>activeMini&&speak(activeMini.speech));
@@ -276,4 +290,7 @@
   $('#openSignalGuide').addEventListener('click',()=>$('#signalGuide').hidden=false); $('#closeSignalGuide').addEventListener('click',()=>$('#signalGuide').hidden=true);
   $('#pauseButton').addEventListener('click',()=>{paused=true;ui.pause.hidden=false}); $('#resumeButton').addEventListener('click',()=>{paused=false;ui.pause.hidden=true;last=performance.now()});
   $('#soundToggle').addEventListener('click',e=>{soundOn=!soundOn;if(!soundOn)stopOriginalVoice();if(musicMaster&&audioContext)musicMaster.gain.setTargetAtTime(soundOn?.045:0,audioContext.currentTime,.18);e.currentTarget.textContent=soundOn?'♫':'×';e.currentTarget.setAttribute('aria-label',soundOn?'Mute music and sound':'Turn music and sound on')});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden&&running&&!paused){paused=true;ui.pause.hidden=false;keys.clear();window.speechSynthesis?.cancel();stopOriginalVoice();}});
+  addEventListener('pagehide',()=>{running=false;cancelAnimationFrame(animationId);keys.clear();window.speechSynthesis?.cancel();stopOriginalVoice();audioContext?.suspend();});
+  restoreCompletion();
 })();

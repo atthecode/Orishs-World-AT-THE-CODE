@@ -37,7 +37,7 @@
 
   function init(){
     document.querySelectorAll('[data-speak]').forEach(b=>b.addEventListener('click',()=>speak(b.dataset.speak)));
-    document.querySelectorAll('.character').forEach(b=>b.addEventListener('click',()=>{selectCharacter(b);startTraining();}));
+    document.querySelectorAll('.character').forEach(b=>b.addEventListener('click',()=>selectCharacter(b)));
     document.getElementById('startMission').addEventListener('click',startTraining);
     document.getElementById('guideSpeak').addEventListener('click',()=>speak(guide.textContent));
     document.getElementById('miniSpeak').addEventListener('click',()=>speak(currentSpeech));
@@ -50,6 +50,12 @@
     pit.addEventListener('pointerup',endBrush);
     pit.addEventListener('pointercancel',endBrush);
     window.addEventListener('resize',positionMarker);
+    restoreCompletion();
+  }
+
+  function restoreCompletion(){
+    if(new URLSearchParams(location.search).has('replay'))return;
+    try{const saved=JSON.parse(localStorage.getItem(SAVE_KEY)||'{}');if(saved.phase!=='complete')return;phase='complete';stars=Number(saved.stars)||110;character=saved.character||'orish';bonuses=Array.from({length:Number(saved.bonuses)||0},()=>({}));document.getElementById('introPanel').hidden=true;document.getElementById('gameShell').hidden=true;document.getElementById('finalStars').textContent=`${stars} ★`;document.getElementById('finalBonus').textContent=`Fossil Detective badge · ${bonuses.length}/3 bonus discoveries`;document.getElementById('completion').hidden=false;}catch{}
   }
 
   function selectCharacter(button){
@@ -295,6 +301,8 @@
   }
   function tone(freq,duration=.08,type='sine',volume=.035){if(!musicOn)return;ensureAudio();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(volume,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);o.connect(g).connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+duration);}
   function playMusic(){clearInterval(musicTimer);let n=0;const notes=[196,247,294,330,294,247,220,247];const pulse=()=>{tone(notes[n++%notes.length],.34,'sine',.018);};pulse();musicTimer=setInterval(pulse,620);}
+
+  addEventListener('pagehide',()=>{clearInterval(musicTimer);musicTimer=0;window.speechSynthesis?.cancel();audioCtx?.suspend();});
 
   window.addEventListener('DOMContentLoaded',init,{once:true});
 })();

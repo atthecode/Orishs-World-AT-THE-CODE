@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#07142f">
   <title>Space Signal — Orish's World</title>
-  <link rel="stylesheet" href="space-signal.css">
+  <link rel="stylesheet" href="space-signal.css?v=20260824-11">
   <script src="modules/security-store.js" defer></script>
   <script src="modules/parent-controls-engine.js" defer></script>
   <script src="modules/avatar-lab-engine.js" defer></script>
   <script src="modules/avatar-3d-viewer.js" defer></script>
-  <script src="space-signal.js" defer></script>
+  <script src="space-signal.js?v=20260824-11" defer></script>
 </head>
 <body>
   <div class="starfield" aria-hidden="true"></div>
@@ -109,7 +109,7 @@
       <p class="eyebrow">MISSION COMPLETE</p>
       <h2>Signal calibrated.</h2>
       <p>You explored the station, collected evidence and tested the pattern before deciding.</p>
-      <div class="reward-row"><span><b>★★★</b> Mission stars</span><span><b>+1</b> Signal badge</span><span><b>UNLOCKED</b> Cinema ending</span></div>
+      <div class="reward-row"><span><b id="spaceFinalStars">★ 0</b> Earned stars</span><span><b>+1</b> Signal badge</span><span><b>UNLOCKED</b> Cinema ending</span></div>
       <div class="complete-actions">
         <button id="replayMission" class="secondary-button" type="button">Replay mission</button>
         <a class="primary-button" href="premium-preview.html#cinema-studio">Enter the cinema →</a>

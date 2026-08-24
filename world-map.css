@@ -194,3 +194,11 @@ footer a{color:var(--cyan)}
 @keyframes windowGlow{0%,18%,100%{opacity:.25}28%,72%{opacity:1}82%{opacity:.5}}
 @keyframes rocketV2{0%,10%{left:72%;top:20%;opacity:0;transform:rotate(28deg) scale(.7)}20%{opacity:1}70%{left:84%;top:5%;opacity:1;transform:rotate(35deg) scale(.85)}86%,100%{left:89%;top:-5%;opacity:0;transform:rotate(38deg) scale(.7)}}
 @media(max-width:700px){.scene-car{width:20px;height:9px}.scene-boat{transform:scale(1)}.walker{transform:scale(1)}}
+
+/* Route lights are locked to the same painted roads as the traffic. */
+.route-glow{offset-path:none}
+.route-one{animation:routeFossil 8s linear infinite}
+.route-two{animation:routeHarbour 9s linear infinite -4s}
+@keyframes routeFossil{0%{left:32.5%;top:93%;opacity:0}8%{opacity:1}30%{left:36%;top:80%}58%{left:41%;top:69%}84%{left:46%;top:60%}100%{left:49%;top:58%;opacity:0}}
+@keyframes routeHarbour{0%{left:72%;top:44.5%;opacity:0}8%{opacity:1}35%{left:75.5%;top:50%}68%{left:78%;top:60%}92%{opacity:1}100%{left:85%;top:66.5%;opacity:0}}
+.map-pin:focus-visible,.panel-toggle:focus-visible,.dock-toggle:focus-visible,.mission-actions a:focus-visible,.mission-actions button:focus-visible{outline:4px solid #fff36b;outline-offset:3px}

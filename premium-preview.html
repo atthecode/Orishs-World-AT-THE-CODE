@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b4f80">
   <title>Orish's World — Premium Visual Preview</title>
-  <link rel="stylesheet" href="premium-preview.css">
-  <link rel="stylesheet" href="premium-preview-fixes.css">
-  <link rel="stylesheet" href="premium-preview-additions.css">
-  <script src="premium-preview.js" defer></script>
+  <link rel="stylesheet" href="premium-preview.css?v=20260824-10">
+  <link rel="stylesheet" href="premium-preview-fixes.css?v=20260824-10">
+  <link rel="stylesheet" href="premium-preview-additions.css?v=20260824-10">
+  <script src="premium-preview.js?v=20260824-10" defer></script>
 </head>
 <body>
   <div class="premium-shell">
     <header class="premium-nav">
-      <a class="premium-brand" href="index.html" aria-label="Open current Orish's World build">
+      <a class="premium-brand" href="world-map.html" aria-label="Open the Orish's World adventure map">
         <img src="assets/at-the-code-mark.webp" alt="">
         <span><small>AT THE CODE</small><strong>Orish's World</strong></span>
       </a>
@@ -25,7 +25,7 @@
         <a href="toy-portal/index.html">⌘ Toy Play</a>
         <a href="index.html">✧ Talk to Orish</a>
       </nav>
-      <div class="premium-profile"><span>★ 1,250</span><img class="profile-avatar" src="assets/orish-approved-hq.webp" alt="Orish"><strong>Explorer</strong></div>
+      <div class="premium-profile"><span id="headerStars">★ 0</span><img class="profile-avatar" src="assets/orish-approved-hq.webp" alt="Orish"><strong>Beta Explorer</strong></div>
     </header>
 
     <main>
@@ -37,7 +37,7 @@
           <h1>Explore. <span>Learn.</span><br><em>Play.</em> <b>Grow.</b></h1>
           <p>Join Orish on amazing adventures, solve real mysteries, build skills and make discoveries that help in real life.</p>
           <div class="hero-buttons">
-            <a class="cta-primary" href="index.html">🚀 Enter Orish's World</a>
+            <a class="cta-primary" href="world-map.html">🚀 Enter Orish's World</a>
             <a class="cta-blue" href="index.html">▶ Meet Orish</a>
             <a class="cta-purple" href="index.html?mode=showcase">🎬 Watch Adventure</a>
             <a class="cta-green" href="index.html">🔒 Parent Portal</a>
@@ -67,7 +67,7 @@
       <section id="worlds" class="worlds-section">
         <div class="section-heading">
           <div><p class="premium-kicker">CHOOSE YOUR WORLD</p><h2>Every doorway is an adventure.</h2></div>
-          <span class="world-count">7 connected worlds</span>
+          <span class="world-count">7 connected worlds · 2 playable</span>
         </div>
 
         <div class="flagship-row">
@@ -77,19 +77,19 @@
           <a class="flagship-card fossil-card" href="fossil-detective.html">
             <img src="assets/fossil-detective.webp" alt=""><div><small>DISCOVERY MISSION</small><strong>Fossil Detective</strong><p>Brush, uncover, rotate and investigate clues from the past.</p></div><b>110 ★</b>
           </a>
-          <a class="flagship-card fraction-card" href="index.html">
-            <img src="assets/fraction-rescue.webp" alt=""><div><small>PLAYABLE MATHS</small><strong>Fraction Rescue</strong><p>Repair the route using fraction pieces and visual reasoning.</p></div><b>90 ★</b>
-          </a>
+          <article class="flagship-card fraction-card future-card" aria-label="Fraction Rescue is planned after the five beta age levels">
+            <img src="assets/fraction-rescue.webp" alt=""><div><small>FUTURE EXPANSION</small><strong>Fraction Rescue</strong><p>Repair routes using fraction pieces and visual reasoning after the beta levels are complete.</p></div><b>BUILDING</b>
+          </article>
         </div>
 
         <div class="world-islands">
-          <a class="island discovery" href="index.html"><span>🔭</span><strong>Discovery District</strong><small>Science, fossils, planets & mysteries</small></a>
-          <a class="island skills" href="index.html"><span>📐</span><strong>Skills Academy</strong><small>Maths, literacy, memory & logic</small></a>
-          <a class="island maker" href="index.html"><span>🛠️</span><strong>Maker Bay</strong><small>Build, invent, experiment & create</small></a>
-          <a class="island story" href="index.html"><span>📖</span><strong>Story Forest</strong><small>Choices, imagination & communication</small></a>
-          <a class="island life" href="index.html"><span>🏙️</span><strong>Life City</strong><small>Money, routines, civics & life skills</small></a>
-          <a class="island family" href="index.html"><span>⚓</span><strong>Family Harbour</strong><small>Trusted family missions together</small></a>
-          <a class="island space" href="index.html"><span>🛰️</span><strong>Space Station</strong><small>Planets, signals & exploration</small></a>
+          <a class="island discovery" href="world-map.html?world=fossil"><span>🔭</span><strong>Discovery District</strong><small>Fossil Detective playable now</small></a>
+          <a class="island skills" href="world-map.html?world=story"><span>📐</span><strong>Skills Academy</strong><small>Maths, literacy, memory & logic</small></a>
+          <a class="island maker" href="world-map.html?world=maker"><span>🛠️</span><strong>Maker Bay</strong><small>Build, invent, experiment & create</small></a>
+          <a class="island story" href="world-map.html?world=story"><span>📖</span><strong>Story Forest</strong><small>Ages 4–6 beta level building</small></a>
+          <a class="island life" href="world-map.html?world=city"><span>🏙️</span><strong>Life City</strong><small>Ages 14–16 beta level building</small></a>
+          <a class="island family" href="world-map.html?world=family"><span>⚓</span><strong>Family Meadow</strong><small>Birth–3 parent-led level building</small></a>
+          <a class="island space" href="world-map.html?world=space"><span>🛰️</span><strong>Space Observatory</strong><small>Space Signal playable now</small></a>
         </div>
       </section>
 
@@ -169,11 +169,11 @@
 
       <section class="progress-bar" aria-label="Explorer progress preview">
         <div><img class="profile-avatar" src="assets/orish-approved-hq.webp" alt="Orish"><p><strong>Hi Explorer!</strong><small>What shall we explore today?</small></p></div>
-        <div><b>★ 1,250</b><small>Stars</small></div>
-        <div><b>🛡️ 12</b><small>Badges</small></div>
-        <div><b>🌍 7</b><small>Worlds unlocked</small></div>
-        <div><b>📖 15</b><small>Missions done</small></div>
-        <a href="index.html">My Journal →</a>
+        <div><b id="progressStars">★ 0</b><small>Earned stars</small></div>
+        <div><b id="progressBadges">🛡️ 0</b><small>Beta badges</small></div>
+        <div><b>🌍 2</b><small>Playable levels</small></div>
+        <div><b id="progressMissions">📖 0</b><small>Missions completed</small></div>
+        <a href="world-map.html">Open World Map →</a>
       </section>
     </main>
   </div>

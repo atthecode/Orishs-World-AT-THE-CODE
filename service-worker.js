@@ -1,6 +1,10 @@
-const CACHE='orish-world-v149-road-locked-traffic';
+const CACHE='orish-world-v150-integrated-beta-polish';
 const SHELL=[
-  './','./index.html','./styles.css','./app.js','./manifest.webmanifest','./world-map.html','./world-map.css','./world-map.js','./fossil-detective.html','./fossil-detective.css','./fossil-detective-fixes.css','./fossil-detective.js','./assets/orish-world-map-v2.webp','./assets/orish-fossil-detective-v2.webp','./assets/fossil-dig-bed-v3.webp',
+  './','./index.html','./styles.css','./app.js','./manifest.webmanifest',
+  './premium-preview.html','./premium-preview.css','./premium-preview-fixes.css','./premium-preview-additions.css','./premium-preview.js',
+  './world-map.html','./world-map.css','./world-map.js','./space-signal.html','./space-signal.css','./space-signal.js','./fossil-detective.html','./fossil-detective.css','./fossil-detective-fixes.css','./fossil-detective.js',
+  './assets/orish-approved-hq.webp','./assets/orish-game-walk.webp','./assets/orish-world-map-v2.webp','./assets/orish-fossil-detective-v2.webp','./assets/fossil-dig-bed-v3.webp',
+  './assets/audio/orish/welcome-orish-world.m4a','./assets/audio/orish/welcome-my-world.m4a','./assets/audio/orish/lets-go.m4a','./assets/audio/orish/fun-and-learn.m4a','./assets/audio/orish/signal-returned.m4a','./assets/audio/orish/move-through-observatory.m4a',
   './toy-portal/index.html','./toy-portal/styles.css','./toy-portal/app.js',
   './modules/security-store.js','./modules/curriculum-engine.js','./modules/age-game-engine.js','./modules/rewards-engine.js','./modules/profile-ui.js',
   './modules/mission-engine.js','./modules/routines-engine.js','./modules/kitchen-engine.js','./modules/maker-engine.js','./modules/creative-engine.js','./modules/visual-game-engine.js','./modules/family-engine.js',
@@ -21,9 +25,11 @@ self.addEventListener('fetch',(event)=>{
   }
   if(event.request.mode==='navigate'){
     const fallback=url.pathname.includes('/toy-portal')?'./toy-portal/index.html':'./index.html';
-    event.respondWith(fetch(event.request,{cache:'no-store'}).catch(()=>caches.match(fallback)));
+    const pageKey=new URL(url.pathname,url.origin).href;
+    event.respondWith(fetch(event.request,{cache:'no-store'}).catch(()=>caches.match(pageKey).then((page)=>page||caches.match(fallback))));
     return;
   }
-  if(!SHELL_URLS.has(url.href))return;
-  event.respondWith(caches.match(event.request).then((cached)=>cached||fetch(event.request,{cache:'no-store'})));
+  const shellKey=new URL(url.pathname,url.origin).href;
+  if(!SHELL_URLS.has(shellKey))return;
+  event.respondWith(caches.match(shellKey).then((cached)=>cached||fetch(event.request,{cache:'no-store'}).then((response)=>{const copy=response.clone();caches.open(CACHE).then((cache)=>cache.put(shellKey,copy));return response;})));
 });
