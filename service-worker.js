@@ -1,4 +1,4 @@
-const CACHE='orish-world-v131-fitted-outfits';
+const CACHE='orish-world-v132-webgl1-character';
 const SHELL=[
   './','./index.html','./styles.css','./app.js','./manifest.webmanifest',
   './toy-portal/index.html','./toy-portal/styles.css','./toy-portal/app.js',
