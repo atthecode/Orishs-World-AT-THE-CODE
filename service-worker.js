@@ -1,4 +1,4 @@
-const CACHE='orish-world-v138-fossil-brush-fix';
+const CACHE='orish-world-v139-character-play-buttons';
 const SHELL=[
   './','./index.html','./styles.css','./app.js','./manifest.webmanifest','./fossil-detective.html','./fossil-detective.css','./fossil-detective-fixes.css','./fossil-detective.js','./assets/orish-fossil-detective-v2.webp','./assets/fossil-dig-bed-v3.webp',
   './toy-portal/index.html','./toy-portal/styles.css','./toy-portal/app.js',

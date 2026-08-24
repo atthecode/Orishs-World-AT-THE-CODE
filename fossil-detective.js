@@ -31,7 +31,7 @@
 
   function init(){
     document.querySelectorAll('[data-speak]').forEach(b=>b.addEventListener('click',()=>speak(b.dataset.speak)));
-    document.querySelectorAll('.character').forEach(b=>b.addEventListener('click',()=>selectCharacter(b)));
+    document.querySelectorAll('.character').forEach(b=>b.addEventListener('click',()=>{selectCharacter(b);startTraining();}));
     document.getElementById('startMission').addEventListener('click',startTraining);
     document.getElementById('guideSpeak').addEventListener('click',()=>speak(guide.textContent));
     document.getElementById('miniSpeak').addEventListener('click',()=>speak(currentSpeech));
@@ -53,6 +53,7 @@
   }
 
   function startTraining(){
+    if(phase!=='intro')return;
     phase='training'; document.getElementById('introPanel').hidden=true; document.getElementById('gameShell').hidden=false;
     document.getElementById('missionName').textContent='Brush training';
     document.getElementById('stageTitle').textContent='Try the fossil brush';
