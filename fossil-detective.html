@@ -6,8 +6,8 @@
   <meta name="theme-color" content="#10283a">
   <title>Fossil Detective — Orish's World</title>
   <link rel="stylesheet" href="fossil-detective.css?v=20260824-1">
-  <link rel="stylesheet" href="fossil-detective-fixes.css?v=20260824-3">
-  <script src="fossil-detective.js?v=20260824-3" defer></script>
+  <link rel="stylesheet" href="fossil-detective-fixes.css?v=20260824-4">
+  <script src="fossil-detective.js?v=20260824-4" defer></script>
 </head>
 <body>
   <div class="sky" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -62,11 +62,29 @@
             <div class="brush-cursor" id="brushCursor" hidden aria-hidden="true">🖌️</div>
             <div class="dig-instruction" id="digInstruction">Drag your finger over the glowing sand</div>
           </div>
+          <section class="evidence-tray" aria-labelledby="evidenceTitle">
+            <div><small>EVIDENCE TRAY</small><h3 id="evidenceTitle">What have we uncovered?</h3></div>
+            <div class="evidence-slots" id="evidenceSlots" aria-live="polite">
+              <span data-evidence="0">?</span><span data-evidence="1">?</span><span data-evidence="2">?</span><span data-evidence="3">?</span><span data-evidence="4">?</span>
+            </div>
+          </section>
           <div class="tool-row"><button id="scanButton" type="button">✦ Pulse scan <small>find the next dig patch</small></button><p id="statusLine" aria-live="polite">Brush the glowing practice patch three times.</p></div>
         </div>
       </div>
     </section>
   </main>
+
+  <div class="modal" id="findModal" hidden>
+    <section class="mini-card find-card" role="dialog" aria-modal="true" aria-labelledby="findTitle">
+      <p class="eyebrow">NEW EVIDENCE FOUND</p>
+      <div class="find-symbol" id="findSymbol" aria-hidden="true">🦴</div>
+      <h2 id="findTitle">A fossil clue</h2>
+      <p id="findCopy"></p>
+      <p class="history-note" id="findHistory"></p>
+      <button class="speaker" id="findSpeak" type="button">🔉 Hear the explanation</button>
+      <button class="primary" id="keepEvidence" type="button">Add to evidence tray</button>
+    </section>
+  </div>
 
   <div class="modal" id="miniModal" hidden>
     <section class="mini-card" role="dialog" aria-modal="true" aria-labelledby="miniTitle">
@@ -84,10 +102,10 @@
     <section>
       <div class="reward-burst" aria-hidden="true">🦕</div>
       <p class="eyebrow">FOSSIL CASE SOLVED</p>
-      <h2>You rebuilt the Canyon Leafback!</h2>
-      <p>You uncovered the fossil, checked the teeth and used plant evidence to identify a gentle plant-eater.</p>
+      <h2>You reconstructed an Iguanodon investigation!</h2>
+      <p>You matched each fossil to its job, checked the tooth evidence and used the surrounding rock clues to investigate a plant-eating dinosaur.</p>
       <div class="final-reward"><strong>110 ★</strong><span>Fossil Detective badge unlocked</span></div>
-      <button class="speaker" data-speak="Case solved. You rebuilt the Canyon Leafback and used evidence to identify a plant eater. Great detective work. That is enough screen time for now. Can you build a dinosaur skeleton with paper or blocks?" type="button">🔉 Hear Orish celebrate</button>
+      <button class="speaker" data-speak="Case solved. Your reconstruction was inspired by Iguanodon. Its fossil teeth helped scientists recognise an ancient plant-eating dinosaur nearly two hundred years ago. Great detective work. That is enough screen time for now. Can you build a dinosaur skeleton with paper or blocks?" type="button">🔉 Hear Orish celebrate</button>
       <a class="primary next-link" href="premium-preview.html">Return to World Map</a>
       <p class="away-prompt">REAL-WORLD MISSION: build a dinosaur skeleton using paper, sticks or blocks.</p>
     </section>

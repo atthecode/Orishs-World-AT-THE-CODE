@@ -112,6 +112,60 @@
 }
 .dig-pit.scanning #sandCanvas { animation: sandScan .8s ease-out; }
 .dig-pit.wrong { animation: shake .38s; }
+.evidence-tray {
+  display: grid;
+  grid-template-columns: minmax(150px, .8fr) 2fr;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: rgba(43, 25, 25, .78);
+  border-top: 1px solid rgba(255, 217, 93, .2);
+}
+.evidence-tray small { color: var(--gold); font-size: .58rem; font-weight: 950; letter-spacing: .14em; }
+.evidence-tray h3 { margin: 3px 0 0; font-size: 1rem; }
+.evidence-slots { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.evidence-slots span {
+  display: grid;
+  min-height: 58px;
+  place-items: center;
+  border: 1px dashed rgba(255,255,255,.25);
+  border-radius: 13px;
+  background: rgba(5, 23, 32, .55);
+  color: rgba(255,255,255,.5);
+  font-size: 1.65rem;
+  transition: transform .3s, background .3s;
+}
+.evidence-slots span.collected { border: 2px solid var(--gold); background: #17475a; color: #fff; animation: found .55s ease-out; }
+.find-card .find-symbol { font-size: 5rem; filter: drop-shadow(0 8px 12px rgba(0,0,0,.35)); }
+.find-card .history-note {
+  padding: 14px;
+  border: 1px solid rgba(255,217,93,.28);
+  border-radius: 15px;
+  background: rgba(255,217,93,.08);
+  color: #fff1ba !important;
+  text-align: left;
+}
+.find-card .speaker,.find-card .primary { margin: 5px; }
+.match-board { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; width: 100%; }
+.match-board button {
+  min-height: 86px;
+  padding: 7px;
+  border: 2px dashed rgba(255,217,93,.48);
+  border-radius: 14px;
+  background: rgba(12,43,57,.9);
+  color: #fff;
+  font-size: .73rem;
+  font-weight: 950;
+}
+.match-board button small { color: #a8d8d8; font-size: .58rem; }
+.match-board button.matched { border-style: solid; border-color: var(--leaf); background: #176044; }
+.match-board button.wrong { border-color: var(--coral); animation: shake .38s; }
+.mini-options.match-pieces { grid-template-columns: repeat(5, 1fr); }
+.match-pieces button { display: grid; min-height: 95px; place-items: center; gap: 3px; }
+.match-pieces button b { font-size: 2rem; }
+.match-pieces button span { font-size: .69rem; }
+.match-pieces button.selected { outline: 4px solid var(--gold); transform: translateY(-5px); }
+.match-pieces button.matched { opacity: .45; border-color: var(--leaf); background: #176044; }
 @keyframes scanPulse { 50% { transform: translate(-50%, -50%) scale(1.08); opacity: .8; } }
 @keyframes sandScan { 50% { filter: brightness(1.16) saturate(1.15); } }
 @keyframes realDust { to { transform: translateY(-20px) scale(5); opacity: 0; } }
@@ -120,4 +174,8 @@
   .dig-pit { min-height: 330px; }
   .dig-instruction { bottom: 8px; font-size: .65rem; }
   .scan-marker { width: 27%; }
+  .evidence-tray { grid-template-columns: 1fr; }
+  .evidence-slots span { min-height: 48px; font-size: 1.35rem; }
+  .match-board { grid-template-columns: repeat(2,1fr); }
+  .mini-options.match-pieces { grid-template-columns: repeat(2,1fr); }
 }

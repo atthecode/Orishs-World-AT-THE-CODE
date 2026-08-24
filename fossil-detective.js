@@ -2,6 +2,13 @@
   'use strict';
   const SAVE_KEY='orish-fossil-detective-v1';
   const fossilNames=['flat tooth','strong leg bone','spine piece','tail bone','fossil leaf'];
+  const fossilInfo=[
+    {icon:'🦷',title:'A broad fossil tooth',copy:'Its wide, ridged surface worked like a small plant-grinder. Shape is evidence: broad teeth are useful for crushing tough leaves and stems.',history:'Iguanodon was named in 1825 after fossil teeth like these were compared with an iguana’s teeth—only much larger.'},
+    {icon:'🦴',title:'A powerful leg bone',copy:'This thick weight-bearing bone supported a large body. Its joints show where the leg moved and connected.',history:'Scientists compare the shape and size of fossil bones with living animals to reconstruct how extinct animals stood and moved.'},
+    {icon:'🦴',title:'Part of the backbone',copy:'These connected vertebrae protected the spinal cord and helped support the body. Repeating bones are a pattern clue.',history:'A fossil skeleton is rarely found perfectly complete. Palaeontologists compare matching vertebrae and other finds to rebuild the missing pattern.'},
+    {icon:'🦴',title:'A chain of tail bones',copy:'The vertebrae become smaller toward the tail tip. The tail helped balance the animal as it moved.',history:'Early dinosaur reconstructions sometimes changed when new fossils were found. Scientific pictures improve when the evidence improves.'},
+    {icon:'🌿',title:'A fossil leaf impression',copy:'This leaf is an environment clue. It shows that plants grew in the same ancient landscape, but it does not prove by itself what one dinosaur ate.',history:'Plants, pollen and rock layers help scientists reconstruct an ancient habitat as well as the animals that lived there.'}
+  ];
   const guide=document.getElementById('guideText'), status=document.getElementById('statusLine');
   const pit=document.getElementById('digPit'), canvas=document.getElementById('sandCanvas');
   const ctx=canvas.getContext('2d'), marker=document.getElementById('scanMarker'), modal=document.getElementById('miniModal');
@@ -11,7 +18,7 @@
     {x:.24,y:.73,name:'fossil leaf'}
   ];
   let character='orish', phase='intro', stars=0, fossils=0, found=[], currentTarget=-1;
-  let brushing=false, clearedAmount=0, lastPoint=null, wrongBrushWarned=false;
+  let brushing=false, clearedAmount=0, lastPoint=null, wrongBrushWarned=false, pendingReveal=-1, selectedMatch='';
   let audioCtx=null, musicTimer=0, musicOn=false, currentSpeech='';
 
   const messages={
@@ -30,6 +37,8 @@
     document.getElementById('miniSpeak').addEventListener('click',()=>speak(currentSpeech));
     document.getElementById('scanButton').addEventListener('click',scan);
     document.getElementById('soundToggle').addEventListener('click',toggleSound);
+    document.getElementById('findSpeak').addEventListener('click',()=>speak(currentSpeech));
+    document.getElementById('keepEvidence').addEventListener('click',keepEvidence);
     pit.addEventListener('pointerdown',startBrush);
     pit.addEventListener('pointermove',moveBrush);
     pit.addEventListener('pointerup',endBrush);
@@ -109,6 +118,7 @@
 
   function beginDig(){
     phase='dig'; found=[]; fossils=0; currentTarget=-1; clearedAmount=0; resetSand(); hideMarker();
+    document.querySelectorAll('[data-evidence]').forEach(slot=>{slot.textContent='?';slot.classList.remove('collected');slot.removeAttribute('title');});
     document.getElementById('missionName').textContent='Canyon excavation';document.getElementById('stageTitle').textContent='Uncover five clues';
     guide.textContent=messages.dig;status.textContent='Step 1: press Pulse Scan to locate fossil signal 1.';updateBrushMeter();updateHud();
   }
@@ -120,10 +130,25 @@
     if(phase==='training'){
       currentTarget=-1;stars+=10;status.textContent='Practice fossil uncovered!';guide.textContent='Excellent brushing. Now scan the real dig, then clear only the glowing sand.';updateHud();setTimeout(beginDig,1100);return;
     }
-    const revealed=currentTarget;found.push(revealed);fossils++;stars+=12;currentTarget=-1;clearedAmount=0;
+    const revealed=currentTarget;found.push(revealed);fossils++;stars+=12;currentTarget=-1;clearedAmount=0;pendingReveal=revealed;
     status.textContent=`Clue ${fossils}: ${fossilNames[revealed]} found.`;
-    guide.textContent=fossils<5?`You uncovered a ${fossilNames[revealed]}. Press Scan to find signal ${fossils+1}.`:'All five clues are collected. Now use them to solve the fossil case.';
-    updateBrushMeter();updateHud();if(fossils===5)setTimeout(showIdentify,950);
+    guide.textContent=`You uncovered a ${fossilNames[revealed]}. Let us examine what this clue means.`;
+    updateBrushMeter();updateHud();setTimeout(()=>openFindCard(revealed),500);
+  }
+
+  function openFindCard(index){
+    const info=fossilInfo[index];currentSpeech=`${info.title}. ${info.copy} History clue. ${info.history}`;
+    document.getElementById('findSymbol').textContent=info.icon;document.getElementById('findTitle').textContent=info.title;
+    document.getElementById('findCopy').textContent=info.copy;document.getElementById('findHistory').textContent=`HISTORY CLUE · ${info.history}`;
+    document.getElementById('findModal').hidden=false;
+  }
+
+  function keepEvidence(){
+    if(pendingReveal<0)return;const info=fossilInfo[pendingReveal],slot=document.querySelector(`[data-evidence="${pendingReveal}"]`);
+    slot.textContent=info.icon;slot.title=info.title;slot.classList.add('collected');document.getElementById('findModal').hidden=true;pendingReveal=-1;
+    tone(690,.12,'triangle');
+    if(fossils===5){status.textContent='Evidence tray complete. Match every clue to where it belongs.';guide.textContent='Five clues collected. Now connect each fossil to the correct place in the reconstruction.';setTimeout(showCollection,550);}
+    else{status.textContent=`Evidence saved. Press Pulse Scan to locate fossil signal ${fossils+1}.`;guide.textContent=`Evidence saved. Press Scan when you are ready for clue ${fossils+1}.`;}
   }
 
   function showMarker(){marker.hidden=false;positionMarker();pit.classList.add('scanning');setTimeout(()=>pit.classList.remove('scanning'),850);}
@@ -151,15 +176,38 @@
     openMini({eyebrow:'MINI MISSION 1 · BONE LAB',title:'Which fossil is a tooth?',copy:'A tooth helps an animal bite and chew. Look for the pointed shape.',speech:'Which fossil is a tooth? A tooth helps an animal bite and chew. Look for the pointed shape.',visual:'<span>🦴</span><span>🦷</span><span>🌿</span>',options:[['Long bone','bone'],['Pointed tooth','tooth'],['Fossil leaf','leaf']],answer:'tooth',next:showAssembly});
   }
 
+  function showCollection(){
+    phase='identify';document.getElementById('missionName').textContent='Connect the evidence';guide.textContent='Look at the complete evidence tray, then match every clue to its correct place.';
+    openMini({eyebrow:'EVIDENCE TRAY COMPLETE',title:'What have you found?',copy:'A tooth, a leg bone, backbone pieces, tail bones and a fossil leaf. The bones connect to a body; the leaf connects to the ancient environment.',speech:'Your evidence tray has a tooth, a leg bone, backbone pieces, tail bones and a fossil leaf. Next, match each clue to where it belongs.',visual:'<span>🦷</span><span>🦴</span><span>🦴</span><span>🦴</span><span>🌿</span>',options:[['Start the matching mission','start']],answer:'start',next:showAssembly});
+  }
+
   function showAssembly(){
-    phase='assemble';document.getElementById('missionName').textContent='Rebuild the skeleton';guide.textContent=messages.assemble;
-    let step=0;const order=['skull','spine','legs','tail'];
-    openMini({eyebrow:'MINI MISSION 2 · REBUILD BAY',title:'Build the skeleton',copy:'Choose the next section, starting at the head and moving through the body.',speech:'Build from the centre outward. Start with the skull, then the spine, legs and tail.',visual:'<span id="buildView">○ · · ·</span>',options:[['Skull','skull'],['Spine','spine'],['Legs','legs'],['Tail','tail']],answer:()=>order[step],keep:true,onCorrect:(value)=>{step++;document.getElementById('buildView').textContent=['◉ · · ·','◉═ · ·','◉═╫ ·','◉═╫〰'][step-1];if(step===4){stars+=20;setTimeout(showEvidence,650);return true;}document.getElementById('miniFeedback').textContent=`Correct. Next: ${order[step]}.`;return false;}});
+    phase='assemble';selectedMatch='';document.getElementById('missionName').textContent='Match the fossils';guide.textContent='Tap one fossil clue, then tap the place where it belongs. Match all five.';
+    modal.hidden=false;document.getElementById('miniEyebrow').textContent='PLAYABLE MINI MISSION · RECONSTRUCTION LAB';document.getElementById('miniTitle').textContent='Connect each fossil clue';
+    document.getElementById('miniCopy').textContent='First choose a fossil. Then choose its correct body or environment location.';
+    currentSpeech='Choose a fossil clue, then choose where it belongs. Match the tooth to the mouth, the leg bone to the leg, the spine to the back, the tail bones to the tail, and the fossil leaf to the environment.';
+    document.getElementById('miniFeedback').textContent='Choose your first fossil clue.';
+    document.getElementById('visualClue').innerHTML='<div class="match-board" aria-label="Dinosaur reconstruction locations"><button data-slot="tooth">MOUTH<br><small>chewing</small></button><button data-slot="spine">BACK<br><small>support</small></button><button data-slot="leg">LEG<br><small>movement</small></button><button data-slot="tail">TAIL<br><small>balance</small></button><button data-slot="leaf">ENVIRONMENT<br><small>ancient plants</small></button></div>';
+    const holder=document.getElementById('miniOptions');holder.innerHTML='';holder.className='mini-options match-pieces';
+    [['🦷','Flat tooth','tooth'],['🦴','Leg bone','leg'],['🦴','Spine piece','spine'],['🦴','Tail bones','tail'],['🌿','Fossil leaf','leaf']].forEach(([icon,label,value])=>{
+      const button=document.createElement('button');button.type='button';button.dataset.piece=value;button.innerHTML=`<b>${icon}</b><span>${label}</span>`;
+      button.addEventListener('click',()=>{if(button.classList.contains('matched'))return;selectedMatch=value;holder.querySelectorAll('button').forEach(b=>b.classList.toggle('selected',b===button));document.getElementById('miniFeedback').textContent=`${label} selected. Now choose where it belongs.`;tone(430,.07,'sine');});holder.appendChild(button);
+    });
+    document.querySelectorAll('[data-slot]').forEach(slot=>slot.addEventListener('click',()=>matchSlot(slot)));
+  }
+
+  function matchSlot(slot){
+    if(slot.classList.contains('matched'))return;
+    if(!selectedMatch){document.getElementById('miniFeedback').textContent='Choose a fossil clue first.';tone(105,.1,'square');return;}
+    if(slot.dataset.slot!==selectedMatch){slot.classList.add('wrong');document.getElementById('miniFeedback').textContent='Those do not connect. Think about what job this fossil did, then try another place.';tone(105,.12,'square');setTimeout(()=>slot.classList.remove('wrong'),450);return;}
+    const piece=document.querySelector(`[data-piece="${selectedMatch}"]`);piece.classList.add('matched');piece.classList.remove('selected');slot.classList.add('matched');slot.innerHTML=`✓ ${slot.innerHTML}`;stars+=8;selectedMatch='';tone(720,.12,'triangle');
+    const count=document.querySelectorAll('[data-slot].matched').length;document.getElementById('miniFeedback').textContent=`Evidence connected: ${count} of 5.`;updateHud();
+    if(count===5){document.getElementById('miniFeedback').textContent='All five clues connected. Your reconstruction is ready!';stars+=20;setTimeout(()=>{document.getElementById('miniOptions').className='mini-options';showEvidence();},850);}
   }
 
   function showEvidence(){
     phase='evidence';document.getElementById('missionName').textContent='Solve the fossil case';guide.textContent=messages.evidence;
-    openMini({eyebrow:'FINAL MINI MISSION · EVIDENCE DESK',title:'What did it eat?',copy:'The creature had broad, flat teeth. Fossil leaves were found beside its ribs.',speech:'The creature had broad flat teeth, and fossil leaves were found beside its ribs. What did it eat?',visual:'<span>🦷</span><b>+</b><span>🌿</span>',options:[['Mostly plants','plants'],['Mostly rocks','rocks'],['Mostly fish','fish']],answer:'plants',next:complete});
+    openMini({eyebrow:'FINAL MINI MISSION · HISTORY DESK',title:'What does the strongest evidence suggest?',copy:'Broad ridged teeth are strong diet evidence. The fossil leaf helps us picture the ancient environment, but does not prove one animal ate that leaf.',speech:'Broad ridged teeth are strong diet evidence. A fossil leaf helps us picture the ancient environment. What does the strongest evidence suggest this dinosaur ate?',visual:'<span>🦷</span><b>+</b><span>🌿</span>',options:[['Mostly plants','plants'],['Mostly rocks','rocks'],['Mostly fish','fish']],answer:'plants',next:complete});
   }
 
   function openMini(config){
