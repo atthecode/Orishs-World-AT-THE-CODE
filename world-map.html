@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#071f37">
   <title>World Map — Orish's World</title>
-  <link rel="stylesheet" href="world-map.css?v=20260824-1">
-  <script src="world-map.js?v=20260824-1" defer></script>
+  <link rel="stylesheet" href="world-map.css?v=20260824-2">
+  <script src="world-map.js?v=20260824-2" defer></script>
 </head>
 <body>
   <header class="map-header">
@@ -17,9 +17,9 @@
 
   <main>
     <section class="map-intro">
-      <p>THE LIVING LEARNING UNIVERSE</p>
-      <h1>Where will curiosity take you?</h1>
-      <span>Tap a glowing location. Swipe the map to explore.</span>
+      <button class="panel-toggle" id="introToggle" type="button" aria-expanded="true" aria-label="Hide map information">−</button>
+      <b class="collapsed-label">WORLD GUIDE</b>
+      <div class="intro-content"><p>THE LIVING LEARNING UNIVERSE</p><h1>Where will curiosity take you?</h1><span>Tap a glowing location. Swipe the map to explore.</span></div>
     </section>
 
     <section class="map-viewport" id="mapViewport" aria-label="Interactive map of Orish's World">
@@ -28,18 +28,19 @@
         <div class="route-glow route-one" aria-hidden="true"></div><div class="route-glow route-two" aria-hidden="true"></div>
 
         <button class="map-pin coming story" data-world="story" type="button"><i>📖</i><span>Story Forest<small>Coming soon</small></span></button>
-        <button class="map-pin playable fossil selected" data-world="fossil" type="button"><i>🦴</i><span>Fossil Canyon<small>PLAYABLE</small></span></button>
+        <button class="map-pin playable fossil selected" data-world="fossil" type="button"><i>🦴</i><span>Fossil Canyon<small>1 MISSION PLAYABLE</small></span></button>
         <button class="map-pin coming family" data-world="family" type="button"><i>🌈</i><span>Family Meadow<small>Coming soon</small></span></button>
         <button class="map-pin playable cinema" data-world="cinema" type="button"><i>🎬</i><span>Learning Cinema<small>OPEN</small></span></button>
         <button class="map-pin coming city" data-world="city" type="button"><i>🏙️</i><span>Life City<small>Coming soon</small></span></button>
-        <button class="map-pin playable space" data-world="space" type="button"><i>🚀</i><span>Space Observatory<small>PLAYABLE</small></span></button>
+        <button class="map-pin playable space" data-world="space" type="button"><i>🚀</i><span>Space Observatory<small>1 MISSION PLAYABLE</small></span></button>
         <button class="map-pin coming maker" data-world="maker" type="button"><i>⚙️</i><span>Maker Harbour<small>Coming soon</small></span></button>
       </div>
     </section>
 
     <section class="mission-dock" aria-live="polite">
+      <button class="dock-toggle" id="dockToggle" type="button" aria-expanded="true" aria-label="Hide mission information">⌄</button>
       <div class="orish-map-guide"><img src="assets/orish-approved-hq.webp" alt="Orish"><span>ORISH SAYS</span></div>
-      <div class="mission-copy"><p id="missionType">DISCOVERY MISSION · PLAYABLE NOW</p><h2 id="missionTitle">Fossil Canyon</h2><p id="missionCopy">Scan the canyon, brush through real sand, uncover five fossils and rebuild the evidence.</p><div id="missionSkills" class="skill-pills"><span>Science</span><span>Evidence</span><span>History</span></div></div>
+      <div class="mission-copy"><p id="missionType">BETA LEVEL 1 · AGES 7–10 · PLAYABLE</p><h2 id="missionTitle">Fossil Canyon</h2><p id="missionCopy">One substantial beta level containing training, excavation, evidence explanations and a matching mission.</p><div id="missionSkills" class="skill-pills"><span>Science</span><span>Evidence</span><span>History</span></div><div class="mission-list" id="missionList"><span class="ready"><b>Fossil Detective</b><small>AGES 7–10 · LEVEL 1</small></span></div></div>
       <div class="mission-actions"><button id="hearLocation" type="button">🔉 Hear Orish</button><a id="missionLink" href="fossil-detective.html">PLAY MISSION <b>→</b></a></div>
     </section>
   </main>
