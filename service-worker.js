@@ -1,6 +1,6 @@
-const CACHE='orish-world-v135-fossil-detective-v2';
+const CACHE='orish-world-v136-real-sand-dig';
 const SHELL=[
-  './','./index.html','./styles.css','./app.js','./manifest.webmanifest','./fossil-detective.html','./fossil-detective.css','./fossil-detective-fixes.css','./fossil-detective.js','./assets/orish-fossil-detective-v2.webp',
+  './','./index.html','./styles.css','./app.js','./manifest.webmanifest','./fossil-detective.html','./fossil-detective.css','./fossil-detective-fixes.css','./fossil-detective.js','./assets/orish-fossil-detective-v2.webp','./assets/fossil-dig-bed-v3.webp',
   './toy-portal/index.html','./toy-portal/styles.css','./toy-portal/app.js',
   './modules/security-store.js','./modules/curriculum-engine.js','./modules/age-game-engine.js','./modules/rewards-engine.js','./modules/profile-ui.js',
   './modules/mission-engine.js','./modules/routines-engine.js','./modules/kitchen-engine.js','./modules/maker-engine.js','./modules/creative-engine.js','./modules/visual-game-engine.js','./modules/family-engine.js',

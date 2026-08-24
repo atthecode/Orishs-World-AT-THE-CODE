@@ -17,3 +17,107 @@
   background: rgba(7, 29, 42, .72);
 }
 .mission-rule span { color: var(--cyan); font-weight: 1000; }
+
+/* Real excavation surface: the child brushes away a continuous sand layer. */
+.dig-pit {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  min-height: 420px;
+  overflow: hidden;
+  cursor: crosshair;
+  touch-action: none;
+  user-select: none;
+  background: #a45f35;
+  box-shadow: inset 0 0 55px rgba(35, 14, 10, .55);
+}
+.fossil-bed,
+#sandCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.fossil-bed { object-fit: cover; }
+#sandCanvas { z-index: 2; }
+.dig-pit::after {
+  content: "";
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 45px rgba(49, 21, 13, .7);
+}
+.scan-marker {
+  position: absolute;
+  z-index: 4;
+  width: clamp(110px, 23%, 210px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  border: 4px solid #5ffaf0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(88, 255, 242, .08), rgba(88, 255, 242, .17) 54%, transparent 56%);
+  box-shadow: 0 0 0 7px rgba(77, 233, 228, .12), 0 0 34px #42e7e0, inset 0 0 25px rgba(77, 233, 228, .35);
+  animation: scanPulse 1.15s ease-in-out infinite;
+}
+.scan-marker i,
+.scan-marker i::before {
+  position: absolute;
+  content: "";
+  inset: 50% 8% auto;
+  height: 2px;
+  background: rgba(210, 255, 250, .85);
+}
+.scan-marker i::before { inset: auto; left: 50%; top: -42px; width: 2px; height: 84px; }
+.brush-cursor {
+  position: absolute;
+  z-index: 7;
+  transform: translate(-20%, -75%) rotate(-24deg);
+  pointer-events: none;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  filter: drop-shadow(0 4px 5px rgba(0,0,0,.55));
+}
+.dig-instruction {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  bottom: 13px;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: calc(100% - 28px);
+  padding: 8px 14px;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 999px;
+  background: rgba(32, 20, 15, .76);
+  color: #fff4ca;
+  font-size: .72rem;
+  font-weight: 950;
+  text-align: center;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+}
+.sand-dust {
+  position: absolute;
+  z-index: 8;
+  width: 8px;
+  height: 8px;
+  margin: -4px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: #ffd58c;
+  box-shadow: 17px -7px #d89a53, -15px -11px #f0bd72, 8px 15px #9e5e37, -18px 8px #efc98b, 2px -19px #b97843;
+  animation: realDust .58s ease-out forwards;
+}
+.dig-pit.scanning #sandCanvas { animation: sandScan .8s ease-out; }
+.dig-pit.wrong { animation: shake .38s; }
+@keyframes scanPulse { 50% { transform: translate(-50%, -50%) scale(1.08); opacity: .8; } }
+@keyframes sandScan { 50% { filter: brightness(1.16) saturate(1.15); } }
+@keyframes realDust { to { transform: translateY(-20px) scale(5); opacity: 0; } }
+
+@media (max-width: 600px) {
+  .dig-pit { min-height: 330px; }
+  .dig-instruction { bottom: 8px; font-size: .65rem; }
+  .scan-marker { width: 27%; }
+}

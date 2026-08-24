@@ -6,8 +6,8 @@
   <meta name="theme-color" content="#10283a">
   <title>Fossil Detective — Orish's World</title>
   <link rel="stylesheet" href="fossil-detective.css?v=20260824-1">
-  <link rel="stylesheet" href="fossil-detective-fixes.css?v=20260824-2">
-  <script src="fossil-detective.js?v=20260824-2" defer></script>
+  <link rel="stylesheet" href="fossil-detective-fixes.css?v=20260824-3">
+  <script src="fossil-detective.js?v=20260824-3" defer></script>
 </head>
 <body>
   <div class="sky" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -23,7 +23,7 @@
       <div class="briefing">
         <p class="eyebrow">TRAINING MISSION · CANYON LAB</p>
         <h1>Five fossil signals are buried in the canyon.</h1>
-        <p>Your job is clear: scan for one signal, brush the glowing patch three times, then examine what you found. Collect all five clues to identify the dinosaur.</p>
+        <p>Your job is clear: scan the sand, then drag your finger gently over the glowing area like a real fossil brush. Clear the sand to reveal five clues and identify the dinosaur.</p>
         <div class="safety-strip"><b>🔎 Explore</b><b>🦴 Investigate</b><b>🧩 Rebuild</b><b>🌿 No violence</b></div>
         <div class="character-choice" aria-label="Choose your game character">
           <strong>Who will lead the dig?</strong>
@@ -31,8 +31,8 @@
           <button class="character" data-character="explorer" type="button"><span>★</span> My Explorer</button>
         </div>
         <div class="briefing-actions">
-          <button class="primary" id="startMission" type="button">Start 30-second training</button>
-          <button class="speaker" data-speak="Five fossil signals are buried in the canyon. Press scan, find the glowing patch, and brush it three times. Collect all five clues to identify the dinosaur." type="button">🔉 Hear mission</button>
+          <button class="primary" id="startMission" type="button">Start brush training</button>
+          <button class="speaker" data-speak="Five fossil signals are buried in the canyon. Press scan, find the glowing area, and move your finger gently over the sand like a fossil brush. Collect all five clues to identify the dinosaur." type="button">🔉 Hear mission</button>
         </div>
       </div>
     </section>
@@ -48,14 +48,20 @@
       <div class="play-stage">
         <aside class="orish-guide">
           <div class="guide-face"><img src="assets/orish-approved-hq.webp" alt="Orish"><span id="playerBadge">ORISH</span></div>
-          <div><small>ORISH SAYS</small><p id="guideText">Brush the one glowing practice patch three times. Watch the sand layers disappear.</p></div>
+          <div><small>ORISH SAYS</small><p id="guideText">Move your finger gently over the glowing sand. Keep brushing until the practice fossil appears.</p></div>
           <button id="guideSpeak" class="round-speaker" type="button" aria-label="Read Orish's guidance aloud">🔉</button>
         </aside>
 
         <div class="dig-zone" id="digZone">
-          <div class="dig-heading"><div><small>LIVE EXCAVATION GRID</small><h2 id="stageTitle">Brush practice</h2></div><div class="tool-meter"><span>BRUSH POWER</span><b id="brushPower">100%</b></div></div>
-          <div class="mission-rule"><b>1 · SCAN</b><span>→</span><b>2 · BRUSH ×3</b><span>→</span><b>3 · EXAMINE</b></div>
-          <div class="dig-grid" id="digGrid" aria-label="Fossil excavation grid"></div>
+          <div class="dig-heading"><div><small>LIVE CANYON EXCAVATION</small><h2 id="stageTitle">Brush practice</h2></div><div class="tool-meter"><span>SAND CLEARED</span><b id="brushPower">0%</b></div></div>
+          <div class="mission-rule"><b>1 · SCAN</b><span>→</span><b>2 · DRAG TO BRUSH</b><span>→</span><b>3 · EXAMINE</b></div>
+          <div class="dig-pit" id="digPit" aria-label="Sandy fossil excavation pit. Drag across the glowing sand to brush.">
+            <img class="fossil-bed" id="fossilBed" src="assets/fossil-dig-bed-v3.webp" alt="Five fossils embedded in a sandy canyon excavation">
+            <canvas id="sandCanvas" aria-hidden="true"></canvas>
+            <div class="scan-marker" id="scanMarker" hidden aria-hidden="true"><i></i></div>
+            <div class="brush-cursor" id="brushCursor" hidden aria-hidden="true">🖌️</div>
+            <div class="dig-instruction" id="digInstruction">Drag your finger over the glowing sand</div>
+          </div>
           <div class="tool-row"><button id="scanButton" type="button">✦ Pulse scan <small>find the next dig patch</small></button><p id="statusLine" aria-live="polite">Brush the glowing practice patch three times.</p></div>
         </div>
       </div>
