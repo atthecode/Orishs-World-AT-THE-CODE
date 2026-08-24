@@ -100,6 +100,7 @@
   function endBrush(){brushing=false;lastPoint=null;document.getElementById('brushCursor').hidden=true;}
 
   function brushAt(point,isStart){
+    if(currentTarget<0)return;
     const target=targets[currentTarget],tx=target.x*canvas.width,ty=target.y*canvas.height;
     const distance=Math.hypot(point.x-tx,point.y-ty);
     if(distance>185){
@@ -124,6 +125,7 @@
   }
 
   function finishReveal(){
+    brushing=false;lastPoint=null;document.getElementById('brushCursor').hidden=true;
     const target=targets[currentTarget],tx=target.x*canvas.width,ty=target.y*canvas.height;
     ctx.save();ctx.globalCompositeOperation='destination-out';ctx.beginPath();ctx.arc(tx,ty,190,0,Math.PI*2);ctx.fill();ctx.restore();
     hideMarker(); tone(760,.18,'triangle');
