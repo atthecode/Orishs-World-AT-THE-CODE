@@ -6,13 +6,13 @@
   <meta name="theme-color" content="#10283a">
   <title>Fossil Detective — Orish's World</title>
   <link rel="stylesheet" href="fossil-detective.css?v=20260824-1">
-  <link rel="stylesheet" href="fossil-detective-fixes.css?v=20260824-8">
-  <script src="fossil-detective.js?v=20260824-8" defer></script>
+  <link rel="stylesheet" href="fossil-detective-fixes.css?v=20260824-9">
+  <script src="fossil-detective.js?v=20260824-9" defer></script>
 </head>
 <body>
   <div class="sky" aria-hidden="true"><i></i><i></i><i></i></div>
   <header class="topbar">
-    <a href="premium-preview.html">← World map</a>
+    <a href="world-map.html">← World map</a>
     <div><small>ORISH'S WORLD</small><strong>FOSSIL DETECTIVE</strong></div>
     <button id="soundToggle" type="button" aria-label="Turn music and sounds on">🔇</button>
   </header>
@@ -59,7 +59,10 @@
             <img class="fossil-bed" id="fossilBed" src="assets/fossil-dig-bed-v3.webp" alt="Five fossils embedded in a sandy canyon excavation">
             <canvas id="sandCanvas" aria-hidden="true"></canvas>
             <div class="scan-marker" id="scanMarker" hidden aria-hidden="true"><i></i></div>
+            <div class="scan-sweep" id="scanSweep" hidden aria-hidden="true"></div>
             <div class="brush-cursor" id="brushCursor" hidden aria-hidden="true">🖌️</div>
+            <div class="combo-toast" id="comboToast" hidden aria-live="polite">CAREFUL BRUSHING ×2</div>
+            <div class="reveal-layer" id="revealLayer" aria-hidden="true"></div>
             <div class="dig-instruction" id="digInstruction">Drag your finger over the glowing sand</div>
           </div>
           <section class="evidence-tray" aria-labelledby="evidenceTitle">
@@ -67,6 +70,7 @@
             <div class="evidence-slots" id="evidenceSlots" aria-live="polite">
               <span data-evidence="0">?</span><span data-evidence="1">?</span><span data-evidence="2">?</span><span data-evidence="3">?</span><span data-evidence="4">?</span>
             </div>
+            <div class="bonus-counter" id="bonusCounter">✨ Bonus discoveries 0/3</div>
           </section>
           <div class="tool-row"><button id="scanButton" type="button">✦ Pulse scan <small>find the next dig patch</small></button><p id="statusLine" aria-live="polite">Brush the glowing practice patch three times.</p></div>
         </div>
@@ -104,9 +108,9 @@
       <p class="eyebrow">FOSSIL CASE SOLVED</p>
       <h2>You reconstructed an Iguanodon investigation!</h2>
       <p>You matched each fossil to its job, checked the tooth evidence and used the surrounding rock clues to investigate a plant-eating dinosaur.</p>
-      <div class="final-reward"><strong>110 ★</strong><span>Fossil Detective badge unlocked</span></div>
+      <div class="final-reward"><strong id="finalStars">110 ★</strong><span id="finalBonus">Fossil Detective badge unlocked</span></div>
       <button class="speaker" data-speak="Case solved. Your reconstruction was inspired by Iguanodon. Its fossil teeth helped scientists recognise an ancient plant-eating dinosaur nearly two hundred years ago. Great detective work. That is enough screen time for now. Can you build a dinosaur skeleton with paper or blocks?" type="button">🔉 Hear Orish celebrate</button>
-      <a class="primary next-link" href="premium-preview.html">Return to World Map</a>
+      <a class="primary next-link" href="world-map.html">Return to World Map</a>
       <p class="away-prompt">REAL-WORLD MISSION: build a dinosaur skeleton using paper, sticks or blocks.</p>
     </section>
   </div>

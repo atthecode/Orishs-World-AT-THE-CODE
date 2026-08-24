@@ -17,8 +17,14 @@
     {x:.50,y:.51,name:'spine piece'}, {x:.73,y:.75,name:'tail bone'},
     {x:.24,y:.73,name:'fossil leaf'}
   ];
+  const bonusFinds=[
+    {icon:'✨',name:'ancient amber fleck',stars:8},
+    {icon:'🔷',name:'canyon crystal',stars:10},
+    {icon:'🌰',name:'fossilised seed',stars:12}
+  ];
   let character='orish', phase='intro', stars=0, fossils=0, found=[], currentTarget=-1;
   let brushing=false, clearedAmount=0, lastPoint=null, wrongBrushWarned=false, pendingReveal=-1, selectedMatch='';
+  let brushStreak=0,lastAccurateBrush=0,scanBusy=false,bonuses=[],latestBonus=null;
   let audioCtx=null, musicTimer=0, musicOn=false, currentSpeech='', sandNoiseBuffer=null, lastSandSound=0;
 
   const messages={
@@ -87,7 +93,7 @@
 
   function startBrush(event){
     if(currentTarget<0||!['training','dig'].includes(phase)){
-      if(phase==='dig')wrong(pit,'Press Pulse Scan before brushing the sand.');
+      if(phase==='dig')wrong(pit,scanBusy?'Scanner sweep in progress. Watch the canyon floor.':'Press Pulse Scan before brushing the sand.');
       return;
     }
     brushing=true; wrongBrushWarned=false; lastPoint=pointFromEvent(event); pit.setPointerCapture?.(event.pointerId);
@@ -106,10 +112,12 @@
     const target=targets[currentTarget],tx=target.x*canvas.width,ty=target.y*canvas.height;
     const distance=Math.hypot(point.x-tx,point.y-ty);
     if(distance>225){
+      brushStreak=0;
       if(!wrongBrushWarned){wrongBrushWarned=true;wrong(pit,'The scanner glow shows where to brush. Move your finger inside the glowing circle.');}
       return;
     }
     const from=lastPoint||point, travelled=Math.max(10,Math.hypot(point.x-from.x,point.y-from.y));
+    const now=performance.now();brushStreak=now-lastAccurateBrush<420?brushStreak+1:1;lastAccurateBrush=now;
     ctx.save();ctx.globalCompositeOperation='destination-out';ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=120;
     ctx.beginPath();ctx.moveTo(from.x,from.y);ctx.lineTo(point.x,point.y);ctx.stroke();
     ctx.beginPath();ctx.arc(point.x,point.y,62,0,Math.PI*2);ctx.fill();ctx.restore();
@@ -118,12 +126,14 @@
     const needed=phase==='training'?275:390;
     const percent=Math.min(100,Math.round(clearedAmount/needed*100));
     status.textContent=percent<100?`Sand cleared: ${percent}%. Keep brushing gently inside the glow.`:'Fossil uncovered!';
+    if(brushStreak===5||brushStreak===9)showCombo(brushStreak===5?2:3);
     if(clearedAmount>=needed)finishReveal();
   }
 
   function beginDig(){
-    phase='dig'; found=[]; fossils=0; currentTarget=-1; clearedAmount=0; resetSand(); hideMarker();
+    phase='dig'; found=[]; fossils=0; currentTarget=-1; clearedAmount=0;brushStreak=0;scanBusy=false;bonuses=[];latestBonus=null;resetSand(); hideMarker();
     document.querySelectorAll('[data-evidence]').forEach(slot=>{slot.textContent='?';slot.classList.remove('collected');slot.removeAttribute('title');});
+    document.getElementById('bonusCounter').textContent='✨ Bonus discoveries 0/3';
     document.getElementById('missionName').textContent='Canyon excavation';document.getElementById('stageTitle').textContent='Uncover five clues';
     guide.textContent=messages.dig;status.textContent='Step 1: press Pulse Scan to locate fossil signal 1.';updateBrushMeter();updateHud();
   }
@@ -137,15 +147,18 @@
       currentTarget=-1;stars+=10;status.textContent='Practice fossil uncovered!';guide.textContent='Excellent brushing. Now scan the real dig, then clear only the glowing sand.';updateHud();setTimeout(beginDig,1100);return;
     }
     const revealed=currentTarget;found.push(revealed);fossils++;stars+=12;currentTarget=-1;clearedAmount=0;pendingReveal=revealed;
+    latestBonus=[0,2,4].includes(revealed)?bonusFinds[[0,2,4].indexOf(revealed)]:null;
+    if(latestBonus){bonuses.push(latestBonus);stars+=latestBonus.stars;document.getElementById('bonusCounter').textContent=`${latestBonus.icon} Bonus discoveries ${bonuses.length}/3`;}
+    celebrateReveal(target,latestBonus);
     status.textContent=`Clue ${fossils}: ${fossilNames[revealed]} found.`;
     guide.textContent=`You uncovered a ${fossilNames[revealed]}. Let us examine what this clue means.`;
     updateBrushMeter();updateHud();setTimeout(()=>openFindCard(revealed),500);
   }
 
   function openFindCard(index){
-    const info=fossilInfo[index];currentSpeech=`${info.title}. ${info.copy} History clue. ${info.history}`;
+    const info=fossilInfo[index],bonusSpeech=latestBonus?` Bonus discovery. You also found a ${latestBonus.name}, worth ${latestBonus.stars} stars.`:'';currentSpeech=`${info.title}. ${info.copy} History clue. ${info.history}${bonusSpeech}`;
     document.getElementById('findSymbol').textContent=info.icon;document.getElementById('findTitle').textContent=info.title;
-    document.getElementById('findCopy').textContent=info.copy;document.getElementById('findHistory').textContent=`HISTORY CLUE · ${info.history}`;
+    document.getElementById('findCopy').textContent=latestBonus?`${info.copy} ${latestBonus.icon} BONUS FIND: ${latestBonus.name} · +${latestBonus.stars} stars.`:info.copy;document.getElementById('findHistory').textContent=`HISTORY CLUE · ${info.history}`;
     document.getElementById('findModal').hidden=false;
   }
 
@@ -170,11 +183,22 @@
     const d=document.createElement('i');d.className='sand-dust';d.style.left=`${point.x/canvas.width*100}%`;d.style.top=`${point.y/canvas.height*100}%`;pit.appendChild(d);setTimeout(()=>d.remove(),600);
   }
 
+  function showCombo(multiplier){
+    const toast=document.getElementById('comboToast');toast.textContent=`CAREFUL BRUSHING ×${multiplier} · +${multiplier} ★`;toast.hidden=false;stars+=multiplier;tone(620+multiplier*80,.1,'triangle');setTimeout(()=>toast.hidden=true,850);updateHud();
+  }
+
+  function celebrateReveal(target,bonus){
+    const layer=document.getElementById('revealLayer'),burst=document.createElement('div');burst.className='reveal-celebration';burst.style.left=`${target.x*100}%`;burst.style.top=`${target.y*100}%`;burst.innerHTML=`<b>FOSSIL FOUND!</b><span>+12 ★${bonus?` · ${bonus.icon} BONUS!`:''}</span>`;
+    for(let i=0;i<12;i++){const spark=document.createElement('i');spark.style.setProperty('--turn',`${i*30}deg`);burst.appendChild(spark);}layer.appendChild(burst);pit.classList.add('discovery-shake');navigator.vibrate?.([35,25,55]);setTimeout(()=>pit.classList.remove('discovery-shake'),450);setTimeout(()=>burst.remove(),1500);
+  }
+
   function scan(){
     if(phase!=='dig'){status.textContent='Finish the short brush training first.';tone(120,.09,'square');return;}
+    if(scanBusy){status.textContent='Scanner sweep in progress…';return;}
     if(currentTarget>=0){status.textContent='The scanner has already marked the sand. Drag your finger inside the glowing circle.';return;}
-    currentTarget=targets.findIndex((_,index)=>!found.includes(index));if(currentTarget<0){status.textContent='Every fossil signal has been uncovered.';return;}
-    clearedAmount=0;showMarker();updateBrushMeter();status.textContent=`Signal ${fossils+1} found. Drag gently over the glowing sand.`;guide.textContent=`The cyan scanner ring marks signal ${fossils+1}. Move your finger back and forth like a careful fossil brush.`;tone(440,.1,'sine');setTimeout(()=>tone(660,.1,'sine'),130);
+    const nextTarget=targets.findIndex((_,index)=>!found.includes(index));if(nextTarget<0){status.textContent='Every fossil signal has been uncovered.';return;}
+    scanBusy=true;const button=document.getElementById('scanButton'),sweep=document.getElementById('scanSweep');button.disabled=true;button.innerHTML='⌁ SCANNING… <small>reading the canyon layers</small>';sweep.hidden=false;pit.classList.add('deep-scanning');status.textContent='Scanner pulse travelling across the canyon…';guide.textContent='Watch the blue scanner line. It is measuring changes beneath the sand.';tone(330,.12,'sine');
+    setTimeout(()=>{currentTarget=nextTarget;clearedAmount=0;showMarker();updateBrushMeter();scanBusy=false;button.disabled=false;button.innerHTML='✦ Pulse scan <small>find the next dig patch</small>';sweep.hidden=true;pit.classList.remove('deep-scanning');status.textContent=`Signal ${fossils+1} locked. Brush inside the glowing ring.`;guide.textContent=`Signal ${fossils+1} locked. Move your finger back and forth like a careful fossil brush.`;tone(440,.1,'sine');setTimeout(()=>tone(720,.14,'triangle'),130);},850);
   }
 
   function showIdentify(){
@@ -235,7 +259,7 @@
   }
 
   function complete(){
-    modal.hidden=true;phase='complete';stars=Math.max(110,stars);updateHud();document.getElementById('completion').hidden=false;save();tone(523,.14,'sine');setTimeout(()=>tone(659,.14,'sine'),150);setTimeout(()=>tone(784,.22,'triangle'),300);
+    modal.hidden=true;phase='complete';stars=Math.max(110,stars);updateHud();document.getElementById('finalStars').textContent=`${stars} ★`;document.getElementById('finalBonus').textContent=`Fossil Detective badge · ${bonuses.length}/3 bonus discoveries`;document.getElementById('completion').hidden=false;save();navigator.vibrate?.([40,35,70,35,100]);tone(523,.14,'sine');setTimeout(()=>tone(659,.14,'sine'),150);setTimeout(()=>tone(784,.22,'triangle'),300);
   }
 
   function updateHud(){
@@ -245,7 +269,7 @@
 
   function wrong(element,message){status.textContent=message;tone(105,.12,'square');element?.classList.add('wrong');setTimeout(()=>element?.classList.remove('wrong'),400);}
   function shuffle(list){for(let i=list.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[list[i],list[j]]=[list[j],list[i]];}return list;}
-  function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify({phase,stars,fossils,character,updated:Date.now()}));}catch{}}
+  function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify({phase,stars,fossils,character,bonuses:bonuses.length,updated:Date.now()}));}catch{}}
 
   function speak(text){
     if(!('speechSynthesis'in window))return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(String(text||''));u.rate=.88;u.pitch=1.04;u.lang='en-GB';window.speechSynthesis.speak(u);
