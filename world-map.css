@@ -159,17 +159,17 @@ footer a{color:var(--cyan)}
 .flying-rocket{width:9px;height:25px;border:1px solid rgba(255,255,255,.8);border-radius:55% 55% 35% 35%;background:linear-gradient(90deg,#d8f3ff,#fff 50%,#8ac7dd);font-size:0;offset-path:none;animation:rocketV2 10s ease-in-out infinite}
 .flying-rocket:before{content:"";position:absolute;left:-4px;bottom:2px;width:15px;height:8px;background:#ef5b4c;clip-path:polygon(0 100%,28% 0,72% 0,100% 100%,62% 70%,38% 70%)}
 .flying-rocket:after{content:"";position:absolute;left:2px;bottom:-11px;width:4px;height:13px;border-radius:50%;background:linear-gradient(#fff7a0,#ff8b3d,transparent);filter:drop-shadow(0 0 4px #ffdb62)}
-.scene-car{position:absolute;width:18px;height:8px;border:1px solid rgba(255,255,255,.6);border-radius:6px 6px 3px 3px;background:linear-gradient(#ff6a59,#b91d36);box-shadow:0 3px 2px rgba(0,0,0,.35);transform-origin:center}
-.scene-car b{position:absolute;left:5px;top:-4px;width:9px;height:5px;border-radius:5px 5px 0 0;background:linear-gradient(90deg,#b9f4ff,#357d9b)}
-.scene-car span:before,.scene-car span:after{content:"";position:absolute;bottom:-3px;width:4px;height:4px;border:1px solid #6d8c94;border-radius:50%;background:#111}.scene-car span:before{left:2px}.scene-car span:after{right:2px}
+.scene-car{position:absolute;width:22px;height:10px;border:1px solid rgba(255,255,255,.6);border-radius:7px 7px 4px 4px;background:linear-gradient(#ff6a59,#b91d36);box-shadow:0 4px 3px rgba(0,0,0,.38);transform-origin:center}
+.scene-car b{position:absolute;left:6px;top:-5px;width:11px;height:6px;border-radius:6px 6px 0 0;background:linear-gradient(90deg,#b9f4ff,#357d9b)}
+.scene-car span:before,.scene-car span:after{content:"";position:absolute;bottom:-4px;width:5px;height:5px;border:1px solid #6d8c94;border-radius:50%;background:#111}.scene-car span:before{left:2px}.scene-car span:after{right:2px}
 .car-two{background:linear-gradient(#ffd84c,#e48b13)}.car-three{background:linear-gradient(#44d9e8,#16729c)}
-.scene-boat{position:absolute;width:20px;height:16px;filter:drop-shadow(0 3px 3px rgba(0,34,54,.5));transform-origin:center}
-.scene-boat b{position:absolute;left:8px;top:0;width:10px;height:11px;background:linear-gradient(135deg,#fff7b8,#ff784f);clip-path:polygon(0 0,100% 100%,0 100%);border-left:1px solid #4d352c}
-.scene-boat span{position:absolute;left:2px;bottom:1px;width:18px;height:6px;border-radius:2px 2px 10px 10px;background:linear-gradient(#9b5e31,#492b24)}
-.scene-boat:after{content:"";position:absolute;right:14px;bottom:-3px;width:18px;height:3px;border-bottom:1px solid rgba(225,255,255,.95);border-radius:50%;box-shadow:0 2px 4px #72f6ff}
-.walker{position:absolute;width:7px;height:12px;filter:drop-shadow(0 2px 1px rgba(0,0,0,.5));transform-origin:50% 100%}
-.walker b{position:absolute;left:2px;top:0;width:5px;height:5px;border-radius:50%;background:#8b4d32}
-.walker span{position:absolute;left:2px;top:5px;width:5px;height:7px;border-radius:2px;background:#ffd24f}
+.scene-boat{position:absolute;width:24px;height:19px;filter:drop-shadow(0 4px 3px rgba(0,34,54,.55));transform-origin:center}
+.scene-boat b{position:absolute;left:9px;top:0;width:13px;height:14px;background:linear-gradient(135deg,#fff7b8,#ff784f);clip-path:polygon(0 0,100% 100%,0 100%);border-left:1px solid #4d352c}
+.scene-boat span{position:absolute;left:2px;bottom:1px;width:22px;height:7px;border-radius:2px 2px 12px 12px;background:linear-gradient(#9b5e31,#492b24)}
+.scene-boat:after{content:"";position:absolute;right:17px;bottom:-3px;width:22px;height:3px;border-bottom:1px solid rgba(225,255,255,.95);border-radius:50%;box-shadow:0 2px 4px #72f6ff}
+.walker{position:absolute;width:9px;height:15px;filter:drop-shadow(0 2px 1px rgba(0,0,0,.55));transform-origin:50% 100%}
+.walker b{position:absolute;left:2px;top:0;width:6px;height:6px;border-radius:50%;background:#8b4d32}
+.walker span{position:absolute;left:2px;top:6px;width:6px;height:9px;border-radius:2px;background:#ffd24f}
 .walker span:before,.walker span:after{content:"";position:absolute;bottom:-3px;width:2px;height:5px;border-radius:2px;background:#18364a;transform-origin:top}.walker span:before{left:0;animation:stepLeft .45s infinite alternate}.walker span:after{right:0;animation:stepRight .45s infinite alternate}
 .walker-two b,.walker-four b{background:#e0a17f}.walker-two span{background:#55d9e8}.walker-three b{background:#5b321f}.walker-three span{background:#f46eab}.walker-four span{background:#8bea7d}
 .window-light{width:4px;height:6px;border-radius:1px;background:#fff2a4;box-shadow:0 0 5px 2px rgba(255,218,91,.85);animation:windowGlow 3.4s ease-in-out infinite}.w2,.w5,.w8,.w11,.w14{animation-delay:-1.2s;background:#6df7ff;box-shadow:0 0 5px 2px rgba(72,233,255,.8)}.w3,.w7,.w12,.w16{animation-delay:-2.25s;background:#ef8dff;box-shadow:0 0 5px 2px rgba(219,91,255,.7)}
@@ -193,4 +193,4 @@ footer a{color:var(--cyan)}
 @keyframes stepLeft{to{transform:rotate(25deg)}}@keyframes stepRight{to{transform:rotate(-25deg)}}
 @keyframes windowGlow{0%,18%,100%{opacity:.25}28%,72%{opacity:1}82%{opacity:.5}}
 @keyframes rocketV2{0%,10%{left:72%;top:20%;opacity:0;transform:rotate(28deg) scale(.7)}20%{opacity:1}70%{left:84%;top:5%;opacity:1;transform:rotate(35deg) scale(.85)}86%,100%{left:89%;top:-5%;opacity:0;transform:rotate(38deg) scale(.7)}}
-@media(max-width:700px){.scene-car{width:16px;height:7px}.scene-boat{transform:scale(.9)}.walker{transform:scale(.9)}}
+@media(max-width:700px){.scene-car{width:20px;height:9px}.scene-boat{transform:scale(1)}.walker{transform:scale(1)}}
