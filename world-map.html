@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#071f37">
   <title>World Map — Orish's World</title>
-  <link rel="stylesheet" href="world-map.css?v=20260824-5">
-  <script src="world-map.js?v=20260824-5" defer></script>
+  <link rel="stylesheet" href="world-map.css?v=20260824-6">
+  <script src="world-map.js?v=20260824-6" defer></script>
 </head>
 <body>
   <header class="map-header">
@@ -24,16 +24,18 @@
 
     <section class="map-viewport" id="mapViewport" aria-label="Interactive map of Orish's World">
       <div class="map-stage">
-        <img src="assets/orish-world-map-v1.webp" alt="A connected adventure world with a fossil canyon, story forest, cinema, city, maker harbour and space observatory">
+        <img src="assets/orish-world-map-v2.webp" alt="A connected adventure world with a fossil canyon, story forest, cinema, city, maker harbour and space observatory">
         <canvas class="world-effects" id="worldEffects" aria-hidden="true"></canvas>
         <div class="living-world" aria-hidden="true">
           <i class="cloud cloud-one">☁</i><i class="cloud cloud-two">☁</i><i class="cloud cloud-three">☁</i>
-          <i class="flying-rocket">🚀</i>
-          <i class="sailing-boat boat-one">⛵</i><i class="sailing-boat boat-two">⛵</i>
-          <i class="world-car car-one">🚙</i><i class="world-car car-two">🚗</i><i class="world-car car-three">🚕</i>
+          <i class="flying-rocket"></i>
+          <i class="scene-boat boat-one"><b></b><span></span></i><i class="scene-boat boat-two"><b></b><span></span></i>
+          <i class="scene-car car-one"><b></b><span></span></i><i class="scene-car car-two"><b></b><span></span></i><i class="scene-car car-three"><b></b><span></span></i>
+          <i class="walker walker-one"><b></b><span></span></i><i class="walker walker-two"><b></b><span></span></i><i class="walker walker-three"><b></b><span></span></i><i class="walker walker-four"><b></b><span></span></i>
           <i class="portal-live portal-left"></i><i class="portal-live portal-right"></i><i class="portal-live portal-centre"></i>
           <i class="water-light water-one"></i><i class="water-light water-two"></i><i class="water-light water-three"></i>
           <i class="world-beacon beacon-space"></i><i class="world-beacon beacon-cinema"></i><i class="world-beacon beacon-maker"></i>
+          <i class="window-light w1"></i><i class="window-light w2"></i><i class="window-light w3"></i><i class="window-light w4"></i><i class="window-light w5"></i><i class="window-light w6"></i><i class="window-light w7"></i><i class="window-light w8"></i><i class="window-light w9"></i><i class="window-light w10"></i><i class="window-light w11"></i><i class="window-light w12"></i><i class="window-light w13"></i><i class="window-light w14"></i><i class="window-light w15"></i><i class="window-light w16"></i>
           <i class="cinema-ray ray-one"></i><i class="cinema-ray ray-two"></i>
           <div class="focus-halo" id="focusHalo"></div>
         </div>
