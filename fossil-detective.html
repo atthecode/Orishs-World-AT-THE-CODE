@@ -6,7 +6,8 @@
   <meta name="theme-color" content="#10283a">
   <title>Fossil Detective — Orish's World</title>
   <link rel="stylesheet" href="fossil-detective.css?v=20260824-1">
-  <script src="fossil-detective.js?v=20260824-1" defer></script>
+  <link rel="stylesheet" href="fossil-detective-fixes.css?v=20260824-2">
+  <script src="fossil-detective.js?v=20260824-2" defer></script>
 </head>
 <body>
   <div class="sky" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -18,20 +19,20 @@
 
   <main>
     <section class="mission-card" id="introPanel">
-      <div class="hero-art"><img src="assets/fossil-detective.webp" alt="Orish exploring a colourful fossil excavation site"><span>DISCOVERY DIG 01</span></div>
+      <div class="hero-art"><img src="assets/orish-fossil-detective-v2.webp" alt="Orish carefully brushing a dinosaur fossil at Canyon Lab"><span>DISCOVERY DIG 01</span></div>
       <div class="briefing">
         <p class="eyebrow">TRAINING MISSION · CANYON LAB</p>
-        <h1>The canyon wall has cracked open.</h1>
-        <p>Something ancient is hidden beneath the sand. Learn to brush carefully, uncover five fossil pieces and use the evidence to identify the creature.</p>
+        <h1>Five fossil signals are buried in the canyon.</h1>
+        <p>Your job is clear: scan for one signal, brush the glowing patch three times, then examine what you found. Collect all five clues to identify the dinosaur.</p>
         <div class="safety-strip"><b>🔎 Explore</b><b>🦴 Investigate</b><b>🧩 Rebuild</b><b>🌿 No violence</b></div>
         <div class="character-choice" aria-label="Choose your game character">
           <strong>Who will lead the dig?</strong>
-          <button class="character active" data-character="orish" type="button"><img src="assets/orish-explorer.webp" alt=""> Play as Orish</button>
+          <button class="character active" data-character="orish" type="button"><img src="assets/orish-approved-hq.webp" alt="Orish"> Play as Orish</button>
           <button class="character" data-character="explorer" type="button"><span>★</span> My Explorer</button>
         </div>
         <div class="briefing-actions">
-          <button class="primary" id="startMission" type="button">Start training dig</button>
-          <button class="speaker" data-speak="The canyon wall has cracked open. Brush the glowing practice squares gently. Then uncover five fossil pieces and use the clues to identify the creature." type="button">🔉 Hear mission</button>
+          <button class="primary" id="startMission" type="button">Start 30-second training</button>
+          <button class="speaker" data-speak="Five fossil signals are buried in the canyon. Press scan, find the glowing patch, and brush it three times. Collect all five clues to identify the dinosaur." type="button">🔉 Hear mission</button>
         </div>
       </div>
     </section>
@@ -46,15 +47,16 @@
 
       <div class="play-stage">
         <aside class="orish-guide">
-          <div class="guide-face"><img src="assets/orish-explorer.webp" alt="Orish"><span id="playerBadge">ORISH</span></div>
-          <div><small>ORISH SAYS</small><p id="guideText">Tap the three glowing squares. Each careful brush removes one layer of sand.</p></div>
+          <div class="guide-face"><img src="assets/orish-approved-hq.webp" alt="Orish"><span id="playerBadge">ORISH</span></div>
+          <div><small>ORISH SAYS</small><p id="guideText">Brush the one glowing practice patch three times. Watch the sand layers disappear.</p></div>
           <button id="guideSpeak" class="round-speaker" type="button" aria-label="Read Orish's guidance aloud">🔉</button>
         </aside>
 
         <div class="dig-zone" id="digZone">
           <div class="dig-heading"><div><small>LIVE EXCAVATION GRID</small><h2 id="stageTitle">Brush practice</h2></div><div class="tool-meter"><span>BRUSH POWER</span><b id="brushPower">100%</b></div></div>
+          <div class="mission-rule"><b>1 · SCAN</b><span>→</span><b>2 · BRUSH ×3</b><span>→</span><b>3 · EXAMINE</b></div>
           <div class="dig-grid" id="digGrid" aria-label="Fossil excavation grid"></div>
-          <div class="tool-row"><button id="scanButton" type="button">✦ Pulse scan <small>reveals one clue</small></button><p id="statusLine" aria-live="polite">Find the glowing practice squares.</p></div>
+          <div class="tool-row"><button id="scanButton" type="button">✦ Pulse scan <small>find the next dig patch</small></button><p id="statusLine" aria-live="polite">Brush the glowing practice patch three times.</p></div>
         </div>
       </div>
     </section>
