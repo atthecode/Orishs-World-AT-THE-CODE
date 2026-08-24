@@ -124,14 +124,23 @@
     const store = window.OrishSecurityStore;
     const profiles = store?.getProfiles() || [];
     const payload = {exportedAt:new Date().toISOString(), source:'Orish’s World beta device data', profiles, activeProfileId:store?.getActiveProfileId() || ''};
-    const blob = new Blob([JSON.stringify(payload,null,2)], {type:'application/json'});
+    const report = [
+      "ORISH'S WORLD @ THE CODE — PARENT DATA EXPORT",
+      'Private copy prepared for the parent or guardian.',
+      'This plain-text file contains the Orish profiles and learning settings saved on this device.',
+      '',
+      JSON.stringify(payload, null, 2)
+    ].join('\n');
+    const blob = new Blob(['\uFEFF', report], {type:'text/plain;charset=utf-8'});
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'orish-world-device-data.json';
+    link.download = 'orish-world-parent-data-export.txt';
+    document.body.appendChild(link);
     link.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-    $('privacyMessage').textContent = 'A copy of this device’s Orish profile data was prepared.';
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    $('privacyMessage').textContent = 'A private Orish’s World text copy was prepared. Save it to Files; do not open it in another shopping or social app.';
   }
 
   function deleteSelectedProfile() {
