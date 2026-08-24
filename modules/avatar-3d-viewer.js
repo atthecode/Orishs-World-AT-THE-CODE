@@ -4,7 +4,7 @@
   const MODEL_URL = './assets/models/avatar-base.glb';
   const statusText = {
     loading: 'Loading local 3D model…',
-    ready: 'Prototype 3D • rebuild underway',
+    ready: 'Original 3D Explorer • fitted outfits',
     fallback: '3D unavailable • safe fallback active'
   };
 
@@ -203,14 +203,7 @@
       const sway=Math.sin(t*0.78)*0.8*deg;
       m=mul(aroundPivot([0,2.42,0], rotateZ(sway)),m);
     }
-    if (name.startsWith('EyeWhite_') || name.startsWith('Iris_')) {
-      const phase=(time%4300)/4300;
-      const blink=phase>0.94 ? Math.sin(((phase-.94)/.06)*Math.PI) : 0;
-      if (blink>0) {
-        const x=name.endsWith('_L')?-.22:.22;
-        m=mul(aroundPivot([x,3.16,.54], scale(1,Math.max(.08,1-blink*.92),1)),m);
-      }
-    }
+    // Keep the eyes steady until a proper facial rig replaces mesh scaling.
     const isLeftArm=name==='BaseOutfit_Arm_L'||name==='Skin_Hand_L';
     const isRightArm=name==='BaseOutfit_Arm_R'||name==='Skin_Hand_R';
     const idleSwing=Math.sin(t*1.18)*1.8*deg;
@@ -265,7 +258,7 @@
 
   function visible(name) {
     if (name.startsWith('Hair_')) return name.startsWith(`Hair_${state.hair}_`);
-    if (name.startsWith('Outfit_')) return name.startsWith(`Outfit_${state.outfit}_`);
+    // The old role overlays were rigid panels that floated away from the body.\n    // Use the fitted base garment for every role until production clothes are weight-painted.\n    if (name.startsWith('Outfit_')) return false;
     if (name === 'Accent_FloorMarker') return false;
     return true;
   }
@@ -278,7 +271,16 @@
     if (name === 'Mouth') return '#6f3341';
     if (name.startsWith('Boot_')) return '#06101e';
     if (name.startsWith('Accent_')) return state.accent;
-    if (name.startsWith('BaseOutfit_')) return '#0d263d';
+    if (name.startsWith('BaseOutfit_')) {
+      const fittedOutfits = {
+        explorer: '#0d263d',
+        scientist: '#dbeaf0',
+        space: '#152d4a',
+        chef: '#f0eee7',
+        artist: '#49365f'
+      };
+      return fittedOutfits[state.outfit] || fittedOutfits.explorer;
+    }
     if (name.startsWith('Outfit_scientist_Coat')) return '#e8f4f4';
     if (name.startsWith('Outfit_scientist_Badge')) return state.accent;
     if (name.startsWith('Outfit_chef_Apron') || name.startsWith('Outfit_chef_Hat')) return '#f3f2e9';
