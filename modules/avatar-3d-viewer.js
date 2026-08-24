@@ -4,7 +4,7 @@
   const MODEL_URL = './assets/models/avatar-base.glb';
   const statusText = {
     loading: 'Loading local 3D model…',
-    ready: 'Original 3D Explorer • fitted outfits',
+    ready: 'Prototype 3D • rebuild underway',
     fallback: '3D unavailable • safe fallback active'
   };
 
@@ -13,7 +13,6 @@
   };
 
   let host, canvas, gl, program, parts = [], state = {...DEFAULT_STATE};
-  let isWebGL2 = false, vaoExt = null;
   let projection = ident(), view = ident(), raf = 0, ready = false, reducedMotion = false;
   let pose = 'idle', poseUntil = 0, poseStarted = 0, lastCapture = '';
   const POSE_DURATIONS = {wave:2200, celebrate:1900, power:1700, idle:0};
@@ -36,18 +35,11 @@
     canvas.setAttribute('aria-hidden', 'true');
     canvas.setAttribute('data-renderer', 'at-the-code-webgl-glb');
     host.prepend(canvas);
-    const contextOptions = {alpha:true, antialias:true, premultipliedAlpha:true, preserveDrawingBuffer:true, powerPreference:'high-performance'};
-    gl = canvas.getContext('webgl2', contextOptions);
-    isWebGL2 = Boolean(gl);
-    if (!gl) gl = canvas.getContext('webgl', contextOptions) || canvas.getContext('experimental-webgl', contextOptions);
-    if (!gl) return fallback('3D graphics are not available in this browser.');
-    if (!isWebGL2) {
-      vaoExt = gl.getExtension('OES_vertex_array_object');
-      if (!vaoExt) return fallback('This browser cannot prepare the 3D character.');
-    }
+    gl = canvas.getContext('webgl2', {alpha:true, antialias:true, premultipliedAlpha:true, preserveDrawingBuffer:true, powerPreference:'high-performance'});
+    if (!gl) return fallback('WebGL2 is not supported on this device.');
 
     try {
-      program = makeProgram(isWebGL2 ? VERT : VERT_WEBGL1, isWebGL2 ? FRAG : FRAG_WEBGL1);
+      program = makeProgram(VERT, FRAG);
       positionLoc = gl.getAttribLocation(program, 'aPosition');
       normalLoc = gl.getAttribLocation(program, 'aNormal');
       mvpLoc = gl.getUniformLocation(program, 'uMVP');
@@ -152,13 +144,13 @@
   }
 
   function createPart(name, positions, normals, indices, nodeMatrixValue) {
-    const vao = createVAO(); bindVAO(vao);
+    const vao = gl.createVertexArray(); gl.bindVertexArray(vao);
     const pbo = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, pbo); gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
     gl.enableVertexAttribArray(positionLoc); gl.vertexAttribPointer(positionLoc, 3, gl.FLOAT, false, 0, 0);
     const nbo = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, nbo); gl.bufferData(gl.ARRAY_BUFFER, normals || makeFlatNormals(positions, indices), gl.STATIC_DRAW);
     gl.enableVertexAttribArray(normalLoc); gl.vertexAttribPointer(normalLoc, 3, gl.FLOAT, false, 0, 0);
     const ibo = gl.createBuffer(); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
-    bindVAO(null);
+    gl.bindVertexArray(null);
     const indexType = indices instanceof Uint32Array ? gl.UNSIGNED_INT : indices instanceof Uint16Array ? gl.UNSIGNED_SHORT : gl.UNSIGNED_BYTE;
     return {name, vao, count:indices.length, indexType, nodeMatrix:nodeMatrixValue};
   }
@@ -196,10 +188,10 @@
       gl.uniformMatrix4fv(mvpLoc, false, mvp);
       gl.uniformMatrix4fv(modelLoc, false, model);
       gl.uniform3fv(colorLoc, rgb(colorFor(part.name)));
-      bindVAO(part.vao);
+      gl.bindVertexArray(part.vao);
       gl.drawElements(gl.TRIANGLES, part.count, part.indexType, 0);
     }
-    bindVAO(null);
+    gl.bindVertexArray(null);
   }
 
   function animationTransform(name, time) {
@@ -211,7 +203,14 @@
       const sway=Math.sin(t*0.78)*0.8*deg;
       m=mul(aroundPivot([0,2.42,0], rotateZ(sway)),m);
     }
-    // Keep the eyes steady until a proper facial rig replaces mesh scaling.
+    if (name.startsWith('EyeWhite_') || name.startsWith('Iris_')) {
+      const phase=(time%4300)/4300;
+      const blink=phase>0.94 ? Math.sin(((phase-.94)/.06)*Math.PI) : 0;
+      if (blink>0) {
+        const x=name.endsWith('_L')?-.22:.22;
+        m=mul(aroundPivot([x,3.16,.54], scale(1,Math.max(.08,1-blink*.92),1)),m);
+      }
+    }
     const isLeftArm=name==='BaseOutfit_Arm_L'||name==='Skin_Hand_L';
     const isRightArm=name==='BaseOutfit_Arm_R'||name==='Skin_Hand_R';
     const idleSwing=Math.sin(t*1.18)*1.8*deg;
@@ -266,7 +265,7 @@
 
   function visible(name) {
     if (name.startsWith('Hair_')) return name.startsWith(`Hair_${state.hair}_`);
-    // The old role overlays were rigid panels that floated away from the body.\n    // Use the fitted base garment for every role until production clothes are weight-painted.\n    if (name.startsWith('Outfit_')) return false;
+    if (name.startsWith('Outfit_')) return name.startsWith(`Outfit_${state.outfit}_`);
     if (name === 'Accent_FloorMarker') return false;
     return true;
   }
@@ -279,16 +278,7 @@
     if (name === 'Mouth') return '#6f3341';
     if (name.startsWith('Boot_')) return '#06101e';
     if (name.startsWith('Accent_')) return state.accent;
-    if (name.startsWith('BaseOutfit_')) {
-      const fittedOutfits = {
-        explorer: '#0d263d',
-        scientist: '#dbeaf0',
-        space: '#152d4a',
-        chef: '#f0eee7',
-        artist: '#49365f'
-      };
-      return fittedOutfits[state.outfit] || fittedOutfits.explorer;
-    }
+    if (name.startsWith('BaseOutfit_')) return '#0d263d';
     if (name.startsWith('Outfit_scientist_Coat')) return '#e8f4f4';
     if (name.startsWith('Outfit_scientist_Badge')) return state.accent;
     if (name.startsWith('Outfit_chef_Apron') || name.startsWith('Outfit_chef_Hat')) return '#f3f2e9';
@@ -325,9 +315,6 @@
     console.warn('[Orish Avatar 3D]', message);
   }
 
-  function createVAO(){return isWebGL2 ? gl.createVertexArray() : vaoExt.createVertexArrayOES();}
-  function bindVAO(vao){if(isWebGL2) gl.bindVertexArray(vao); else vaoExt.bindVertexArrayOES(vao);}
-
   function makeProgram(vsSource, fsSource) {
     const p=gl.createProgram(), vs=shader(gl.VERTEX_SHADER,vsSource), fs=shader(gl.FRAGMENT_SHADER,fsSource);
     gl.attachShader(p,vs);gl.attachShader(p,fs);gl.linkProgram(p);
@@ -352,9 +339,6 @@
 
   const VERT=`#version 300 es\nprecision highp float;\nin vec3 aPosition;\nin vec3 aNormal;\nuniform mat4 uMVP;\nuniform mat4 uModel;\nout vec3 vNormal;\nout vec3 vWorld;\nvoid main(){vec4 world=uModel*vec4(aPosition,1.0);vWorld=world.xyz;vNormal=mat3(uModel)*aNormal;gl_Position=uMVP*vec4(aPosition,1.0);}`;
   const FRAG=`#version 300 es\nprecision highp float;\nin vec3 vNormal;\nin vec3 vWorld;\nuniform vec3 uColor;\nuniform vec3 uCamera;\nout vec4 outColor;\nvoid main(){vec3 n=normalize(vNormal);vec3 l=normalize(vec3(-0.55,0.9,0.75));float d=max(dot(n,l),0.0);vec3 v=normalize(uCamera-vWorld);float rim=pow(1.0-max(dot(n,v),0.0),2.2);vec3 col=uColor*(0.48+0.62*d)+vec3(0.10,0.18,0.22)*rim;outColor=vec4(col,1.0);}`;
-
-  const VERT_WEBGL1=`precision highp float;\nattribute vec3 aPosition;\nattribute vec3 aNormal;\nuniform mat4 uMVP;\nuniform mat4 uModel;\nvarying vec3 vNormal;\nvarying vec3 vWorld;\nvoid main(){vec4 world=uModel*vec4(aPosition,1.0);vWorld=world.xyz;vNormal=mat3(uModel)*aNormal;gl_Position=uMVP*vec4(aPosition,1.0);}`;
-  const FRAG_WEBGL1=`precision highp float;\nvarying vec3 vNormal;\nvarying vec3 vWorld;\nuniform vec3 uColor;\nuniform vec3 uCamera;\nvoid main(){vec3 n=normalize(vNormal);vec3 l=normalize(vec3(-0.55,0.9,0.75));float d=max(dot(n,l),0.0);vec3 v=normalize(uCamera-vWorld);float rim=pow(1.0-max(dot(n,v),0.0),2.2);vec3 col=uColor*(0.48+0.62*d)+vec3(0.10,0.18,0.22)*rim;gl_FragColor=vec4(col,1.0);}`;
 
   window.addEventListener('orish-avatar:update', e => update(e.detail));
   window.addEventListener('DOMContentLoaded', init, {once:true});
