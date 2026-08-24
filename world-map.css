@@ -109,3 +109,33 @@ footer a{color:var(--cyan)}
   .mission-dock.collapsed .mission-actions{grid-column:1/-1;grid-template-columns:1fr}
   .mission-dock.collapsed .mission-actions a{min-height:44px}
 }
+
+/* Living-world animation layer. */
+.world-effects,.living-world{position:absolute;z-index:2;inset:0;width:100%;height:100%;pointer-events:none}
+.living-world>i{position:absolute;z-index:3;display:block;font-style:normal;filter:drop-shadow(0 4px 6px rgba(0,0,0,.45))}
+.cloud{color:rgba(255,255,255,.88);font-size:clamp(2.4rem,5vw,5rem);filter:blur(.4px) drop-shadow(0 5px 10px rgba(22,85,120,.25));animation:cloudDrift 24s linear infinite}
+.cloud-one{left:24%;top:5%}.cloud-two{left:55%;top:9%;font-size:3rem;animation-duration:31s;animation-delay:-16s}.cloud-three{left:72%;top:3%;font-size:2.2rem;animation-duration:27s;animation-delay:-8s}
+.flying-rocket{font-size:1.8rem;offset-path:path("M 820 165 C 900 70 1010 75 1080 10");offset-rotate:auto;animation:rocketFlight 9s ease-in-out infinite}
+.sailing-boat{font-size:1.55rem;animation:boatBob 1.8s ease-in-out infinite alternate}
+.boat-one{offset-path:path("M 470 520 C 590 555 710 540 850 505");offset-rotate:auto;animation:boatSail 18s linear infinite}
+.boat-two{offset-path:path("M 1010 560 C 900 590 800 585 680 550");offset-rotate:auto;animation:boatSail 23s linear infinite;animation-delay:-11s}
+.world-car{font-size:1.05rem;offset-rotate:auto;filter:drop-shadow(0 2px 3px rgba(0,0,0,.6))}
+.car-one{offset-path:path("M 190 390 C 350 330 480 390 610 330 S 820 260 930 190");animation:carDrive 14s linear infinite}
+.car-two{offset-path:path("M 510 430 C 650 470 790 440 960 380");animation:carDrive 12s linear infinite;animation-delay:-6s}
+.car-three{offset-path:path("M 320 300 C 460 265 610 270 760 235");animation:carDrive 18s linear infinite;animation-delay:-12s}
+.portal-live{width:48px;height:48px;border:4px solid rgba(108,248,239,.8);border-radius:50%;box-shadow:0 0 12px #54f4e9,0 0 28px #8a61ff,inset 0 0 16px #f7fdff;animation:portalBreathe 1.8s ease-in-out infinite}.portal-left{left:6.7%;top:54%}.portal-right{left:89.2%;top:54%}.portal-centre{left:42.7%;top:34%;width:34px;height:34px;animation-delay:-.8s}
+.water-light{width:90px;height:12px;border-radius:50%;background:rgba(134,255,250,.38);box-shadow:0 0 20px #58e5e5;animation:waterFlow 3s ease-in-out infinite}.water-one{left:46%;top:74%;transform:rotate(12deg)}.water-two{left:69%;top:63%;animation-delay:-1.2s}.water-three{left:30%;top:39%;width:65px;animation-delay:-2s}
+.world-beacon{width:8px;height:8px;border-radius:50%;background:#fff8a0;box-shadow:0 0 12px 5px #ffd962;animation:beaconFlash 1.4s ease-in-out infinite}.beacon-space{left:81%;top:14%}.beacon-cinema{left:49%;top:61%;animation-delay:-.6s}.beacon-maker{left:80%;top:67%;animation-delay:-1s}
+.cinema-ray{left:49%;top:60%;width:3px;height:95px;transform-origin:bottom;background:linear-gradient(transparent,rgba(255,226,109,.72));filter:blur(1px);animation:cinemaSweep 3.8s ease-in-out infinite}.ray-one{transform:rotate(-35deg)}.ray-two{transform:rotate(35deg);animation-delay:-1.9s}
+.focus-halo{position:absolute;z-index:4;width:115px;height:115px;border:4px solid var(--cyan);border-radius:50%;transform:translate(-50%,-50%);opacity:0;box-shadow:0 0 0 12px rgba(84,244,233,.16),0 0 34px #54f4e9}.focus-halo.pulse{animation:focusWorld 1s ease-out}
+@keyframes cloudDrift{0%{transform:translateX(-140px);opacity:0}10%,85%{opacity:.8}100%{transform:translateX(620px);opacity:0}}
+@keyframes rocketFlight{0%,12%{offset-distance:0;opacity:0}20%,78%{opacity:1}90%,100%{offset-distance:100%;opacity:0}}
+@keyframes boatSail{0%{offset-distance:0;transform:translateY(0)}50%{transform:translateY(-3px)}100%{offset-distance:100%;transform:translateY(0)}}
+@keyframes boatBob{to{transform:translateY(-3px) rotate(2deg)}}
+@keyframes carDrive{0%{offset-distance:0;opacity:0}6%,94%{opacity:1}100%{offset-distance:100%;opacity:0}}
+@keyframes portalBreathe{50%{transform:scale(1.15) rotate(20deg);filter:hue-rotate(35deg)}}
+@keyframes waterFlow{50%{transform:translateX(20px) scaleX(1.35);opacity:.45}}
+@keyframes beaconFlash{50%{transform:scale(2.2);opacity:.5}}
+@keyframes cinemaSweep{50%{transform:rotate(45deg);opacity:.35}}
+@keyframes focusWorld{0%{transform:translate(-50%,-50%) scale(.3);opacity:0}35%{opacity:1}100%{transform:translate(-50%,-50%) scale(1.55);opacity:0}}
+@media(max-width:700px){.cloud{font-size:3rem}.flying-rocket{font-size:1.45rem}.world-car{font-size:.9rem}.sailing-boat{font-size:1.3rem}}
