@@ -1,4 +1,4 @@
-const CACHE='orish-world-v148-readable-scene-life';
+const CACHE='orish-world-v149-road-locked-traffic';
 const SHELL=[
   './','./index.html','./styles.css','./app.js','./manifest.webmanifest','./world-map.html','./world-map.css','./world-map.js','./fossil-detective.html','./fossil-detective.css','./fossil-detective-fixes.css','./fossil-detective.js','./assets/orish-world-map-v2.webp','./assets/orish-fossil-detective-v2.webp','./assets/fossil-dig-bed-v3.webp',
   './toy-portal/index.html','./toy-portal/styles.css','./toy-portal/app.js',
