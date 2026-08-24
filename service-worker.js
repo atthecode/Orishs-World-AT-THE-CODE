@@ -1,8 +1,8 @@
-const CACHE='orish-world-v150-integrated-beta-polish';
+const CACHE='orish-world-v151-learning-cinema';
 const SHELL=[
   './','./index.html','./styles.css','./app.js','./manifest.webmanifest',
   './premium-preview.html','./premium-preview.css','./premium-preview-fixes.css','./premium-preview-additions.css','./premium-preview.js',
-  './world-map.html','./world-map.css','./world-map.js','./space-signal.html','./space-signal.css','./space-signal.js','./fossil-detective.html','./fossil-detective.css','./fossil-detective-fixes.css','./fossil-detective.js',
+  './world-map.html','./world-map.css','./world-map.js','./space-signal.html','./space-signal.css','./space-signal.js','./fossil-detective.html','./fossil-detective.css','./fossil-detective-fixes.css','./fossil-detective.js','./learning-cinema.html','./learning-cinema.css','./learning-cinema.js',
   './assets/orish-approved-hq.webp','./assets/orish-game-walk.webp','./assets/orish-world-map-v2.webp','./assets/orish-fossil-detective-v2.webp','./assets/fossil-dig-bed-v3.webp',
   './assets/audio/orish/welcome-orish-world.m4a','./assets/audio/orish/welcome-my-world.m4a','./assets/audio/orish/lets-go.m4a','./assets/audio/orish/fun-and-learn.m4a','./assets/audio/orish/signal-returned.m4a','./assets/audio/orish/move-through-observatory.m4a',
   './toy-portal/index.html','./toy-portal/styles.css','./toy-portal/app.js',
