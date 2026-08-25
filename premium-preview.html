@@ -66,6 +66,49 @@
         </div>
       </section>
 
+      <section class="beta-welcome preview-panel" aria-labelledby="betaWelcomeTitle">
+        <div class="beta-guide-card">
+          <img src="assets/orish-approved-hq.webp" alt="Orish, your beta guide">
+          <div>
+            <p class="premium-kicker">ORISH'S BETA WELCOME</p>
+            <h2 id="betaWelcomeTitle">Welcome to Orish's World.</h2>
+            <p>This is an early family testing experience, not the finished product. You are helping us test the first games, Learning Cinema, spoken guidance, mobile controls and the route through the world.</p>
+            <p>Some worlds are still being built. Please tell us what was fun, what was confusing, what did not work and what would make the experience better.</p>
+            <div class="beta-voice-actions">
+              <button id="playBetaWelcome" type="button">▶ Hear Orish welcome you</button>
+              <button id="stopBetaWelcome" type="button" disabled>■ Stop voice</button>
+            </div>
+            <p id="betaVoiceStatus" class="beta-status" aria-live="polite">🔇 Voice is off. Orish only speaks after you press the button.</p>
+          </div>
+        </div>
+
+        <div class="beta-explainer" aria-label="What the beta includes">
+          <div><b>1</b><strong>Explore</strong><span>Try the playable missions and cinema activities.</span></div>
+          <div><b>2</b><strong>Notice</strong><span>Look for confusing wording, controls or screen layouts.</span></div>
+          <div><b>3</b><strong>Tell us</strong><span>A grown-up records what worked and what should change.</span></div>
+        </div>
+
+        <div class="beta-community-grid">
+          <form id="betaFeedbackForm" class="beta-parent-card">
+            <p class="premium-kicker">GROWN-UP FEEDBACK</p>
+            <h3>Help us improve the next version</h3>
+            <label><span>What are you commenting on?</span><select id="feedbackArea"><option>Getting into the games</option><option>Space Signal</option><option>Fossil Detective</option><option>Learning Cinema</option><option>Spoken guidance</option><option>Mobile screen or buttons</option><option>Something else</option></select></label>
+            <label><span>What worked, what should change, or what could be better?</span><textarea id="feedbackMessage" maxlength="1000" required placeholder="Tell us what happened…"></textarea></label>
+            <div class="beta-card-actions"><button type="submit">Save my feedback</button><button id="shareFeedback" type="button" disabled>Share feedback</button></div>
+            <p id="feedbackStatus" class="beta-status" aria-live="polite">Feedback is private on this device until a grown-up chooses to share it.</p>
+          </form>
+
+          <section class="beta-parent-card referral-card" aria-labelledby="referralTitle">
+            <p class="premium-kicker">INVITE ANOTHER FAMILY</p>
+            <h3 id="referralTitle">Refer a friend to beta test</h3>
+            <p>Beta Stage 1 is planned for up to <strong>25 invited families</strong>. If that group is full, interested families can continue to the next testing stage.</p>
+            <button id="referFriend" type="button">↗ Refer a parent or guardian</button>
+            <button id="betaInterest" class="secondary-beta-button" type="button">Join this or the next beta stage</button>
+            <p id="referralStatus" class="beta-status" aria-live="polite">Invitations are parent-to-parent. Do not enter a child's contact details.</p>
+          </section>
+        </div>
+      </section>
+
       <section id="worlds" class="worlds-section">
         <div class="section-heading">
           <div><p class="premium-kicker">CHOOSE YOUR WORLD</p><h2>Every doorway is an adventure.</h2></div>
