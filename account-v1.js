@@ -77,6 +77,7 @@
     const profile = selectedProfile();
     $('readyPanel').hidden = !profile;
     $('deleteProfile').disabled = !profile;
+    $('clearConversationMemory').disabled = !profile;
     if (!profile) return;
     $('readyAvatar').textContent = profile.nickname.charAt(0).toUpperCase();
     $('readyName').textContent = profile.nickname;
@@ -111,6 +112,8 @@
       $('routineGate').checked = controls?.routineGateEnabled === true;
       document.querySelectorAll('[name="routineTask"]').forEach(input => { input.checked = (controls?.routineTasks || DEFAULT_ROUTINE_TASKS).includes(input.value); });
       $('familySupportFocus').value = controls?.familySupportFocus || '';
+      $('conversationMemory').value = controls?.conversationMemory || 'off';
+      $('memoryRetentionDays').value = String(controls?.memoryRetentionDays || 7);
     }
     $('profileName').focus();
   }
@@ -130,6 +133,8 @@
     $('routineGate').checked = false;
     document.querySelectorAll('[name="routineTask"]').forEach(input => { input.checked = DEFAULT_ROUTINE_TASKS.includes(input.value); });
     $('familySupportFocus').value = '';
+    $('conversationMemory').value = 'off';
+    $('memoryRetentionDays').value = '7';
     state.editing = false;
   }
 
@@ -161,7 +166,9 @@
       greetingStyle:$('greetingStyle').value,
       routineGateEnabled:$('routineGate').checked,
       routineTasks:[...document.querySelectorAll('[name="routineTask"]:checked')].map(input => input.value),
-      familySupportFocus:$('familySupportFocus').value
+      familySupportFocus:$('familySupportFocus').value,
+      conversationMemory:$('conversationMemory').value,
+      memoryRetentionDays:Number($('memoryRetentionDays').value)
     });
     state.selectedId = profile.id;
     closeProfileForm();
@@ -204,6 +211,12 @@
     $('profileForm').addEventListener('submit', saveProfile);
     $('exportData').addEventListener('click', exportData);
     $('deleteProfile').addEventListener('click', deleteSelectedProfile);
+    $('clearConversationMemory').addEventListener('click', () => {
+      const profile = selectedProfile();
+      if (!profile) return;
+      window.OrishConversationMemory?.clear(profile.id);
+      $('privacyMessage').textContent = 'Orish’s saved conversation summary was cleared for this profile.';
+    });
     $('playSchedule').addEventListener('change', () => {
       const preset = PLAY_PRESETS[$('playSchedule').value];
       if (!preset) return;
