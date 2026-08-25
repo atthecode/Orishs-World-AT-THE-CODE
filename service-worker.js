@@ -1,4 +1,4 @@
-const CACHE='orish-world-v159-conversation-idle-guard';
+const CACHE='orish-world-v160-safe-conversation-memory';
 const SHELL=[
   './','./index.html','./styles.css','./app.js','./manifest.webmanifest',
   './premium-preview.html','./premium-preview.css','./premium-preview-fixes.css','./premium-preview-additions.css','./premium-preview.js','./account.html','./account-v1.css','./account-schedule.css','./account-v1.js','./family-check-in.html','./family-check-in.css','./family-check-in.js',
@@ -6,7 +6,7 @@ const SHELL=[
   './assets/orish-approved-hq.webp','./assets/orish-game-walk.webp','./assets/orish-world-map-v2.webp','./assets/orish-fossil-detective-v2.webp','./assets/fossil-dig-bed-v3.webp',
   './assets/audio/orish/welcome-orish-world.m4a','./assets/audio/orish/welcome-my-world.m4a','./assets/audio/orish/lets-go.m4a','./assets/audio/orish/fun-and-learn.m4a','./assets/audio/orish/signal-returned.m4a','./assets/audio/orish/move-through-observatory.m4a',
   './toy-portal/index.html','./toy-portal/styles.css','./toy-portal/app.js',
-  './modules/security-store.js','./modules/beta-session-guard.js','./modules/conversation-idle-manager.js','./modules/curriculum-engine.js','./modules/age-game-engine.js','./modules/rewards-engine.js','./modules/profile-ui.js',
+  './modules/security-store.js','./modules/beta-session-guard.js','./modules/conversation-idle-manager.js','./modules/conversation-memory-store.js','./modules/curriculum-engine.js','./modules/age-game-engine.js','./modules/rewards-engine.js','./modules/profile-ui.js',
   './modules/mission-engine.js','./modules/routines-engine.js','./modules/kitchen-engine.js','./modules/maker-engine.js','./modules/creative-engine.js','./modules/visual-game-engine.js','./modules/family-engine.js',
   './modules/accessibility-engine.js','./modules/memory-game-engine.js','./modules/maths-game-engine.js','./modules/observation-game-engine.js','./modules/sequencing-game-engine.js','./modules/literacy-keyboard-engine.js','./modules/story-choice-engine.js','./modules/good-news-engine.js','./modules/parent-summary-engine.js','./modules/discovery-engine.js','./modules/life-skills-engine.js','./modules/global-history-engine.js','./modules/are-we-alone-engine.js','./modules/orish-intelligence-engine.js','./modules/parent-controls-engine.js','./modules/avatar-lab-engine.js','./modules/avatar-3d-viewer.js','./modules/open-voice-engine.js',
   './assets/models/avatar-base.glb','./assets/at-the-code-mark.webp','./assets/orish-explorer.webp','./assets/fossil-detective.webp','./assets/fraction-rescue.webp','./assets/learning-adventures.webp','./assets/icon-192.png','./assets/icon-512.png','./assets/icon-maskable-192.png','./assets/icon-maskable-512.png','./assets/apple-touch-icon.png'
