@@ -83,4 +83,71 @@
   ageTabs.forEach((item, index) => item.setAttribute('aria-selected', String(index === 0)));
   readProgress();
   addEventListener('storage', readProgress);
+
+  const betaClips = [
+    'assets/audio/orish/welcome-orish-world.m4a',
+    'assets/audio/orish/fun-and-learn.m4a'
+  ];
+  let betaAudio = null;
+  let betaClipIndex = 0;
+  const betaPlay = document.getElementById('playBetaWelcome');
+  const betaStop = document.getElementById('stopBetaWelcome');
+  const betaVoiceStatus = document.getElementById('betaVoiceStatus');
+  function stopBetaVoice(message = '🔇 Voice is off. Orish only speaks after you press the button.') {
+    if (betaAudio) { betaAudio.pause(); betaAudio.currentTime = 0; }
+    betaAudio = null; betaClipIndex = 0;
+    betaPlay.disabled = false; betaStop.disabled = true;
+    betaVoiceStatus.textContent = message;
+  }
+  function playNextBetaClip() {
+    if (betaClipIndex >= betaClips.length) {
+      stopBetaVoice('✓ Welcome finished. Full conversational guidance will be tested separately with parent permission.');
+      return;
+    }
+    betaAudio = new Audio(betaClips[betaClipIndex++]);
+    betaAudio.addEventListener('ended', playNextBetaClip, { once: true });
+    betaAudio.addEventListener('error', () => stopBetaVoice('The welcome recording could not play on this device. The written introduction is available above.'), { once: true });
+    betaAudio.play().catch(() => stopBetaVoice('Tap the welcome button again to allow sound.'));
+  }
+  betaPlay?.addEventListener('click', () => {
+    stopBetaVoice(); betaPlay.disabled = true; betaStop.disabled = false;
+    betaVoiceStatus.textContent = '🔊 Orish is speaking. Press Stop voice at any time.';
+    playNextBetaClip();
+  });
+  betaStop?.addEventListener('click', () => stopBetaVoice());
+
+  const feedbackForm = document.getElementById('betaFeedbackForm');
+  const shareFeedback = document.getElementById('shareFeedback');
+  const feedbackStatus = document.getElementById('feedbackStatus');
+  feedbackForm?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const area = document.getElementById('feedbackArea').value;
+    const message = document.getElementById('feedbackMessage').value.trim();
+    if (!message) return;
+    localStorage.setItem('orish-beta-feedback-draft-v1', JSON.stringify({ area, message, savedAt: new Date().toISOString() }));
+    shareFeedback.disabled = false;
+    feedbackStatus.textContent = '✓ Feedback saved privately on this device. Press Share feedback when ready.';
+  });
+  shareFeedback?.addEventListener('click', async () => {
+    const saved = JSON.parse(localStorage.getItem('orish-beta-feedback-draft-v1') || 'null');
+    if (!saved) return;
+    const text = `Orish's World beta feedback\nArea: ${saved.area}\n\n${saved.message}`;
+    try {
+      if (navigator.share) await navigator.share({ title: "Orish's World beta feedback", text });
+      else { await navigator.clipboard.writeText(text); feedbackStatus.textContent = '✓ Feedback copied. A grown-up can paste it into a message.'; }
+    } catch (error) { if (error?.name !== 'AbortError') feedbackStatus.textContent = 'Feedback remains saved privately on this device.'; }
+  });
+  document.getElementById('referFriend')?.addEventListener('click', async () => {
+    const share = { title: "Orish's World family beta", text: "You may be interested in helping test Orish's World, a parent-controlled learning universe for children.", url: location.href };
+    const status = document.getElementById('referralStatus');
+    try {
+      if (navigator.share) await navigator.share(share);
+      else { await navigator.clipboard.writeText(`${share.text} ${share.url}`); status.textContent = '✓ Beta invitation link copied.'; }
+    } catch (error) { if (error?.name !== 'AbortError') status.textContent = 'The invitation could not open. Please copy the page link instead.'; }
+  });
+  document.getElementById('betaInterest')?.addEventListener('click', () => {
+    localStorage.setItem('orish-beta-interest-v1', new Date().toISOString());
+    document.getElementById('referralStatus').textContent = '✓ Interest noted on this device. Secure invite registration will be connected before family recruitment opens.';
+  });
+  addEventListener('pagehide', () => stopBetaVoice());
 })();
