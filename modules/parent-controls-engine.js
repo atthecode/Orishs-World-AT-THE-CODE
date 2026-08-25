@@ -22,7 +22,7 @@
       kitchenLab: true,
       goodNews: true,
       parentMissions: true,
-      playSchedule: { preset:'morning', start:'07:00', end:'09:00', dailyMinutes:30, bedtimeMode:false },
+      playSchedule: { preset:'anytime', start:'00:00', end:'23:59', dailyMinutes:30, bedtimeMode:false },
       conversationalDailyMinutes: 10,
       conversationalDailyTurns: 20,
       trustedFamilyRoles: [...ROLE_IDS],
