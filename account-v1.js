@@ -2,7 +2,7 @@
   'use strict';
 
   const $ = id => document.getElementById(id);
-  const state = { principal:null, selectedId:'' };
+  const state = { principal:null, selectedId:'', editing:false };
   const AGE_LABELS = {'0-2':'Birth–3 · Parent & Me','4-6':'Ages 4–6 · Early Explorers','7-9':'Ages 7–10 · Explorers','10-12':'Ages 11–13 · Investigators','13-16':'Ages 14–16 · Advanced Missions'};
   const PLAY_PRESETS = {'morning':['07:00','09:00'],'after-school':['15:30','18:00'],'evening':['18:00','19:00'],'bedtime':['19:00','20:00']};
 
@@ -84,8 +84,25 @@
     $('readyDescription').textContent = `${AGE_LABELS[profile.ageBand] || profile.ageBand} · ${profile.readAloud ? 'spoken guide available' : 'spoken guide off'}${schedule ? ` · ${schedule.start}–${schedule.end} · ${schedule.dailyMinutes} min/day` : ''}`;
   }
 
-  function openProfileForm() {
+  function openProfileForm(editing = false) {
+    state.editing = editing === true;
     $('profileForm').hidden = false;
+    $('profileFormTitle').textContent = state.editing ? 'Edit profile and play schedule' : 'Create child profile';
+    if (state.editing) {
+      const profile = selectedProfile();
+      if (!profile) return;
+      const controls = window.OrishParentControls?.get(profile.id, profile.ageBand);
+      $('profileName').value = profile.nickname;
+      $('profileAge').value = profile.ageBand;
+      $('spokenGuide').checked = profile.readAloud !== false;
+      $('offlineGuide').checked = profile.offlineActivities !== false;
+      $('readingGuide').checked = controls?.spokenSupport !== false;
+      const preset = controls?.playSchedule?.preset || 'custom';
+      $('playSchedule').value = PLAY_PRESETS[preset] ? preset : 'custom';
+      $('playStart').value = controls?.playSchedule?.start || '07:00';
+      $('playEnd').value = controls?.playSchedule?.end || '09:00';
+      $('dailyPlayMinutes').value = String(controls?.playSchedule?.dailyMinutes || 30);
+    }
     $('profileName').focus();
   }
 
@@ -99,13 +116,17 @@
     $('playStart').value = '07:00';
     $('playEnd').value = '09:00';
     $('dailyPlayMinutes').value = '30';
+    state.editing = false;
   }
 
   function saveProfile(event) {
     event.preventDefault();
     const store = window.OrishSecurityStore;
     if (!store) return;
+    const existing = state.editing ? selectedProfile() : null;
     const profile = store.saveProfile({
+      id:existing?.id,
+      createdAt:existing?.createdAt,
       nickname:$('profileName').value,
       ageBand:$('profileAge').value,
       readAloud:$('spokenGuide').checked,
@@ -158,7 +179,8 @@
   }
 
   async function init() {
-    $('newProfileButton').addEventListener('click', openProfileForm);
+    $('newProfileButton').addEventListener('click', () => openProfileForm(false));
+    $('editScheduleButton').addEventListener('click', () => openProfileForm(true));
     $('closeProfileForm').addEventListener('click', closeProfileForm);
     $('profileForm').addEventListener('submit', saveProfile);
     $('exportData').addEventListener('click', exportData);
