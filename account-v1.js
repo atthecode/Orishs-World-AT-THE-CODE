@@ -4,6 +4,7 @@
   const $ = id => document.getElementById(id);
   const state = { principal:null, selectedId:'' };
   const AGE_LABELS = {'0-2':'Birth–3 · Parent & Me','4-6':'Ages 4–6 · Early Explorers','7-9':'Ages 7–10 · Explorers','10-12':'Ages 11–13 · Investigators','13-16':'Ages 14–16 · Advanced Missions'};
+  const PLAY_PRESETS = {'morning':['07:00','09:00'],'after-school':['15:30','18:00'],'evening':['18:00','19:00'],'bedtime':['19:00','20:00']};
 
   function setStep(step) {
     ['stepAccount','stepProfile','stepWorld'].forEach((id,index) => $(id)?.classList.toggle('active', index < step));
@@ -78,7 +79,9 @@
     if (!profile) return;
     $('readyAvatar').textContent = profile.nickname.charAt(0).toUpperCase();
     $('readyName').textContent = profile.nickname;
-    $('readyDescription').textContent = `${AGE_LABELS[profile.ageBand] || profile.ageBand} · ${profile.readAloud ? 'spoken guide available' : 'spoken guide off'}`;
+    const controls = window.OrishParentControls?.get(profile.id, profile.ageBand);
+    const schedule = controls?.playSchedule;
+    $('readyDescription').textContent = `${AGE_LABELS[profile.ageBand] || profile.ageBand} · ${profile.readAloud ? 'spoken guide available' : 'spoken guide off'}${schedule ? ` · ${schedule.start}–${schedule.end} · ${schedule.dailyMinutes} min/day` : ''}`;
   }
 
   function openProfileForm() {
@@ -92,6 +95,10 @@
     $('spokenGuide').checked = true;
     $('readingGuide').checked = true;
     $('offlineGuide').checked = true;
+    $('playSchedule').value = 'morning';
+    $('playStart').value = '07:00';
+    $('playEnd').value = '09:00';
+    $('dailyPlayMinutes').value = '30';
   }
 
   function saveProfile(event) {
@@ -111,7 +118,10 @@
       spokenSupport:$('spokenGuide').checked,
       phonicsGuide:$('readingGuide').checked,
       offlineActivities:$('offlineGuide').checked,
-      learningEvidence:true
+      learningEvidence:true,
+      playSchedule:{preset:$('playSchedule').value,start:$('playStart').value,end:$('playEnd').value,dailyMinutes:Number($('dailyPlayMinutes').value),bedtimeMode:$('playSchedule').value === 'bedtime'},
+      conversationalDailyMinutes:10,
+      conversationalDailyTurns:20
     });
     state.selectedId = profile.id;
     closeProfileForm();
@@ -124,23 +134,14 @@
     const store = window.OrishSecurityStore;
     const profiles = store?.getProfiles() || [];
     const payload = {exportedAt:new Date().toISOString(), source:'Orish’s World beta device data', profiles, activeProfileId:store?.getActiveProfileId() || ''};
-    const report = [
-      "ORISH'S WORLD @ THE CODE — PARENT DATA EXPORT",
-      'Private copy prepared for the parent or guardian.',
-      'This plain-text file contains the Orish profiles and learning settings saved on this device.',
-      '',
-      JSON.stringify(payload, null, 2)
-    ].join('\n');
-    const blob = new Blob(['\uFEFF', report], {type:'text/plain;charset=utf-8'});
+    const blob = new Blob([JSON.stringify(payload,null,2)], {type:'application/json'});
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'orish-world-parent-data-export.txt';
-    document.body.appendChild(link);
+    link.download = 'orish-world-device-data.json';
     link.click();
-    link.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 2000);
-    $('privacyMessage').textContent = 'A private Orish’s World text copy was prepared. Save it to Files; do not open it in another shopping or social app.';
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    $('privacyMessage').textContent = 'A copy of this device’s Orish profile data was prepared.';
   }
 
   function deleteSelectedProfile() {
@@ -162,6 +163,12 @@
     $('profileForm').addEventListener('submit', saveProfile);
     $('exportData').addEventListener('click', exportData);
     $('deleteProfile').addEventListener('click', deleteSelectedProfile);
+    $('playSchedule').addEventListener('change', () => {
+      const preset = PLAY_PRESETS[$('playSchedule').value];
+      if (!preset) return;
+      $('playStart').value = preset[0];
+      $('playEnd').value = preset[1];
+    });
     state.principal = await getPrincipal();
     if (!state.principal) { showSignedOut(); return; }
     $('loadingState').hidden = true;
