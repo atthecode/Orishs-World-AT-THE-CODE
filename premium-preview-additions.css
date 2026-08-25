@@ -31,3 +31,15 @@
 .future-card:after{content:"PLANNED";position:absolute;left:18px;top:18px;padding:7px 10px;border-radius:999px;background:rgba(8,19,44,.82);color:#fff4b0;font-size:.62rem;font-weight:1000;letter-spacing:.1em}
 button:focus-visible,a:focus-visible{outline:4px solid #fff36b;outline-offset:3px}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.floating-object{animation:none}.play-here-button{transition:none}}
+
+/* One unmistakable route into the beta. */
+.simplified-entry{display:grid!important;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:12px!important}
+.simplified-entry>a{min-width:0;white-space:normal;text-align:center;justify-content:center}
+.journey-strip{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);align-items:stretch;gap:10px;margin:18px 0 8px}
+.journey-strip>span{display:grid;grid-template-columns:36px minmax(0,1fr);grid-template-rows:auto auto;column-gap:10px;align-items:center;padding:12px;border:1px solid rgba(124,236,255,.28);border-radius:16px;background:rgba(3,25,49,.58);min-width:0}
+.journey-strip b{grid-row:1/3;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#ffdb62;color:#09213c;font-size:1rem}
+.journey-strip strong,.journey-strip small{min-width:0;overflow-wrap:anywhere}
+.journey-strip strong{font-size:.92rem;color:#fff}
+.journey-strip small{font-size:.73rem;line-height:1.3;color:#b9d7e8}
+.journey-strip>i{align-self:center;color:#75eeff;font-style:normal;font-weight:900}
+@media(max-width:760px){.simplified-entry{grid-template-columns:1fr}.journey-strip{grid-template-columns:1fr;gap:8px}.journey-strip>i{display:none}.journey-strip>span{width:100%}}
