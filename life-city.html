@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#071624">
+  <title>Life City: Pressure Test — Orish's World</title>
+  <link rel="stylesheet" href="life-city.css?v=20260825-1">
+  <script src="modules/security-store.js" defer></script>
+  <script src="modules/parent-controls-engine.js" defer></script>
+  <script src="modules/beta-session-guard.js" defer></script>
+  <script src="life-city.js?v=20260825-1" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a href="world-map.html?world=city" class="back-link">← World map</a>
+    <div class="brand"><small>ORISH'S WORLD · ADVANCED MISSIONS</small><strong>LIFE CITY // PRESSURE TEST</strong></div>
+    <button id="soundToggle" class="icon-button" type="button" aria-label="Turn sound on">🔇</button>
+  </header>
+
+  <main>
+    <section class="hero" id="introPanel">
+      <div class="city-visual" aria-hidden="true">
+        <div class="grid-glow"></div>
+        <div class="skyline"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="signal-line"></div>
+        <div class="case-stamp">CASE 14–16 // LC-01</div>
+      </div>
+      <div class="hero-copy">
+        <p class="eyebrow">ADVANCED LEVEL 1 · STRATEGY / CIVICS / FINANCE</p>
+        <h1>A learning hub must reopen. The city cannot fund everything.</h1>
+        <p class="lead">You have one connected case. Separate evidence from noise, choose a workable budget, absorb an unexpected cost and make a public decision you can defend.</p>
+        <div class="case-facts">
+          <span><b>100</b> resource credits</span>
+          <span><b>5</b> evidence sources</span>
+          <span><b>4</b> decision stages</span>
+          <span><b>1</b> final strategy</span>
+        </div>
+        <div class="brief-box">
+          <strong>CASE RULE</strong>
+          <p>There is no perfect option. Your score comes from how well you protect evidence quality, budget control, access and resilience at the same time.</p>
+        </div>
+        <div class="hero-actions">
+          <button id="startMission" class="primary" type="button">Open the case file</button>
+          <button class="secondary speak" data-speak="Life City Pressure Test. A community learning hub needs to reopen, but the city cannot fund every request. Check the evidence, protect the budget, plan for unexpected costs and make a public decision you can defend." type="button">🔉 Hear briefing</button>
+        </div>
+        <p class="safety-note">Educational simulation only · no real financial or legal advice · no public posting or open chat.</p>
+      </div>
+    </section>
+
+    <section class="game-shell" id="gameShell" hidden>
+      <div class="mission-hud">
+        <div><small>CASE STAGE</small><strong id="stageName">Training</strong></div>
+        <div><small>CASE SCORE</small><strong id="caseScore">0</strong></div>
+        <div><small>DECISIONS</small><strong><span id="decisionCount">0</span>/4</strong></div>
+        <div class="progress-track" aria-label="Case progress"><span id="progressBar"></span></div>
+      </div>
+
+      <section class="metric-grid" aria-label="Strategy indicators">
+        <article><div><small>EVIDENCE</small><strong id="evidenceValue">50</strong></div><span><i id="evidenceBar"></i></span></article>
+        <article><div><small>BUDGET</small><strong id="budgetValue">50</strong></div><span><i id="budgetBar"></i></span></article>
+        <article><div><small>ACCESS</small><strong id="accessValue">50</strong></div><span><i id="accessBar"></i></span></article>
+        <article><div><small>RESILIENCE</small><strong id="resilienceValue">50</strong></div><span><i id="resilienceBar"></i></span></article>
+      </section>
+
+      <div class="workspace">
+        <aside class="orish-console">
+          <div class="orish-chip"><img src="assets/orish-approved-hq.webp" alt="Orish"><span>ORISH // CASE GUIDE</span></div>
+          <p id="guideText">Before the live case starts, prove that you can tell strong evidence from a loud claim.</p>
+          <button id="guideSpeak" class="secondary" type="button">🔉 Read guidance</button>
+          <div class="principle-card"><small>INVESTIGATOR PRINCIPLE</small><strong id="principleTitle">Evidence beats volume</strong><p id="principleText">A confident claim is not automatically a reliable claim. Check source, method and relevance.</p></div>
+        </aside>
+
+        <section class="case-panel" id="casePanel" aria-live="polite">
+          <div class="panel-head"><div><p class="eyebrow" id="stageEyebrow">TRAINING // SOURCE CHECK</p><h2 id="stageTitle">Which source deserves the most trust?</h2></div><span id="stageTag">TRAINING</span></div>
+          <p class="stage-copy" id="stageCopy">The hub roof may be unsafe. Which source should carry the most weight when deciding whether repair work is required?</p>
+          <div id="stageVisual" class="stage-visual"></div>
+          <div id="choiceGrid" class="choice-grid"></div>
+          <p id="feedback" class="feedback" role="status"></p>
+          <div class="panel-actions"><button id="continueButton" class="primary" type="button" hidden>Continue case</button></div>
+        </section>
+      </div>
+
+      <section class="decision-log" aria-labelledby="decisionLogTitle">
+        <div><p class="eyebrow">DECISION LOG</p><h2 id="decisionLogTitle">Your strategy trail</h2></div>
+        <ol id="decisionLog"><li>No live decisions recorded yet.</li></ol>
+      </section>
+    </section>
+  </main>
+
+  <div class="completion" id="completion" hidden>
+    <section>
+      <p class="eyebrow">CASE CLOSED // ADVANCED LEVEL 1</p>
+      <h2 id="completionTitle">You kept the system workable under pressure.</h2>
+      <p id="completionCopy">Your final result balances evidence, money, access and resilience. The important part is not choosing the cheapest option—it is being able to explain the trade-offs.</p>
+      <div class="result-grid">
+        <article><small>FINAL CASE SCORE</small><strong id="finalScore">0</strong><span>/ 1000</span></article>
+        <article><small>EXPLORER REWARD</small><strong id="finalStars">0 ★</strong><span id="badgeText">Life City Strategist</span></article>
+      </div>
+      <div class="final-metrics" id="finalMetrics"></div>
+      <div class="final-brief"><small>YOUR CASE SUMMARY</small><p id="finalBrief"></p></div>
+      <button class="secondary speak" data-speak="Case closed. Strong strategy means checking evidence, protecting limited resources, planning for shocks and explaining why a decision is fair and workable." type="button">🔉 Hear Orish debrief</button>
+      <a class="secondary link-button" href="life-city.html?replay=1">Replay with a different strategy</a>
+      <a class="primary link-button" href="world-map.html?world=city">Return to Life City</a>
+      <p class="real-world">OFF-SCREEN CHALLENGE: find one real public decision in your local area and list what evidence you would want before forming an opinion. Do not post personal information.</p>
+    </section>
+  </div>
+</body>
+</html>
