@@ -16,7 +16,7 @@
   if(!allowedNow()){overlay('It is not play time yet.',`Your grown-up chose ${schedule.start}–${schedule.end}. Orish will be ready during that time.`);return}
   let routineConfirmed=false;try{routineConfirmed=JSON.parse(localStorage.getItem(ROUTINE_KEY)||'{}')?.[dateKey]?.[profile.id]===true}catch{}
   if(controls.routineGateEnabled===true&&!routineConfirmed){overlay('A grown-up check-in is needed.','Complete or pause today’s family routine together before opening the games.',false,true);return}
-  if(schedule.bedtimeMode===true&&/(space-signal|fossil-detective)/.test(location.pathname)){overlay('Bedtime Wind-Down is active.','Energetic missions are resting now. Choose a calm story, sound or creative activity instead.',true);return}
+  if(schedule.bedtimeMode===true&&/(space-signal|fossil-detective|life-city)/.test(location.pathname)){overlay('Bedtime Wind-Down is active.','Energetic missions are resting now. Choose a calm story, sound or creative activity instead.',true);return}
   const limitSeconds=Number(schedule.dailyMinutes||30)*60;if(usedSeconds()>=limitSeconds){overlay('Today’s beta time is complete.','Great exploring. Come back tomorrow, or try something away from the screen.');return}
   document.body.classList.toggle('orish-bedtime-mode',schedule.bedtimeMode===true);
   const pill=document.createElement('div');pill.className='beta-time-pill';pill.setAttribute('aria-live','polite');document.body.appendChild(pill);let last=Date.now();
