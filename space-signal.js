@@ -167,7 +167,7 @@
     if (mini) { openMiniMission(mini); return; }
     const trace = nearestTrace(); const distance = trace ? Math.hypot(player.x-trace.x,player.y-trace.y) : Infinity;
     if (trace && distance < 88) {
-      trace.found = true; foundCount++; scannerPower = 8; ui.evidence.textContent = String(foundCount); ui.stars.textContent = String(300 - (3-foundCount)*10);
+      trace.found = true; foundCount++; scannerPower = 8; ui.evidence.textContent = String(foundCount); ui.stars.textContent = String(Number(ui.stars.textContent) + 10);
       ui.comms.textContent = `${trace.label} secured. Evidence ${foundCount} of 3.`; ui.objective.textContent = foundCount < 3 ? `Find trace ${foundCount + 1}` : 'Return to the evidence lab'; beep(880,.22);
       saveProgress('playing');
       if (foundCount === 3) setTimeout(openAnalysis, 950);
