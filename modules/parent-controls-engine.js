@@ -31,6 +31,8 @@
       routineGateEnabled: false,
       routineTasks: ['wash','teeth','dress','breakfast','bag'],
       familySupportFocus: '',
+      conversationMemory: 'off',
+      memoryRetentionDays: 7,
       trustedFamilyRoles: [...ROLE_IDS],
       futureLiveAI: false,
       futureWebSearch: false,
@@ -71,6 +73,8 @@
       routineGateEnabled: input.routineGateEnabled === true,
       routineTasks: Array.isArray(input.routineTasks) ? input.routineTasks.filter(task => ['wash','teeth','dress','breakfast','bag','listen','tidy','calm'].includes(task)).slice(0,8) : base.routineTasks,
       familySupportFocus: String(input.familySupportFocus || '').replace(/[<>\u0000-\u001f]/g,'').trim().slice(0,240),
+      conversationMemory: ['off','session','last-summary'].includes(input.conversationMemory) ? input.conversationMemory : base.conversationMemory,
+      memoryRetentionDays: [1,7,30].includes(Number(input.memoryRetentionDays)) ? Number(input.memoryRetentionDays) : base.memoryRetentionDays,
       trustedFamilyRoles: roles.length ? [...new Set(roles)] : ['parent'],
       // Future online-capability flags are deliberately locked OFF in this prototype.
       futureLiveAI: false,
