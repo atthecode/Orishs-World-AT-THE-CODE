@@ -3,6 +3,7 @@
 
   const KEY = 'orish.v1.parentControls';
   const ROLE_IDS = ['parent','sibling','grandparent','family'];
+  const CAREGIVER_TITLES = ['parent','parents','mother','father','guardian','grandparent','teacher','grown-up'];
 
   function safeParse(value, fallback) {
     try { return value ? JSON.parse(value) : fallback; } catch { return fallback; }
@@ -68,7 +69,7 @@
       conversationalDailyMinutes: Math.min(10, Math.max(0, Number(input.conversationalDailyMinutes) || base.conversationalDailyMinutes)),
       conversationalDailyTurns: Math.min(20, Math.max(0, Number(input.conversationalDailyTurns) || base.conversationalDailyTurns)),
       conversationIdleSeconds: Math.min(90, Math.max(30, Number(input.conversationIdleSeconds) || base.conversationIdleSeconds)),
-      caregiverTitle: ['parent','mother','father','guardian','grandparent','grown-up'].includes(input.caregiverTitle) ? input.caregiverTitle : base.caregiverTitle,
+      caregiverTitle: CAREGIVER_TITLES.includes(input.caregiverTitle) ? input.caregiverTitle : base.caregiverTitle,
       greetingStyle: ['hello','good-morning','grand-rising','rich-risings','grand-evening','grand-night'].includes(input.greetingStyle) ? input.greetingStyle : base.greetingStyle,
       routineGateEnabled: input.routineGateEnabled === true,
       routineTasks: Array.isArray(input.routineTasks) ? input.routineTasks.filter(task => ['wash','teeth','dress','breakfast','bag','listen','tidy','calm'].includes(task)).slice(0,8) : base.routineTasks,
@@ -135,5 +136,5 @@
     return enabled.length ? enabled.join(' • ') : 'Only core guided learning is enabled';
   }
 
-  window.OrishParentControls = { KEY, ROLE_IDS, defaults, normalise, get, save, reset, remove, isRoleApproved, describe };
+  window.OrishParentControls = { KEY, ROLE_IDS, CAREGIVER_TITLES, defaults, normalise, get, save, reset, remove, isRoleApproved, describe };
 })();
