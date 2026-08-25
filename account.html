@@ -7,6 +7,7 @@
   <meta name="description" content="Secure parent sign-in and child profile selection for Orish's World.">
   <title>Parent Sign In — Orish's World</title>
   <link rel="stylesheet" href="account-v1.css?v=20260824-1">
+  <link rel="stylesheet" href="account-schedule.css?v=20260825-1">
   <script src="modules/security-store.js" defer></script>
   <script src="modules/parent-controls-engine.js" defer></script>
   <script src="account-v1.js?v=20260824-1" defer></script>
@@ -86,6 +87,13 @@
             <label><span>Child’s chosen name <small>Do not use a full legal name</small></span><input id="profileName" maxlength="30" autocomplete="off" required placeholder="e.g. Star Explorer"></label>
             <label><span>Age experience</span><select id="profileAge" required><option value="0-2">Birth–3 · Parent & Me</option><option value="4-6">Ages 4–6 · Early Explorers</option><option value="7-9" selected>Ages 7–10 · Explorers</option><option value="10-12">Ages 11–13 · Investigators</option><option value="13-16">Ages 14–16 · Advanced Missions</option></select></label>
             <fieldset><legend>Learning support</legend><label class="switch-row"><span><b>Spoken guide</b><small>Show a 🔉 button for instructions and choices</small></span><input id="spokenGuide" type="checkbox" checked></label><label class="switch-row"><span><b>Extra reading guidance</b><small>Visual clues and explanations without changing the level</small></span><input id="readingGuide" type="checkbox" checked></label><label class="switch-row"><span><b>Off-screen activities</b><small>Orish can suggest safe real-world missions</small></span><input id="offlineGuide" type="checkbox" checked></label></fieldset>
+            <fieldset class="schedule-fieldset"><legend>Beta play schedule</legend>
+              <label><span>Choose a preset or set your own time</span><select id="playSchedule"><option value="morning">Morning Mission · 07:00–09:00</option><option value="after-school">After School · 15:30–18:00</option><option value="evening">Evening Explorer · 18:00–19:00</option><option value="bedtime">Bedtime Wind-Down · 19:00–20:00</option><option value="custom">Set my own time</option></select></label>
+              <div class="schedule-times"><label><span>Start</span><input id="playStart" type="time" value="07:00"></label><label><span>Finish</span><input id="playEnd" type="time" value="09:00"></label></div>
+              <label><span>Daily testing allowance</span><select id="dailyPlayMinutes"><option value="15">15 minutes</option><option value="20">20 minutes</option><option value="30" selected>30 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option></select></label>
+              <p class="schedule-note"><b>Bedtime Wind-Down</b> opens calm stories, sounds and creative activities rather than energetic missions. The daily allowance is shared across the selected time window.</p>
+            </fieldset>
+            <div class="cost-control"><b>Beta cost protection</b><span>Conversational Orish: maximum 10 minutes or 20 exchanges a day when activated · AI video generation: off</span></div>
             <div class="locked-safety"><b>Locked off in this beta</b><span>Camera uploads · location · open chat · public profile · unrestricted AI</span></div>
             <button class="primary-button" type="submit">Save approved profile</button>
           </form>
