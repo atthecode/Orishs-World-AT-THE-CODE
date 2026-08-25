@@ -1,4 +1,4 @@
-const CACHE='orish-world-v166-older-games-hard-mode';
+const CACHE='orish-world-v167-life-city-sound';
 const SHELL=[
   './','./index.html','./styles.css','./app.js','./manifest.webmanifest',
   './premium-preview.html','./premium-preview.css','./premium-preview-fixes.css','./premium-preview-additions.css','./premium-preview.js','./account.html','./account-v1.css','./account-schedule.css','./account-v1.js','./family-check-in.html','./family-check-in.css','./family-check-in.js',
