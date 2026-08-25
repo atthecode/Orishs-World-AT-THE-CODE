@@ -5,6 +5,7 @@
   const state = { principal:null, selectedId:'', editing:false };
   const AGE_LABELS = {'0-2':'Birth–3 · Parent & Me','4-6':'Ages 4–6 · Early Explorers','7-9':'Ages 7–10 · Explorers','10-12':'Ages 11–13 · Investigators','13-16':'Ages 14–16 · Advanced Missions'};
   const PLAY_PRESETS = {'morning':['07:00','09:00'],'after-school':['15:30','18:00'],'evening':['18:00','19:00'],'bedtime':['19:00','20:00']};
+  const DEFAULT_ROUTINE_TASKS = ['wash','teeth','dress','breakfast','bag'];
 
   function setStep(step) {
     ['stepAccount','stepProfile','stepWorld'].forEach((id,index) => $(id)?.classList.toggle('active', index < step));
@@ -82,6 +83,9 @@
     const controls = window.OrishParentControls?.get(profile.id, profile.ageBand);
     const schedule = controls?.playSchedule;
     $('readyDescription').textContent = `${AGE_LABELS[profile.ageBand] || profile.ageBand} · ${profile.readAloud ? 'spoken guide available' : 'spoken guide off'}${schedule ? ` · ${schedule.start}–${schedule.end} · ${schedule.dailyMinutes} min/day` : ''}`;
+    const enter = document.querySelector('.enter-button');
+    enter.href = controls?.routineGateEnabled ? 'family-check-in.html' : 'world-map.html';
+    enter.innerHTML = controls?.routineGateEnabled ? 'CONTINUE TO FAMILY CHECK-IN <span>→</span>' : "ENTER ORISH'S WORLD <span>→</span>";
   }
 
   function openProfileForm(editing = false) {
@@ -102,6 +106,11 @@
       $('playStart').value = controls?.playSchedule?.start || '07:00';
       $('playEnd').value = controls?.playSchedule?.end || '09:00';
       $('dailyPlayMinutes').value = String(controls?.playSchedule?.dailyMinutes || 30);
+      $('caregiverTitle').value = controls?.caregiverTitle || 'parent';
+      $('greetingStyle').value = controls?.greetingStyle || 'hello';
+      $('routineGate').checked = controls?.routineGateEnabled === true;
+      document.querySelectorAll('[name="routineTask"]').forEach(input => { input.checked = (controls?.routineTasks || DEFAULT_ROUTINE_TASKS).includes(input.value); });
+      $('familySupportFocus').value = controls?.familySupportFocus || '';
     }
     $('profileName').focus();
   }
@@ -116,6 +125,11 @@
     $('playStart').value = '07:00';
     $('playEnd').value = '09:00';
     $('dailyPlayMinutes').value = '30';
+    $('caregiverTitle').value = 'parent';
+    $('greetingStyle').value = 'hello';
+    $('routineGate').checked = false;
+    document.querySelectorAll('[name="routineTask"]').forEach(input => { input.checked = DEFAULT_ROUTINE_TASKS.includes(input.value); });
+    $('familySupportFocus').value = '';
     state.editing = false;
   }
 
@@ -142,7 +156,12 @@
       learningEvidence:true,
       playSchedule:{preset:$('playSchedule').value,start:$('playStart').value,end:$('playEnd').value,dailyMinutes:Number($('dailyPlayMinutes').value),bedtimeMode:$('playSchedule').value === 'bedtime'},
       conversationalDailyMinutes:10,
-      conversationalDailyTurns:20
+      conversationalDailyTurns:20,
+      caregiverTitle:$('caregiverTitle').value,
+      greetingStyle:$('greetingStyle').value,
+      routineGateEnabled:$('routineGate').checked,
+      routineTasks:[...document.querySelectorAll('[name="routineTask"]:checked')].map(input => input.value),
+      familySupportFocus:$('familySupportFocus').value
     });
     state.selectedId = profile.id;
     closeProfileForm();
