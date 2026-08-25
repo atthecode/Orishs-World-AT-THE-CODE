@@ -10,6 +10,7 @@
   <script src="modules/security-store.js" defer></script>
   <script src="modules/parent-controls-engine.js" defer></script>
   <script src="modules/beta-session-guard.js" defer></script>
+  <script src="life-city-play.js?v=20260825-2" defer></script>
   <script src="life-city.js?v=20260825-2" defer></script>
 </head>
 <body>
@@ -21,27 +22,12 @@
 
   <main>
     <section class="hero" id="introPanel">
-      <div class="city-visual" aria-hidden="true">
-        <div class="grid-glow"></div>
-        <div class="skyline"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-        <div class="signal-line"></div>
-        <div class="case-stamp">CASE 14–16 // LC-01</div>
-      </div>
+      <div class="city-visual" aria-hidden="true"><div class="grid-glow"></div><div class="skyline"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="signal-line"></div><div class="case-stamp">CASE 14–16 // LC-01</div></div>
       <div class="hero-copy">
-        <p class="eyebrow">ADVANCED LEVEL 1 · EXPLORATION / STRATEGY / CIVICS</p>
-        <h1>Enter the city. Find the evidence. Keep the system working.</h1>
-        <p class="lead">First, move through Life City and scan four evidence stations. Then use what you found to solve a connected pressure case where your decisions have consequences.</p>
-        <div class="case-facts">
-          <span><b>4</b> city scan stations</span>
-          <span><b>100</b> resource credits</span>
-          <span><b>4</b> live decisions</span>
-          <span><b>1</b> final strategy</span>
-        </div>
+        <p class="eyebrow">ADVANCED LEVEL 1 · EXPLORATION / STRATEGY / CIVICS</p><h1>Enter the city. Find the evidence. Keep the system working.</h1><p class="lead">First, move through Life City and scan four evidence stations. Then use what you found to solve a connected pressure case where your decisions have consequences.</p>
+        <div class="case-facts"><span><b>4</b> city scan stations</span><span><b>100</b> resource credits</span><span><b>4</b> live decisions</span><span><b>1</b> final strategy</span></div>
         <div class="brief-box"><strong>HOW TO PLAY</strong><p>Move with the on-screen arrows or keyboard. Reach a glowing station, press SCAN, collect the evidence, then unlock the strategy desk.</p></div>
-        <div class="hero-actions">
-          <button id="startMission" class="primary" type="button">ENTER LIFE CITY</button>
-          <button class="secondary speak" data-speak="Life City Pressure Test. Move through the city, reach four glowing evidence stations and scan each one. When your evidence pack is complete, open the strategy desk and keep the city plan working under pressure." type="button">🔉 Hear mission</button>
-        </div>
+        <div class="hero-actions"><button id="startMission" class="primary" type="button">ENTER LIFE CITY</button><button class="secondary speak" data-speak="Life City Pressure Test. Move through the city, reach four glowing evidence stations and scan each one. When your evidence pack is complete, open the strategy desk and keep the city plan working under pressure." type="button">🔉 Hear mission</button></div>
         <p class="safety-note">Educational simulation only · no real financial or legal advice · no public posting or open chat.</p>
       </div>
     </section>
@@ -49,73 +35,18 @@
     <section class="city-run" id="exploreShell" hidden>
       <div class="run-head"><div><p class="eyebrow">PLAYABLE MISSION // CITY SCAN</p><h2>Collect the four evidence signals.</h2><p>Move to a glowing station. When you are close enough, scan it.</p></div><div class="scan-count"><small>SCANNED</small><strong><span id="scanCount">0</span>/4</strong></div></div>
       <div class="run-layout">
-        <div class="city-board" id="cityBoard">
-          <canvas id="cityCanvas" width="720" height="480" aria-label="Top-down Life City mission map"></canvas>
-          <div class="run-overlay"><div id="runStatus" class="run-status" aria-live="polite">Move toward any glowing evidence station.</div><div id="distancePill" class="distance-pill">SCAN RANGE —</div></div>
-        </div>
-        <aside class="run-console">
-          <h3>Evidence pack</h3><p>Find all four. You can collect them in any order.</p>
-          <div class="scan-list" id="scanList">
-            <div class="scan-item" data-scan="audit"><i>01</i><div><b>Building Audit</b><small>Roof safety + repair cost</small></div></div>
-            <div class="scan-item" data-scan="transport"><i>02</i><div><b>Transport Data</b><small>Evening access</small></div></div>
-            <div class="scan-item" data-scan="survey"><i>03</i><div><b>Youth Survey</b><small>Demand + usage</small></div></div>
-            <div class="scan-item" data-scan="sponsor"><i>04</i><div><b>Sponsor Offer</b><small>Funding condition</small></div></div>
-          </div>
-          <button id="scanAction" class="scan-action" type="button" disabled>MOVE CLOSER TO SCAN</button>
-          <button id="openDesk" class="desk-action" type="button" hidden>OPEN STRATEGY DESK →</button>
-          <div id="runComplete" class="run-complete" hidden><b>EVIDENCE PACK COMPLETE</b><span>You have enough information to start the pressure case.</span></div>
-          <div class="touch-controls" aria-label="Movement controls"><button class="up" data-move="up" type="button" aria-label="Move up">▲</button><button class="left" data-move="left" type="button" aria-label="Move left">◀</button><button class="down" data-move="down" type="button" aria-label="Move down">▼</button><button class="right" data-move="right" type="button" aria-label="Move right">▶</button></div>
-          <p class="keyboard-note">Keyboard: arrow keys / WASD · Scan: space bar</p>
-        </aside>
+        <div class="city-board" id="cityBoard"><canvas id="cityCanvas" width="720" height="480" aria-label="Top-down Life City mission map"></canvas><div class="run-overlay"><div id="runStatus" class="run-status" aria-live="polite">Move toward any glowing evidence station.</div><div id="distancePill" class="distance-pill">SCAN RANGE —</div></div></div>
+        <aside class="run-console"><h3>Evidence pack</h3><p>Find all four. You can collect them in any order.</p><div class="scan-list" id="scanList"><div class="scan-item" data-scan="audit"><i>01</i><div><b>Building Audit</b><small>Roof safety + repair cost</small></div></div><div class="scan-item" data-scan="transport"><i>02</i><div><b>Transport Data</b><small>Evening access</small></div></div><div class="scan-item" data-scan="survey"><i>03</i><div><b>Youth Survey</b><small>Demand + usage</small></div></div><div class="scan-item" data-scan="sponsor"><i>04</i><div><b>Sponsor Offer</b><small>Funding condition</small></div></div></div><button id="scanAction" class="scan-action" type="button" disabled>MOVE CLOSER TO SCAN</button><button id="openDesk" class="desk-action" type="button" hidden>OPEN STRATEGY DESK →</button><div id="runComplete" class="run-complete" hidden><b>EVIDENCE PACK COMPLETE</b><span>You have enough information to start the pressure case.</span></div><div class="touch-controls" aria-label="Movement controls"><button class="up" data-move="up" type="button" aria-label="Move up">▲</button><button class="left" data-move="left" type="button" aria-label="Move left">◀</button><button class="down" data-move="down" type="button" aria-label="Move down">▼</button><button class="right" data-move="right" type="button" aria-label="Move right">▶</button></div><p class="keyboard-note">Keyboard: arrow keys / WASD · Scan: space bar</p></aside>
       </div>
     </section>
 
     <section class="game-shell" id="gameShell" hidden>
-      <div class="mission-hud">
-        <div><small>CASE STAGE</small><strong id="stageName">Training</strong></div>
-        <div><small>CASE SCORE</small><strong id="caseScore">0</strong></div>
-        <div><small>DECISIONS</small><strong><span id="decisionCount">0</span>/4</strong></div>
-        <div class="progress-track" aria-label="Case progress"><span id="progressBar"></span></div>
-      </div>
-      <section class="metric-grid" aria-label="Strategy indicators">
-        <article><div><small>EVIDENCE</small><strong id="evidenceValue">50</strong></div><span><i id="evidenceBar"></i></span></article>
-        <article><div><small>BUDGET</small><strong id="budgetValue">50</strong></div><span><i id="budgetBar"></i></span></article>
-        <article><div><small>ACCESS</small><strong id="accessValue">50</strong></div><span><i id="accessBar"></i></span></article>
-        <article><div><small>RESILIENCE</small><strong id="resilienceValue">50</strong></div><span><i id="resilienceBar"></i></span></article>
-      </section>
-      <div class="workspace">
-        <aside class="orish-console">
-          <div class="orish-chip"><img src="assets/orish-approved-hq.webp" alt="Orish"><span>ORISH // CASE GUIDE</span></div>
-          <p id="guideText">Use the evidence you collected in the city. The strongest strategy protects more than one thing at once.</p>
-          <button id="guideSpeak" class="secondary" type="button">🔉 Read guidance</button>
-          <div class="principle-card"><small>INVESTIGATOR PRINCIPLE</small><strong id="principleTitle">Evidence beats volume</strong><p id="principleText">A confident claim is not automatically a reliable claim. Check source, method and relevance.</p></div>
-        </aside>
-        <section class="case-panel" id="casePanel" aria-live="polite">
-          <div class="panel-head"><div><p class="eyebrow" id="stageEyebrow">TRAINING // SOURCE CHECK</p><h2 id="stageTitle">Which source deserves the most trust?</h2></div><span id="stageTag">TRAINING</span></div>
-          <p class="stage-copy" id="stageCopy"></p>
-          <div id="stageVisual" class="stage-visual"></div>
-          <div id="choiceGrid" class="choice-grid"></div>
-          <p id="feedback" class="feedback" role="status"></p>
-          <div class="panel-actions"><button id="continueButton" class="primary" type="button" hidden>Continue case</button></div>
-        </section>
-      </div>
+      <div class="mission-hud"><div><small>CASE STAGE</small><strong id="stageName">Training</strong></div><div><small>CASE SCORE</small><strong id="caseScore">0</strong></div><div><small>DECISIONS</small><strong><span id="decisionCount">0</span>/4</strong></div><div class="progress-track" aria-label="Case progress"><span id="progressBar"></span></div></div>
+      <section class="metric-grid" aria-label="Strategy indicators"><article><div><small>EVIDENCE</small><strong id="evidenceValue">50</strong></div><span><i id="evidenceBar"></i></span></article><article><div><small>BUDGET</small><strong id="budgetValue">50</strong></div><span><i id="budgetBar"></i></span></article><article><div><small>ACCESS</small><strong id="accessValue">50</strong></div><span><i id="accessBar"></i></span></article><article><div><small>RESILIENCE</small><strong id="resilienceValue">50</strong></div><span><i id="resilienceBar"></i></span></article></section>
+      <div class="workspace"><aside class="orish-console"><div class="orish-chip"><img src="assets/orish-approved-hq.webp" alt="Orish"><span>ORISH // CASE GUIDE</span></div><p id="guideText">Use the evidence you collected in the city. The strongest strategy protects more than one thing at once.</p><button id="guideSpeak" class="secondary" type="button">🔉 Read guidance</button><div class="principle-card"><small>INVESTIGATOR PRINCIPLE</small><strong id="principleTitle">Evidence beats volume</strong><p id="principleText">A confident claim is not automatically a reliable claim. Check source, method and relevance.</p></div></aside><section class="case-panel" id="casePanel" aria-live="polite"><div class="panel-head"><div><p class="eyebrow" id="stageEyebrow">TRAINING // SOURCE CHECK</p><h2 id="stageTitle">Which source deserves the most trust?</h2></div><span id="stageTag">TRAINING</span></div><p class="stage-copy" id="stageCopy"></p><div id="stageVisual" class="stage-visual"></div><div id="choiceGrid" class="choice-grid"></div><p id="feedback" class="feedback" role="status"></p><div class="panel-actions"><button id="continueButton" class="primary" type="button" hidden>Continue case</button></div></section></div>
       <section class="decision-log" aria-labelledby="decisionLogTitle"><div><p class="eyebrow">DECISION LOG</p><h2 id="decisionLogTitle">Your strategy trail</h2></div><ol id="decisionLog"><li>No live decisions recorded yet.</li></ol></section>
     </section>
   </main>
-
-  <div class="completion" id="completion" hidden>
-    <section>
-      <p class="eyebrow">CASE CLOSED // ADVANCED LEVEL 1</p>
-      <h2 id="completionTitle">You kept the system workable under pressure.</h2>
-      <p id="completionCopy">Your final result balances evidence, money, access and resilience. The important part is not choosing the cheapest option—it is being able to explain the trade-offs.</p>
-      <div class="result-grid"><article><small>FINAL CASE SCORE</small><strong id="finalScore">0</strong><span>/ 1000</span></article><article><small>EXPLORER REWARD</small><strong id="finalStars">0 ★</strong><span id="badgeText">Life City Strategist</span></article></div>
-      <div class="final-metrics" id="finalMetrics"></div>
-      <div class="final-brief"><small>YOUR CASE SUMMARY</small><p id="finalBrief"></p></div>
-      <button class="secondary speak" data-speak="Case closed. You explored the city, gathered evidence, protected limited resources, planned for shocks and made a public decision you could defend." type="button">🔉 Hear Orish debrief</button>
-      <a class="secondary link-button" href="life-city.html?replay=1">Replay mission</a>
-      <a class="primary link-button" href="world-map.html?world=city">Back to games</a>
-      <p class="real-world">OFF-SCREEN CHALLENGE: find one real public decision in your local area and list what evidence you would want before forming an opinion. Do not post personal information.</p>
-    </section>
-  </div>
+  <div class="completion" id="completion" hidden><section><p class="eyebrow">CASE CLOSED // ADVANCED LEVEL 1</p><h2 id="completionTitle">You kept the system workable under pressure.</h2><p id="completionCopy">Your final result balances evidence, money, access and resilience. The important part is not choosing the cheapest option—it is being able to explain the trade-offs.</p><div class="result-grid"><article><small>FINAL CASE SCORE</small><strong id="finalScore">0</strong><span>/ 1000</span></article><article><small>EXPLORER REWARD</small><strong id="finalStars">0 ★</strong><span id="badgeText">Life City Strategist</span></article></div><div class="final-metrics" id="finalMetrics"></div><div class="final-brief"><small>YOUR CASE SUMMARY</small><p id="finalBrief"></p></div><button class="secondary speak" data-speak="Case closed. You explored the city, gathered evidence, protected limited resources, planned for shocks and made a public decision you could defend." type="button">🔉 Hear Orish debrief</button><a class="secondary link-button" href="life-city.html?replay=1">Replay mission</a><a class="primary link-button" href="world-map.html?world=city">Back to games</a><p class="real-world">OFF-SCREEN CHALLENGE: find one real public decision in your local area and list what evidence you would want before forming an opinion. Do not post personal information.</p></section></div>
 </body>
 </html>
