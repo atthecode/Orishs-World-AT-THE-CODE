@@ -1,4 +1,4 @@
-const CACHE='orish-world-v156-orish-only-cartoon-studio';
+const CACHE='orish-world-v157-orish-only-cartoon-studio';
 const SHELL=[
   './','./index.html','./styles.css','./app.js','./manifest.webmanifest',
   './premium-preview.html','./premium-preview.css','./premium-preview-fixes.css','./premium-preview-additions.css','./premium-preview.js','./account.html','./account-v1.css','./account-v1.js',
