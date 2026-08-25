@@ -15,7 +15,6 @@
     return {
       freeTextOrish: ageBand !== '0-2',
       spokenSupport: true,
-      phonicsGuide: ['0-2','2-4','4-6','7-9'].includes(ageBand),
       twoWayVoice: false,
       offlineActivities: true,
       learningEvidence: true,
@@ -23,6 +22,9 @@
       kitchenLab: true,
       goodNews: true,
       parentMissions: true,
+      playSchedule: { preset:'morning', start:'07:00', end:'09:00', dailyMinutes:30, bedtimeMode:false },
+      conversationalDailyMinutes: 10,
+      conversationalDailyTurns: 20,
       trustedFamilyRoles: [...ROLE_IDS],
       futureLiveAI: false,
       futureWebSearch: false,
@@ -41,7 +43,6 @@
     return {
       freeTextOrish: ageBand === '0-2' ? false : input.freeTextOrish !== false,
       spokenSupport: input.spokenSupport !== false,
-      phonicsGuide: typeof input.phonicsGuide === 'boolean' ? input.phonicsGuide : base.phonicsGuide,
       twoWayVoice: ageBand === '0-2' ? false : input.twoWayVoice === true,
       offlineActivities: input.offlineActivities !== false,
       learningEvidence: input.learningEvidence !== false,
@@ -49,6 +50,15 @@
       kitchenLab: input.kitchenLab !== false,
       goodNews: input.goodNews !== false,
       parentMissions: input.parentMissions !== false,
+      playSchedule: {
+        preset: String(input.playSchedule?.preset || base.playSchedule.preset),
+        start: /^\d{2}:\d{2}$/.test(input.playSchedule?.start || '') ? input.playSchedule.start : base.playSchedule.start,
+        end: /^\d{2}:\d{2}$/.test(input.playSchedule?.end || '') ? input.playSchedule.end : base.playSchedule.end,
+        dailyMinutes: Math.min(60, Math.max(10, Number(input.playSchedule?.dailyMinutes) || base.playSchedule.dailyMinutes)),
+        bedtimeMode: input.playSchedule?.preset === 'bedtime' || input.playSchedule?.bedtimeMode === true
+      },
+      conversationalDailyMinutes: Math.min(10, Math.max(0, Number(input.conversationalDailyMinutes) || base.conversationalDailyMinutes)),
+      conversationalDailyTurns: Math.min(20, Math.max(0, Number(input.conversationalDailyTurns) || base.conversationalDailyTurns)),
       trustedFamilyRoles: roles.length ? [...new Set(roles)] : ['parent'],
       // Future online-capability flags are deliberately locked OFF in this prototype.
       futureLiveAI: false,
@@ -98,7 +108,6 @@
     const enabled = [
       c.freeTextOrish && 'free-text Orish',
       c.spokenSupport && 'spoken support',
-      c.phonicsGuide && 'phonics & reading guide',
       c.twoWayVoice && 'two-way voice',
       c.offlineActivities && 'offline activities',
       c.learningEvidence && 'Learning Passport',
