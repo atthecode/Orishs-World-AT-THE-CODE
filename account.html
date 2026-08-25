@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#071f37">
+  <meta name="description" content="Secure parent sign-in and child profile selection for Orish's World.">
+  <title>Parent Sign In — Orish's World</title>
+  <link rel="stylesheet" href="account-v1.css?v=20260824-1">
+  <link rel="stylesheet" href="account-schedule.css?v=20260825-1">
+  <script src="modules/security-store.js" defer></script>
+  <script src="modules/parent-controls-engine.js" defer></script>
+  <script src="modules/conversation-memory-store.js" defer></script>
+  <script src="account-v1.js?v=20260824-1" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#accountMain">Skip to account</a>
+  <header class="account-header">
+    <a class="brand" href="premium-preview.html">
+      <img src="assets/orish-approved-hq.webp" alt="">
+      <span><small>AT THE CODE</small><strong>Orish's World</strong></span>
+    </a>
+    <a class="world-link" href="premium-preview.html">← Back to the world</a>
+  </header>
+
+  <main id="accountMain">
+    <section class="account-hero">
+      <div class="hero-copy">
+        <p class="eyebrow">PARENT-OWNED ACCOUNT</p>
+        <h1>Grown-ups sign in.<br><span>Children explore safely.</span></h1>
+        <p>The adult owns the account, privacy choices and permissions. Children choose only a profile their grown-up has approved.</p>
+        <div class="trust-row"><span>🔒 Azure-hosted sign in</span><span>🛡️ No child passwords</span><span>🚫 No adverts</span></div>
+      </div>
+      <div class="orish-welcome">
+        <div class="orish-glow"></div>
+        <img src="assets/orish-approved-hq.webp" alt="Orish, the child explorer guide">
+        <p><b>ORISH SAYS</b><span>Ask your grown-up to do this part.</span></p>
+      </div>
+    </section>
+
+    <section class="account-panel" aria-live="polite">
+      <div class="steps" aria-label="Account steps">
+        <span class="active" id="stepAccount"><b>1</b> Parent</span>
+        <i></i>
+        <span id="stepProfile"><b>2</b> Child profile</span>
+        <i></i>
+        <span id="stepWorld"><b>3</b> Enter world</span>
+      </div>
+
+      <div id="loadingState" class="state-card loading-card">
+        <span class="loader" aria-hidden="true"></span>
+        <div><h2>Checking your secure sign-in…</h2><p>This should only take a moment.</p></div>
+      </div>
+
+      <section id="signedOutState" class="state-card sign-in-card" hidden>
+        <div class="state-icon">🔐</div>
+        <div>
+          <p class="eyebrow">STEP 1 OF 3</p>
+          <h2>Parent or guardian sign in</h2>
+          <p>Continue on Microsoft’s secure page. Orish’s World never sees or stores your password.</p>
+          <a class="primary-button" id="microsoftLogin" href="/.auth/login/aad?post_login_redirect_uri=/account.html">Continue securely with Microsoft <span>→</span></a>
+          <ul class="plain-list">
+            <li>The child does not sign in</li>
+            <li>Payment and permissions remain adult-only</li>
+            <li>Signed-in cloud profiles are the next production milestone</li>
+          </ul>
+          <div id="authUnavailable" class="auth-note" hidden><b>Preview note</b><span>Azure sign-in is available on the deployed website. If this page is opened as a local file, use the deployed link instead.</span></div>
+        </div>
+      </section>
+
+      <section id="signedInState" hidden>
+        <div class="signed-in-banner">
+          <span class="verified">✓</span>
+          <div><small>PARENT SIGNED IN</small><strong id="parentDisplay">Verified grown-up</strong><p>Your sign-in is handled securely by Microsoft Azure.</p></div>
+          <a id="signOut" href="/.auth/logout?post_logout_redirect_uri=/account.html">Sign out</a>
+        </div>
+
+        <div class="profile-layout">
+          <section class="profile-picker">
+            <p class="eyebrow">STEP 2 OF 3</p>
+            <div class="section-title"><div><h2>Who is exploring?</h2><p>Choose an approved profile or make a new one.</p></div><button id="newProfileButton" class="secondary-button" type="button">＋ New child profile</button></div>
+            <div id="profileList" class="profile-list"></div>
+            <div id="emptyProfiles" class="empty-profile" hidden><span>🌟</span><h3>No child profiles yet</h3><p>Create a minimal, private profile to begin.</p></div>
+          </section>
+
+          <form id="profileForm" class="profile-form" hidden>
+            <div class="form-heading"><div><p class="eyebrow">PARENT SETUP</p><h2 id="profileFormTitle">Create child profile</h2></div><button id="closeProfileForm" type="button" aria-label="Close profile form">×</button></div>
+            <label><span>Child’s chosen name <small>Do not use a full legal name</small></span><input id="profileName" maxlength="30" autocomplete="off" required placeholder="e.g. Star Explorer"></label>
+            <label><span>Age experience</span><select id="profileAge" required><option value="0-2">Birth–3 · Parent & Me</option><option value="4-6">Ages 4–6 · Early Explorers</option><option value="7-9" selected>Ages 7–10 · Explorers</option><option value="10-12">Ages 11–13 · Investigators</option><option value="13-16">Ages 14–16 · Advanced Missions</option></select></label>
+            <fieldset><legend>Learning support</legend><label class="switch-row"><span><b>Spoken guide</b><small>Show a 🔉 button for instructions and choices</small></span><input id="spokenGuide" type="checkbox" checked></label><label class="switch-row"><span><b>Extra reading guidance</b><small>Visual clues and explanations without changing the level</small></span><input id="readingGuide" type="checkbox" checked></label><label class="switch-row"><span><b>Off-screen activities</b><small>Orish can suggest safe real-world missions</small></span><input id="offlineGuide" type="checkbox" checked></label></fieldset>
+            <fieldset><legend>Conversational Orish memory</legend><label><span>What may Orish remember?</span><select id="conversationMemory"><option value="off">Off — remember nothing after the conversation</option><option value="session">This session only</option><option value="last-summary">Last learning conversation summary</option></select></label><label><span>Delete the saved summary after</span><select id="memoryRetentionDays"><option value="1">1 day</option><option value="7" selected>7 days</option><option value="30">30 days</option></select></label><p class="schedule-note"><b>Privacy first</b>No raw microphone recording is saved. Orish remembers only a short, safety-checked learning summary. A child can say “forget that,” and a grown-up can clear it below.</p></fieldset>
+            <fieldset class="schedule-fieldset"><legend>Beta play schedule</legend>
+              <label><span>Choose a preset or set your own time</span><select id="playSchedule"><option value="morning">Morning Mission · 07:00–09:00</option><option value="after-school">After School · 15:30–18:00</option><option value="evening">Evening Explorer · 18:00–19:00</option><option value="bedtime">Bedtime Wind-Down · 19:00–20:00</option><option value="custom">Set my own time</option></select></label>
+              <div class="schedule-times"><label><span>Start</span><input id="playStart" type="time" value="07:00"></label><label><span>Finish</span><input id="playEnd" type="time" value="09:00"></label></div>
+              <label><span>Daily testing allowance</span><select id="dailyPlayMinutes"><option value="15">15 minutes</option><option value="20">20 minutes</option><option value="30" selected>30 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option></select></label>
+              <p class="schedule-note"><b>Bedtime Wind-Down</b> opens calm stories, sounds and creative activities rather than energetic missions. The daily allowance is shared across the selected time window.</p>
+            </fieldset>
+            <div class="cost-control"><b>Beta cost protection</b><span>Conversational Orish: maximum 10 minutes or 20 exchanges a day when activated · warning after 45 seconds of silence · connection switches off after 60 seconds · AI video generation: off</span></div>
+            <fieldset class="family-support-fieldset"><legend>Family routine before play</legend>
+              <label><span>What should Orish call the adult?</span><select id="caregiverTitle"><option value="parent">Parent</option><option value="parents">Parents</option><option value="mother">Mother</option><option value="father">Father</option><option value="guardian">Guardian</option><option value="grandparent">Grandparent</option><option value="teacher">Teacher</option><option value="grown-up">Grown-up</option></select></label>
+              <label><span>Greeting style</span><select id="greetingStyle"><option value="hello">Hello — how are you today?</option><option value="good-morning">Good morning — are you ready for today?</option><option value="grand-rising">Grand rising — how is your sunrise?</option><option value="rich-risings">Rich risings — what are you ready to grow today?</option><option value="grand-evening">Grand evening — how has your day been?</option><option value="grand-night">Grand night — shall we wind down together?</option></select></label>
+              <label class="switch-row"><span><b>Require a grown-up check-in before games</b><small>The adult confirms the selected routine. They can pause or skip it on difficult days.</small></span><input id="routineGate" type="checkbox"></label>
+              <div class="routine-task-grid" aria-label="Choose routine actions"><label><input type="checkbox" name="routineTask" value="wash"><span>Wash and freshen up</span></label><label><input type="checkbox" name="routineTask" value="teeth"><span>Brush teeth</span></label><label><input type="checkbox" name="routineTask" value="dress"><span>Get dressed</span></label><label><input type="checkbox" name="routineTask" value="breakfast"><span>Breakfast or morning plan checked</span></label><label><input type="checkbox" name="routineTask" value="bag"><span>School bag or belongings ready</span></label><label><input type="checkbox" name="routineTask" value="listen"><span>Family instructions checked together</span></label><label><input type="checkbox" name="routineTask" value="tidy"><span>Put belongings away</span></label><label><input type="checkbox" name="routineTask" value="calm"><span>Calm bedtime activity ready</span></label></div>
+              <label><span>What would the family like support with? <small>Parent-only beta note; do not include private or identifying information.</small></span><textarea id="familySupportFocus" maxlength="240" placeholder="For example: building confidence with the morning routine"></textarea></label>
+              <p class="schedule-note"><b>Manners, respect and safety</b>Orish can practise listening, kindness, turn-taking and repair. Orish will never teach that a child must obey an unsafe or uncomfortable instruction.</p>
+            </fieldset>
+            <div class="locked-safety"><b>Locked off in this beta</b><span>Camera uploads · location · open chat · public profile · unrestricted AI</span></div>
+            <button class="primary-button" type="submit">Save approved profile</button>
+          </form>
+        </div>
+
+        <section id="readyPanel" class="ready-panel" hidden>
+          <div class="ready-avatar" id="readyAvatar">O</div>
+          <div><p class="eyebrow">STEP 3 OF 3</p><h2><span id="readyName">Explorer</span> is ready.</h2><p id="readyDescription">Approved profile selected.</p></div>
+          <div class="ready-actions"><button id="editScheduleButton" type="button">Change family controls</button><a class="enter-button" href="family-check-in.html">CONTINUE TO FAMILY CHECK-IN <span>→</span></a></div>
+        </section>
+
+        <section class="privacy-tools">
+          <div><p class="eyebrow">PARENT PRIVACY TOOLS</p><h2>Data on this device</h2><p>Beta child profiles and progress are currently stored only in this browser. They are not yet synchronised to the signed-in account.</p></div>
+          <div class="privacy-actions"><button id="exportData" type="button">Export device data</button><button id="clearConversationMemory" type="button" disabled>Clear Orish memory</button><button id="deleteProfile" class="danger-button" type="button" disabled>Delete selected profile</button></div>
+          <p id="privacyMessage" class="privacy-message" aria-live="polite"></p>
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <footer><span>🔒 Parent-owned account</span><span>🛡️ Private by default</span><span>👧 No child credentials</span></footer>
+</body>
+</html>

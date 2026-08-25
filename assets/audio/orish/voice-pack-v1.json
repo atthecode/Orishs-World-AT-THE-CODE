@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "created": "2026-08-23",
+  "usage": "Approved fixed dialogue for Space Signal. Device speech remains the fallback for unrecorded lines.",
+  "clips": {
+    "welcomeOrishWorld": "welcome-orish-world.m4a",
+    "welcomeMyWorld": "welcome-my-world.m4a",
+    "letsGo": "lets-go.m4a",
+    "funAndLearn": "fun-and-learn.m4a",
+    "signalReturned": "signal-returned.m4a",
+    "moveObservatory": "move-through-observatory.m4a"
+  }
+}

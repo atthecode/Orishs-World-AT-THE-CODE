@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#160f39">
+  <title>Learning Cinema — Orish's World</title>
+  <link rel="stylesheet" href="learning-cinema-v3.css?v=20260825-5">
+  <script src="modules/security-store.js" defer></script>
+  <script src="modules/parent-controls-engine.js" defer></script>
+  <script src="modules/beta-session-guard.js" defer></script>
+  <script src="learning-cinema-v3.js?v=20260825-5" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#cinemaMain">Skip to the cinema</a>
+  <header class="cinema-header">
+    <a class="cinema-brand" href="world-map.html?world=cinema">
+      <img src="assets/orish-approved-hq.webp" alt="">
+      <span><small>ORISH'S WORLD</small><strong>Learning Cinema</strong></span>
+    </a>
+    <div class="header-actions">
+      <span class="cinema-stars" aria-label="Explorer stars">★ <b id="cinemaStars">0</b></span>
+      <button id="cinemaSound" class="round-control" type="button" aria-pressed="false" aria-label="Turn cinema sound on">🔇</button>
+      <a class="map-link" href="world-map.html">World map</a>
+    </div>
+  </header>
+
+  <main id="cinemaMain">
+    <section class="foyer">
+      <div class="foyer-lights" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="foyer-copy">
+        <p class="eyebrow">WATCH • NOTICE • PLAY • CREATE</p>
+        <h1>Every film opens<br><span>another doorway.</span></h1>
+        <p>Choose a child-safe learning short. Orish will pause at the important moments, help you notice clues and turn what you discover into a playable mission or real-world activity.</p>
+        <div class="foyer-buttons">
+          <button id="continueFilm" class="primary-cta" type="button">▶ Start cinema</button>
+          <button id="hearWelcome" class="voice-cta" type="button">🔉 Hear welcome</button>
+        </div>
+        <div class="safety-strip"><span>🔒 Parent controlled</span><span>🛡️ Curated content</span><span>💬 No child chat</span><span>⏸ Break friendly</span></div>
+      </div>
+      <div class="foyer-orish">
+        <div class="spotlight" aria-hidden="true"></div>
+        <img src="assets/orish-approved-hq.webp" alt="Orish welcoming explorers to the Learning Cinema">
+        <div class="orish-line"><b>ORISH SAYS</b><span>“Choose a story. We will investigate it together.”</span></div>
+      </div>
+    </section>
+
+    <section class="programme" id="programme">
+      <div class="section-heading">
+        <div><p class="eyebrow">TODAY'S PROGRAMME</p><h2>Choose a learning adventure</h2></div>
+        <label class="age-filter">Viewing age
+          <select id="ageFilter">
+            <option value="all">Show every age</option>
+            <option value="parent">Birth–3 · Parent & Me</option>
+            <option value="early">4–6 · Early Explorers</option>
+            <option value="explorer" selected>7–10 · Explorers</option>
+            <option value="investigator">11–13 · Investigators</option>
+            <option value="advanced">14–16 · Advanced</option>
+          </select>
+        </label>
+      </div>
+      <div class="programme-tabs" role="tablist" aria-label="Cinema categories">
+        <button class="programme-tab active" type="button" data-category="all" aria-selected="true">All</button>
+        <button class="programme-tab" type="button" data-category="science" aria-selected="false">Science</button>
+        <button class="programme-tab" type="button" data-category="stories" aria-selected="false">Stories</button>
+        <button class="programme-tab" type="button" data-category="life" aria-selected="false">Life skills</button>
+        <button class="programme-tab" type="button" data-category="create" aria-selected="false">Create</button>
+      </div>
+      <div class="film-grid" id="filmGrid" aria-live="polite"></div>
+      <p id="emptyProgramme" class="empty-programme" hidden>No shorts match those filters yet. Choose another age or category.</p>
+    </section>
+
+    <section class="age-game-lab" id="ageGameLab">
+      <div class="section-heading">
+        <div><p class="eyebrow">ONE EXPERIENCE FOR EVERY AGE</p><h2>Try a game for your age</h2><p class="age-game-intro">Every group can try the learning style now. Fossil Detective and Space Signal are substantial beta levels; the other three are short playable tasters while their full Level 1 games are built.</p></div>
+        <span class="local-badge">BETA TESTING</span>
+      </div>
+      <div class="age-game-tabs" role="tablist" aria-label="Choose an age game">
+        <button type="button" data-game-age="parent"><b>Birth–3</b><span>Parent & Me</span><small>PLAYABLE TASTER</small></button>
+        <button type="button" data-game-age="early"><b>4–6</b><span>Early Explorers</span><small>PLAYABLE TASTER</small></button>
+        <button class="active" type="button" data-game-age="explorer"><b>7–10</b><span>Explorers</span><small>FULL BETA LEVEL</small></button>
+        <button type="button" data-game-age="investigator"><b>11–13</b><span>Investigators</span><small>FULL BETA LEVEL</small></button>
+        <button type="button" data-game-age="advanced"><b>14–16</b><span>Advanced</span><small>PLAYABLE TASTER</small></button>
+      </div>
+      <div class="age-game-stage" id="ageGameStage">
+        <div class="age-game-copy"><span id="ageGameBadge">AGES 7–10 · EXPLORERS</span><h3 id="ageGameTitle">Fossil Evidence Test</h3><p id="ageGameCopy">Make the first careful decision a fossil detective should take.</p><button id="hearAgeGame" type="button">🔉 Hear the challenge</button></div>
+        <div class="age-game-play"><div id="ageGameVisual" class="age-game-visual"></div><p id="ageGameQuestion"></p><div id="ageGameChoices" class="age-game-choices"></div><p id="ageGameFeedback" class="age-game-feedback" aria-live="polite"></p><a id="fullAgeGame" href="fossil-detective.html">PLAY THE FULL BETA LEVEL →</a></div>
+      </div>
+    </section>
+
+    <section class="screening-room" id="screeningRoom" aria-labelledby="screeningTitle">
+      <div class="screen-shell">
+        <div class="screen-topbar"><span>ORISH LEARNING CINEMA</span><b id="screenAge">AGES 7–10</b></div>
+        <div class="cinema-screen" id="cinemaScreen">
+          <div class="curtain left" aria-hidden="true"></div><div class="curtain right" aria-hidden="true"></div>
+          <div class="scene-space" id="sceneSpace" aria-hidden="true">
+            <i class="scene-star s1"></i><i class="scene-star s2"></i><i class="scene-star s3"></i><i class="scene-star s4"></i>
+            <i class="scene-planet"></i><i class="scene-moon"></i><i class="scene-signal w1"></i><i class="scene-signal w2"></i><i class="scene-signal w3"></i>
+            <i class="scene-rocket"></i>
+          </div>
+          <div class="scene-fossil" id="sceneFossil" aria-hidden="true"><i class="sand-layer a"></i><i class="sand-layer b"></i><i class="fossil-bone bone-a"></i><i class="fossil-bone bone-b"></i><i class="brush-mark"></i></div>
+          <div class="scene-colour" id="sceneColour" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="screen-copy">
+            <span id="sceneNumber">SCENE 1 OF 3</span>
+            <h3 id="screeningTitle">The Signal in the Sky</h3>
+            <p id="screeningCopy">A quiet night. A repeating light. Orish notices something unusual above the observatory.</p>
+          </div>
+          <div class="caption-bar" id="captionBar">A repeating signal is a pattern that happens again with similar gaps.</div>
+          <button id="speakScene" class="screen-speak" type="button" aria-label="Read this scene aloud">🔉</button>
+          <div class="interaction-card" id="interactionCard" hidden>
+            <p class="eyebrow">ORISH PAUSED THE FILM</p>
+            <h3 id="questionText">What did you notice?</h3>
+            <p id="questionHelp">Look at the gaps between the waves. A pattern repeats in the same order.</p>
+            <div id="visualClue" class="visual-clue" aria-label="Visual clue showing signal wave gaps"><i></i><b></b><i></i><b></b><i></i></div>
+            <div id="answerChoices" class="answer-choices"></div>
+            <p id="answerFeedback" class="answer-feedback" aria-live="polite"></p>
+          </div>
+        </div>
+        <div class="screen-controls">
+          <button id="previousScene" type="button" aria-label="Previous scene">↶ <span>Back</span></button>
+          <button id="playScene" class="play-control" type="button" aria-label="Play film">▶</button>
+          <button id="nextScene" type="button"><span>Next</span> ↷</button>
+          <button id="captionToggle" type="button" aria-pressed="true">CC <span>Captions on</span></button>
+        </div>
+        <div class="scene-progress" aria-label="Film progress"><i id="sceneProgress"></i></div>
+      </div>
+      <aside class="mission-unlock">
+        <p class="eyebrow">FILM → MISSION</p>
+        <h2 id="unlockTitle">Investigate the signal</h2>
+        <p id="unlockCopy">Finish the short and answer Orish's observation question to open the connected playable mission.</p>
+        <div class="unlock-status" id="unlockStatus"><span>🎬 Watch all 3 scenes</span><span>🔍 Answer the clue</span><span>🚀 Enter the mission</span></div>
+        <a id="missionUnlockLink" class="mission-link locked" href="space-signal.html" aria-disabled="true">Mission locked</a>
+        <button id="realWorldPrompt" class="real-world-button" type="button">🌍 Try it away from the screen</button>
+        <p id="realWorldCopy" class="real-world-copy" hidden>With a grown-up, find three things that repeat: a road marking, window pattern or rhythm. Describe the gaps you notice.</p>
+      </aside>
+    </section>
+
+    <section class="creative-studio" id="creativeStudio">
+      <div class="section-heading studio-heading">
+        <div><p class="eyebrow">PRIVATE CREATIVE DESK</p><h2>Draw, paint, collage and make notes</h2><p>Respond to the film with colours, paint, tissue-paper shapes or a private learning note. Nothing is posted or shared.</p></div>
+        <span class="local-badge">SAVED ON THIS DEVICE</span>
+      </div>
+      <div class="studio-layout">
+        <div class="art-tools" aria-label="Creative tools">
+          <div class="tool-group"><b>Make with</b>
+            <button class="art-tool active" type="button" data-tool="brush" aria-pressed="true">🖌 Paint</button>
+            <button class="art-tool" type="button" data-tool="pencil" aria-pressed="false">✏️ Draw</button>
+            <button class="art-tool" type="button" data-tool="marker" aria-pressed="false">🖍 Marker</button>
+            <button class="art-tool" type="button" data-tool="tissue" aria-pressed="false">◩ Tissue paper</button>
+            <button class="art-tool" type="button" data-tool="eraser" aria-pressed="false">◻ Eraser</button>
+          </div>
+          <div class="tool-group"><b>Colours</b><div class="colour-palette" id="colourPalette" aria-label="Paint colours"></div></div>
+          <label class="size-control">Tool size <input id="brushSize" type="range" min="3" max="42" value="12"></label>
+          <div class="tool-actions"><button id="undoArt" type="button">↶ Undo</button><button id="clearArt" type="button">Clear page</button><button id="saveArt" type="button">✓ Save picture</button></div>
+        </div>
+        <div class="canvas-wrap"><canvas id="artCanvas" width="900" height="560" aria-label="Private drawing and collage canvas"></canvas><p id="artStatus" aria-live="polite">Choose a colour and make something inspired by the film.</p></div>
+        <div class="notes-panel">
+          <label for="learningNotes"><b>My discovery notes</b><span>Write, draw first, or ask a grown-up to type.</span></label>
+          <textarea id="learningNotes" maxlength="600" placeholder="I noticed…&#10;I wonder…&#10;My idea is…"></textarea>
+          <div><small id="noteCount">0 / 600</small><button id="saveNotes" type="button">Save private notes</button></div>
+          <button id="speakNotePrompt" class="note-prompt" type="button">🔉 Hear the note starters</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="movie-studio" id="movieStudio">
+      <div class="section-heading movie-heading">
+        <div><p class="eyebrow">CHILDREN'S INTERACTIVE FILMMAKER</p><h2>Make and watch your own cartoon</h2><p>Tell Orish an idea, choose the world and story, then watch a private animated three-scene cartoon with movement, captions and optional read-aloud.</p></div>
+        <span class="local-badge">PRIVATE DRAFT</span>
+      </div>
+      <div class="simple-film-steps" aria-label="Three film making steps"><span class="active"><b>1</b>Tell the idea</span><span><b>2</b>Choose the story</span><span><b>3</b>Watch the cartoon</span></div>
+      <div class="movie-builder simplified">
+        <div class="idea-workbench">
+          <label class="story-age-label">Who is making the film?<select id="storyAge"><option value="early">Ages 4–6</option><option value="explorer" selected>Ages 7–10</option><option value="investigator">Ages 11–13</option><option value="advanced">Ages 14–16</option></select></label>
+          <label for="storyIdea"><b>Step 1 — Tell Orish the film idea</b><span id="writingGuide">Write one clear sentence: who is there, what happens and what they need to discover.</span></label>
+          <textarea id="storyIdea" maxlength="280" placeholder="Orish finds a repeating light above the space station and follows the clues."></textarea>
+          <div class="idea-actions"><button id="tryFilmExample" class="try-example" type="button">▶ TRY AN EXAMPLE</button><button id="speakIdea" type="button">🎙 Speak idea</button><button id="hearIdea" type="button">🔉 Hear my words</button><button id="helpIdea" type="button">💡 Help me</button></div>
+          <div class="child-keyboard" id="childKeyboard" hidden aria-label="Orish's World child keyboard">
+            <div id="keyboardSuggestions" class="keyboard-suggestions"></div>
+            <div id="keyboardKeys" class="keyboard-keys"></div>
+            <button id="keyboardSpace" type="button">SPACE</button><button id="keyboardBack" type="button">⌫</button>
+          </div>
+          <details class="story-choice-box" open><summary><b>Step 2 — Choose the story</b><span id="storyChoiceSummary">Orish · Space Observatory · Discovery</span></summary>
+            <div class="story-controls">
+              <label>Who stars?<select id="storyCharacter"><option value="orish">Orish</option></select></label>
+              <label>Where?<select id="storyWorld"><option value="space">Space Observatory</option><option value="fossil">Fossil Canyon</option><option value="rainbow">Rainbow World</option><option value="kitchen">Family Kitchen Lab</option></select></label>
+              <label>What happens?<select id="storyMission"><option value="discover">Make a discovery</option><option value="mystery">Solve a mystery</option><option value="help">Help someone</option><option value="build">Build an invention</option></select></label>
+            </div>
+          </details>
+          <div class="orish-character-interview" aria-labelledby="characterInterviewTitle">
+            <img src="assets/orish-approved-hq.webp" alt="Orish">
+            <div><small>ORISH ASKS</small><h3 id="characterInterviewTitle">Help me meet your story character</h3><p id="characterQuestion">What kind of character should I meet in your cartoon?</p></div>
+            <textarea id="characterAnswer" maxlength="120" placeholder="For example: a friendly robot inventor"></textarea>
+            <div class="interview-actions"><button id="hearCharacterQuestion" type="button">🔉 Hear question</button><button id="speakCharacterAnswer" type="button">🎙 Speak answer</button><button id="nextCharacterQuestion" type="button">NEXT QUESTION →</button></div>
+            <div class="interview-progress" id="characterProgress" aria-label="Character questions"><i class="active"></i><i></i><i></i><i></i></div>
+            <p id="characterSummary">Orish will ask four short questions. Do not use a real person’s name, photograph, school or address.</p>
+          </div>
+          <p id="storyFeedback" class="story-feedback" aria-live="polite">Your words stay on this device during beta testing.</p>
+          <button id="buildStoryboard" class="build-storyboard" type="button">STEP 3 — MAKE MY CARTOON</button>
+        </div>
+      </div>
+      <div class="storyboard" id="storyboard" hidden>
+        <div class="storyboard-top"><div><p class="eyebrow">MY PRIVATE MOVIE DRAFT</p><h3 id="storyboardTitle">Orish's New Adventure</h3></div><button id="saveStoryboard" type="button">Save draft</button></div>
+        <div class="cartoon-player" id="cartoonPlayer" style="--cartoon-a:#18245d;--cartoon-b:#894aa0">
+          <div class="cartoon-stage" id="cartoonStage" aria-live="polite">
+            <div class="cartoon-sky" aria-hidden="true"><i></i><i></i><i></i></div>
+            <span class="cartoon-world-icon" id="cartoonWorldIcon" aria-hidden="true">🛰️</span>
+            <img class="cartoon-orish" src="assets/orish-game-walk.webp" alt="Orish moving through the cartoon scene">
+            <div class="cartoon-clue" aria-hidden="true">✦</div>
+            <div class="cartoon-caption"><small id="cartoonSceneNumber">SCENE 1 OF 3</small><p id="cartoonCaption">Your cartoon will play here.</p></div>
+          </div>
+          <div class="cartoon-controls"><button id="playCartoon" type="button">▶ PLAY MY CARTOON</button><button id="hearCartoonScene" type="button" aria-label="Hear this cartoon scene">🔉 Hear scene</button></div>
+        </div>
+        <div class="storyboard-frames" id="storyboardFrames"></div>
+        <div class="storyboard-next"><span>READ ✓</span><span>EDIT ✓</span><span>ANIMATED CARTOON ✓</span><b>This beta uses approved characters, worlds and animation templates. No public posting or download.</b></div>
+      </div>
+    </section>
+
+    <section class="parent-cinema" id="parentCinema">
+      <div class="parent-lock">🔒</div>
+      <div><p class="eyebrow">GROWN-UP SETTINGS</p><h2>Parent-controlled cinema</h2><p>These settings apply on this device during beta testing. Child profiles never type in shared rooms and there is no open chat, gifting, stranger matching or public posting.</p></div>
+      <div class="parent-settings">
+        <label><span><b>Guided viewing</b><small>Orish pauses to explain and ask questions</small></span><input id="guidedViewing" type="checkbox" checked></label>
+        <label><span><b>Captions by default</b><small>Show every spoken learning line</small></span><input id="defaultCaptions" type="checkbox" checked></label>
+        <label><span><b>Allow read-aloud buttons</b><small>Speech only starts when the child taps 🔉</small></span><input id="allowSpeech" type="checkbox" checked></label>
+        <label><span><b>Allow voice ideas</b><small>Microphone input is off until a grown-up enables it</small></span><input id="allowVoiceInput" type="checkbox"></label>
+        <label><span><b>Break reminder</b><small>Orish suggests an off-screen activity after a short</small></span><input id="breakReminder" type="checkbox" checked></label>
+      </div>
+      <div class="family-watch"><b>FAMILY WATCH SAFETY</b><span>Future private rooms will require a grown-up host and approved family invitations. Child profiles will use reactions only—never free text.</span></div>
+    </section>
+  </main>
+
+  <footer><span>Curated learning shorts only</span><span>No adverts or child profiling</span><a href="world-map.html">Return to the world map</a></footer>
+</body>
+</html>
