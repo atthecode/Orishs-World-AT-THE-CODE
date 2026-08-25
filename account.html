@@ -94,6 +94,14 @@
               <p class="schedule-note"><b>Bedtime Wind-Down</b> opens calm stories, sounds and creative activities rather than energetic missions. The daily allowance is shared across the selected time window.</p>
             </fieldset>
             <div class="cost-control"><b>Beta cost protection</b><span>Conversational Orish: maximum 10 minutes or 20 exchanges a day when activated · AI video generation: off</span></div>
+            <fieldset class="family-support-fieldset"><legend>Family routine before play</legend>
+              <label><span>What should Orish call the adult?</span><select id="caregiverTitle"><option value="parent">Parent</option><option value="mother">Mother</option><option value="father">Father</option><option value="guardian">Guardian</option><option value="grandparent">Grandparent</option><option value="grown-up">Grown-up</option></select></label>
+              <label><span>Greeting style</span><select id="greetingStyle"><option value="hello">Hello — how are you today?</option><option value="good-morning">Good morning — are you ready for today?</option><option value="grand-rising">Grand rising — how is your sunrise?</option><option value="rich-risings">Rich risings — what are you ready to grow today?</option><option value="grand-evening">Grand evening — how has your day been?</option><option value="grand-night">Grand night — shall we wind down together?</option></select></label>
+              <label class="switch-row"><span><b>Require a grown-up check-in before games</b><small>The adult confirms the selected routine. They can pause or skip it on difficult days.</small></span><input id="routineGate" type="checkbox"></label>
+              <div class="routine-task-grid" aria-label="Choose routine actions"><label><input type="checkbox" name="routineTask" value="wash"><span>Wash and freshen up</span></label><label><input type="checkbox" name="routineTask" value="teeth"><span>Brush teeth</span></label><label><input type="checkbox" name="routineTask" value="dress"><span>Get dressed</span></label><label><input type="checkbox" name="routineTask" value="breakfast"><span>Breakfast or morning plan checked</span></label><label><input type="checkbox" name="routineTask" value="bag"><span>School bag or belongings ready</span></label><label><input type="checkbox" name="routineTask" value="listen"><span>Family instructions checked together</span></label><label><input type="checkbox" name="routineTask" value="tidy"><span>Put belongings away</span></label><label><input type="checkbox" name="routineTask" value="calm"><span>Calm bedtime activity ready</span></label></div>
+              <label><span>What would the family like support with? <small>Parent-only beta note; do not include private or identifying information.</small></span><textarea id="familySupportFocus" maxlength="240" placeholder="For example: building confidence with the morning routine"></textarea></label>
+              <p class="schedule-note"><b>Manners, respect and safety</b>Orish can practise listening, kindness, turn-taking and repair. Orish will never teach that a child must obey an unsafe or uncomfortable instruction.</p>
+            </fieldset>
             <div class="locked-safety"><b>Locked off in this beta</b><span>Camera uploads · location · open chat · public profile · unrestricted AI</span></div>
             <button class="primary-button" type="submit">Save approved profile</button>
           </form>
@@ -102,7 +110,7 @@
         <section id="readyPanel" class="ready-panel" hidden>
           <div class="ready-avatar" id="readyAvatar">O</div>
           <div><p class="eyebrow">STEP 3 OF 3</p><h2><span id="readyName">Explorer</span> is ready.</h2><p id="readyDescription">Approved profile selected.</p></div>
-          <div class="ready-actions"><button id="editScheduleButton" type="button">Change play schedule</button><a class="enter-button" href="world-map.html">ENTER ORISH'S WORLD <span>→</span></a></div>
+          <div class="ready-actions"><button id="editScheduleButton" type="button">Change family controls</button><a class="enter-button" href="family-check-in.html">CONTINUE TO FAMILY CHECK-IN <span>→</span></a></div>
         </section>
 
         <section class="privacy-tools">
