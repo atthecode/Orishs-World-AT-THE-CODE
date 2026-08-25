@@ -10,13 +10,22 @@
     {id:'sponsor',label:'Sponsor Offer',x:360,y:408,icon:'S'}
   ];
   let data={x:360,y:248,scans:[],complete:false};
-  let canvas,ctx,scanButton,statusNode,distanceNode,raf=0,heldTimer=0;
+  let canvas,ctx,scanButton,statusNode,distanceNode,raf=0,heldTimer=0,audioCtx=null,ambienceTimer=0,proximityAnnounced='';
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function read(){try{return{...data,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{return{...data}}}
   function save(){try{localStorage.setItem(KEY,JSON.stringify({...data,updated:Date.now()}))}catch{}}
   function readCase(){try{return JSON.parse(localStorage.getItem(CASE_KEY)||'{}')}catch{return{}}}
   function activeProfile(){try{const id=localStorage.getItem('orish.activeProfile.v1')||'',profiles=JSON.parse(localStorage.getItem('orish.profiles.v1')||'[]');return profiles.find(p=>p.id===id)||null}catch{return null}}
+  function soundEnabled(){return document.getElementById('soundToggle')?.textContent?.includes('🔊')===true;}
+  function ensureAudio(){const AudioCtx=window.AudioContext||window.webkitAudioContext;if(!AudioCtx)return null;if(!audioCtx)audioCtx=new AudioCtx();if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx;}
+  function tone(freq,duration=.09,type='sine',volume=.02){if(!soundEnabled())return;try{const ac=ensureAudio();if(!ac)return;const o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(volume,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+duration);o.connect(g).connect(ac.destination);o.start();o.stop(ac.currentTime+duration);}catch{}}
+  function scanChime(){tone(560,.08,'triangle',.025);setTimeout(()=>tone(760,.1,'triangle',.024),70);setTimeout(()=>tone(980,.14,'triangle',.02),145);}
+  function blockedSound(){tone(145,.08,'square',.014);setTimeout(()=>tone(110,.1,'square',.011),70);}
+  function proximityPing(){tone(420,.055,'sine',.012);setTimeout(()=>tone(630,.07,'triangle',.012),55);}
+  function completeChime(){[523,659,784,1046].forEach((f,i)=>setTimeout(()=>tone(f,.16,'triangle',.023),i*90));}
+  function startAmbience(){stopAmbience();if(!soundEnabled())return;tone(105,.35,'sine',.008);ambienceTimer=setInterval(()=>{if(document.hidden||!soundEnabled())return;tone(105,.28,'sine',.005);setTimeout(()=>tone(165,.14,'triangle',.004),160);},3200);}
+  function stopAmbience(){clearInterval(ambienceTimer);ambienceTimer=0;}
 
   function init(){
     if(new URLSearchParams(location.search).has('replay')){try{localStorage.removeItem(KEY)}catch{}}
@@ -32,24 +41,27 @@
       ['pointerup','pointercancel','pointerleave'].forEach(name=>button.addEventListener(name,()=>{clearInterval(heldTimer);heldTimer=0}));
     });
     addEventListener('keydown',onKey);
+    document.getElementById('soundToggle')?.addEventListener('click',()=>setTimeout(()=>{if(soundEnabled())startAmbience();else stopAmbience();},0));
     paintScanList();
   }
 
   function interceptStart(event){
     const profile=activeProfile();if(!profile||profile.ageBand!=='13-16')return;
     if(data.complete)return;
-    event.preventDefault();event.stopImmediatePropagation();showExplore();
+    event.preventDefault();event.stopImmediatePropagation();
+    const soundButton=document.getElementById('soundToggle');if(soundButton&&!soundEnabled())soundButton.click();
+    showExplore();
   }
 
   function showExplore(){
     document.getElementById('introPanel').hidden=true;document.getElementById('gameShell').hidden=true;document.getElementById('completion').hidden=true;document.getElementById('exploreShell').hidden=false;
-    paintScanList();draw();updateProximity();
+    paintScanList();draw();updateProximity();startAmbience();
     setTimeout(()=>document.getElementById('exploreShell').scrollIntoView({behavior:reduced?'auto':'smooth'}),30);
   }
 
   function openDesk(){
     if(data.scans.length<stations.length)return;
-    data.complete=true;save();document.getElementById('exploreShell').hidden=true;
+    data.complete=true;save();stopAmbience();document.getElementById('exploreShell').hidden=true;
     const start=document.getElementById('startMission');start?.click();
   }
 
@@ -69,7 +81,7 @@
   function move(dir){
     const step=13;let nx=data.x,ny=data.y;if(dir==='up')ny-=step;if(dir==='down')ny+=step;if(dir==='left')nx-=step;if(dir==='right')nx+=step;
     nx=Math.max(42,Math.min(678,nx));ny=Math.max(38,Math.min(442,ny));
-    if(!walkable(nx,ny)){pulseStatus('Road blocked — use the lit streets to reach the next station.');return;}
+    if(!walkable(nx,ny)){blockedSound();pulseStatus('Road blocked — use the lit streets to reach the next station.');return;}
     data.x=nx;data.y=ny;save();draw();updateProximity();
   }
 
@@ -84,14 +96,14 @@
       statusNode.textContent='All four signals collected. Open the strategy desk.';scanButton.disabled=true;scanButton.textContent='EVIDENCE PACK COMPLETE';document.getElementById('openDesk').hidden=false;document.getElementById('runComplete').hidden=false;return;
     }
     document.getElementById('openDesk').hidden=true;document.getElementById('runComplete').hidden=true;
-    if(inRange&&!collected){scanButton.disabled=false;scanButton.textContent=`SCAN ${close.label.toUpperCase()}`;statusNode.textContent=`Signal locked: ${close.label}. Press SCAN.`;}
+    if(inRange&&!collected){if(proximityAnnounced!==close.id){proximityAnnounced=close.id;proximityPing();}scanButton.disabled=false;scanButton.textContent=`SCAN ${close.label.toUpperCase()}`;statusNode.textContent=`Signal locked: ${close.label}. Press SCAN.`;}
     else if(inRange&&collected){scanButton.disabled=true;scanButton.textContent='ALREADY COLLECTED';statusNode.textContent=`${close.label} is already in your evidence pack. Move to another signal.`;}
-    else{scanButton.disabled=true;scanButton.textContent='MOVE CLOSER TO SCAN';statusNode.textContent='Move toward a glowing evidence station.';}
+    else{proximityAnnounced='';scanButton.disabled=true;scanButton.textContent='MOVE CLOSER TO SCAN';statusNode.textContent='Move toward a glowing evidence station.';}
   }
 
   function scanNearest(){
     const close=nearest();if(close.d>50||data.scans.includes(close.id))return;
-    data.scans.push(close.id);save();navigator.vibrate?.([35,25,55]);paintScanList();draw();pulseStatus(`${close.label} collected. ${stations.length-data.scans.length} signal${stations.length-data.scans.length===1?'':'s'} remaining.`);updateProximity();
+    data.scans.push(close.id);save();navigator.vibrate?.([35,25,55]);scanChime();paintScanList();draw();pulseStatus(`${close.label} collected. ${stations.length-data.scans.length} signal${stations.length-data.scans.length===1?'':'s'} remaining.`);if(data.scans.length===stations.length)completeChime();updateProximity();
   }
 
   function paintScanList(){
@@ -127,6 +139,6 @@
   }
 
   function roundRect(x,y,w,h,r,fill){ctx.beginPath();ctx.roundRect?ctx.roundRect(x,y,w,h,r):(ctx.rect(x,y,w,h));fill?ctx.fill():ctx.stroke()}
-  addEventListener('pagehide',()=>{cancelAnimationFrame(raf);clearInterval(heldTimer)});
+  addEventListener('pagehide',()=>{cancelAnimationFrame(raf);clearInterval(heldTimer);stopAmbience();audioCtx?.suspend();});
   addEventListener('DOMContentLoaded',init,{once:true});
 })();
