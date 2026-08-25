@@ -162,10 +162,10 @@
 
     <section class="movie-studio" id="movieStudio">
       <div class="section-heading movie-heading">
-        <div><p class="eyebrow">CHILDREN'S INTERACTIVE FILMMAKER</p><h2>Make your own three-scene cartoon</h2><p>Follow three simple steps. The child can try the editor immediately, change the words and see their private cartoon plan appear below.</p></div>
+        <div><p class="eyebrow">CHILDREN'S INTERACTIVE FILMMAKER</p><h2>Make and watch your own cartoon</h2><p>Tell Orish an idea, choose the world and story, then watch a private animated three-scene cartoon with movement, captions and optional read-aloud.</p></div>
         <span class="local-badge">PRIVATE DRAFT</span>
       </div>
-      <div class="simple-film-steps" aria-label="Three film making steps"><span class="active"><b>1</b>Tell the idea</span><span><b>2</b>Choose the story</span><span><b>3</b>Make three scenes</span></div>
+      <div class="simple-film-steps" aria-label="Three film making steps"><span class="active"><b>1</b>Tell the idea</span><span><b>2</b>Choose the story</span><span><b>3</b>Watch the cartoon</span></div>
       <div class="movie-builder simplified">
         <div class="idea-workbench">
           <label class="story-age-label">Who is making the film?<select id="storyAge"><option value="early">Ages 4–6</option><option value="explorer" selected>Ages 7–10</option><option value="investigator">Ages 11–13</option><option value="advanced">Ages 14–16</option></select></label>
@@ -179,19 +179,37 @@
           </div>
           <details class="story-choice-box" open><summary><b>Step 2 — Choose the story</b><span id="storyChoiceSummary">Orish · Space Observatory · Discovery</span></summary>
             <div class="story-controls">
-              <label>Who stars?<select id="storyCharacter"><option value="orish">Orish</option><option value="explorer">My Explorer</option></select></label>
+              <label>Who stars?<select id="storyCharacter"><option value="orish">Orish</option></select></label>
               <label>Where?<select id="storyWorld"><option value="space">Space Observatory</option><option value="fossil">Fossil Canyon</option><option value="rainbow">Rainbow World</option><option value="kitchen">Family Kitchen Lab</option></select></label>
               <label>What happens?<select id="storyMission"><option value="discover">Make a discovery</option><option value="mystery">Solve a mystery</option><option value="help">Help someone</option><option value="build">Build an invention</option></select></label>
             </div>
           </details>
+          <div class="orish-character-interview" aria-labelledby="characterInterviewTitle">
+            <img src="assets/orish-approved-hq.webp" alt="Orish">
+            <div><small>ORISH ASKS</small><h3 id="characterInterviewTitle">Help me meet your story character</h3><p id="characterQuestion">What kind of character should I meet in your cartoon?</p></div>
+            <textarea id="characterAnswer" maxlength="120" placeholder="For example: a friendly robot inventor"></textarea>
+            <div class="interview-actions"><button id="hearCharacterQuestion" type="button">🔉 Hear question</button><button id="speakCharacterAnswer" type="button">🎙 Speak answer</button><button id="nextCharacterQuestion" type="button">NEXT QUESTION →</button></div>
+            <div class="interview-progress" id="characterProgress" aria-label="Character questions"><i class="active"></i><i></i><i></i><i></i></div>
+            <p id="characterSummary">Orish will ask four short questions. Do not use a real person’s name, photograph, school or address.</p>
+          </div>
           <p id="storyFeedback" class="story-feedback" aria-live="polite">Your words stay on this device during beta testing.</p>
-          <button id="buildStoryboard" class="build-storyboard" type="button">STEP 3 — MAKE MY THREE SCENES</button>
+          <button id="buildStoryboard" class="build-storyboard" type="button">STEP 3 — MAKE MY CARTOON</button>
         </div>
       </div>
       <div class="storyboard" id="storyboard" hidden>
         <div class="storyboard-top"><div><p class="eyebrow">MY PRIVATE MOVIE DRAFT</p><h3 id="storyboardTitle">Orish's New Adventure</h3></div><button id="saveStoryboard" type="button">Save draft</button></div>
+        <div class="cartoon-player" id="cartoonPlayer" style="--cartoon-a:#18245d;--cartoon-b:#894aa0">
+          <div class="cartoon-stage" id="cartoonStage" aria-live="polite">
+            <div class="cartoon-sky" aria-hidden="true"><i></i><i></i><i></i></div>
+            <span class="cartoon-world-icon" id="cartoonWorldIcon" aria-hidden="true">🛰️</span>
+            <img class="cartoon-orish" src="assets/orish-game-walk.webp" alt="Orish moving through the cartoon scene">
+            <div class="cartoon-clue" aria-hidden="true">✦</div>
+            <div class="cartoon-caption"><small id="cartoonSceneNumber">SCENE 1 OF 3</small><p id="cartoonCaption">Your cartoon will play here.</p></div>
+          </div>
+          <div class="cartoon-controls"><button id="playCartoon" type="button">▶ PLAY MY CARTOON</button><button id="hearCartoonScene" type="button" aria-label="Hear this cartoon scene">🔉 Hear scene</button></div>
+        </div>
         <div class="storyboard-frames" id="storyboardFrames"></div>
-        <div class="storyboard-next"><span>READ ✓</span><span>EDIT ✓</span><span>CARTOON STORYBOARD ✓</span><b>Full animated-film generation remains parent-controlled for launch.</b></div>
+        <div class="storyboard-next"><span>READ ✓</span><span>EDIT ✓</span><span>ANIMATED CARTOON ✓</span><b>This beta uses approved characters, worlds and animation templates. No public posting or download.</b></div>
       </div>
     </section>
 
