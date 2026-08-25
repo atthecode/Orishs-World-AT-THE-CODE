@@ -95,8 +95,10 @@
   const betaVoiceStatus = document.getElementById('betaVoiceStatus');
   function stopBetaVoice(message = '🔇 Voice is off. Orish only speaks after you press the button.') {
     if (betaAudio) { betaAudio.pause(); betaAudio.currentTime = 0; }
-    betaAudio = null; betaClipIndex = 0;
-    betaPlay.disabled = false; betaStop.disabled = true;
+    betaAudio = null;
+    betaClipIndex = 0;
+    betaPlay.disabled = false;
+    betaStop.disabled = true;
     betaVoiceStatus.textContent = message;
   }
   function playNextBetaClip() {
@@ -110,7 +112,9 @@
     betaAudio.play().catch(() => stopBetaVoice('Tap the welcome button again to allow sound.'));
   }
   betaPlay?.addEventListener('click', () => {
-    stopBetaVoice(); betaPlay.disabled = true; betaStop.disabled = false;
+    stopBetaVoice();
+    betaPlay.disabled = true;
+    betaStop.disabled = false;
     betaVoiceStatus.textContent = '🔊 Orish is speaking. Press Stop voice at any time.';
     playNextBetaClip();
   });
@@ -137,6 +141,7 @@
       else { await navigator.clipboard.writeText(text); feedbackStatus.textContent = '✓ Feedback copied. A grown-up can paste it into a message.'; }
     } catch (error) { if (error?.name !== 'AbortError') feedbackStatus.textContent = 'Feedback remains saved privately on this device.'; }
   });
+
   document.getElementById('referFriend')?.addEventListener('click', async () => {
     const share = { title: "Orish's World family beta", text: "You may be interested in helping test Orish's World, a parent-controlled learning universe for children.", url: location.href };
     const status = document.getElementById('referralStatus');
