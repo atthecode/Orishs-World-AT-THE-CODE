@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="account-schedule.css?v=20260825-1">
   <script src="modules/security-store.js" defer></script>
   <script src="modules/parent-controls-engine.js" defer></script>
+  <script src="modules/conversation-memory-store.js" defer></script>
   <script src="account-v1.js?v=20260824-1" defer></script>
 </head>
 <body>
@@ -87,6 +88,7 @@
             <label><span>Child’s chosen name <small>Do not use a full legal name</small></span><input id="profileName" maxlength="30" autocomplete="off" required placeholder="e.g. Star Explorer"></label>
             <label><span>Age experience</span><select id="profileAge" required><option value="0-2">Birth–3 · Parent & Me</option><option value="4-6">Ages 4–6 · Early Explorers</option><option value="7-9" selected>Ages 7–10 · Explorers</option><option value="10-12">Ages 11–13 · Investigators</option><option value="13-16">Ages 14–16 · Advanced Missions</option></select></label>
             <fieldset><legend>Learning support</legend><label class="switch-row"><span><b>Spoken guide</b><small>Show a 🔉 button for instructions and choices</small></span><input id="spokenGuide" type="checkbox" checked></label><label class="switch-row"><span><b>Extra reading guidance</b><small>Visual clues and explanations without changing the level</small></span><input id="readingGuide" type="checkbox" checked></label><label class="switch-row"><span><b>Off-screen activities</b><small>Orish can suggest safe real-world missions</small></span><input id="offlineGuide" type="checkbox" checked></label></fieldset>
+            <fieldset><legend>Conversational Orish memory</legend><label><span>What may Orish remember?</span><select id="conversationMemory"><option value="off">Off — remember nothing after the conversation</option><option value="session">This session only</option><option value="last-summary">Last learning conversation summary</option></select></label><label><span>Delete the saved summary after</span><select id="memoryRetentionDays"><option value="1">1 day</option><option value="7" selected>7 days</option><option value="30">30 days</option></select></label><p class="schedule-note"><b>Privacy first</b>No raw microphone recording is saved. Orish remembers only a short, safety-checked learning summary. A child can say “forget that,” and a grown-up can clear it below.</p></fieldset>
             <fieldset class="schedule-fieldset"><legend>Beta play schedule</legend>
               <label><span>Choose a preset or set your own time</span><select id="playSchedule"><option value="morning">Morning Mission · 07:00–09:00</option><option value="after-school">After School · 15:30–18:00</option><option value="evening">Evening Explorer · 18:00–19:00</option><option value="bedtime">Bedtime Wind-Down · 19:00–20:00</option><option value="custom">Set my own time</option></select></label>
               <div class="schedule-times"><label><span>Start</span><input id="playStart" type="time" value="07:00"></label><label><span>Finish</span><input id="playEnd" type="time" value="09:00"></label></div>
@@ -115,7 +117,7 @@
 
         <section class="privacy-tools">
           <div><p class="eyebrow">PARENT PRIVACY TOOLS</p><h2>Data on this device</h2><p>Beta child profiles and progress are currently stored only in this browser. They are not yet synchronised to the signed-in account.</p></div>
-          <div class="privacy-actions"><button id="exportData" type="button">Export device data</button><button id="deleteProfile" class="danger-button" type="button" disabled>Delete selected profile</button></div>
+          <div class="privacy-actions"><button id="exportData" type="button">Export device data</button><button id="clearConversationMemory" type="button" disabled>Clear Orish memory</button><button id="deleteProfile" class="danger-button" type="button" disabled>Delete selected profile</button></div>
           <p id="privacyMessage" class="privacy-message" aria-live="polite"></p>
         </section>
       </section>
