@@ -4,7 +4,7 @@
   const defaults = { spaceComplete:false, cinemaSeen:false, echoComplete:false, stars:0, updated:0 };
   const read = () => { try { return {...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')}; } catch (_) { return {...defaults}; } };
   const write = state => { try { localStorage.setItem(KEY, JSON.stringify({...state,updated:Date.now()})); } catch (_) {} };
-  const state = read();
+  let state = read();
   const spaceStatus = document.getElementById('spaceStatus');
   const echoStatus = document.getElementById('echoStatus');
   const echoCard = document.getElementById('echoCard');
@@ -37,15 +37,30 @@
     reward.hidden = !state.echoComplete;
   }
 
+  function refresh() {
+    state = read();
+    render();
+  }
+
   echoLink.addEventListener('click', event => {
+    state = read();
     if (!state.spaceComplete) event.preventDefault();
   });
 
   document.getElementById('resetLevel').addEventListener('click', () => {
     if (!confirm('Reset Level 1 test progress on this device?')) return;
     write({...defaults});
-    location.reload();
+    refresh();
   });
 
-  render();
+  window.addEventListener('pageshow', refresh);
+  window.addEventListener('focus', refresh);
+  window.addEventListener('storage', event => {
+    if (event.key === KEY) refresh();
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) refresh();
+  });
+
+  refresh();
 })();
