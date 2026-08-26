@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#120f2e">
+  <title>Echo Planet — Level 1</title>
+  <link rel="stylesheet" href="echo-planet.css?v=20260826-1">
+  <script src="echo-planet.js?v=20260826-1" defer></script>
+</head>
+<body>
+  <main class="mission-shell">
+    <header class="topbar">
+      <a href="level-one.html">← Level 1</a>
+      <div class="brand"><small>ORISH'S WORLD</small><strong>ECHO PLANET // MISSION 2</strong></div>
+      <button id="soundToggle" class="round" type="button" aria-label="Toggle sound">♫</button>
+    </header>
+
+    <section class="stage">
+      <canvas id="planetCanvas" width="1280" height="720" aria-label="Playable Echo Planet exploration"></canvas>
+      <div id="stormTint" class="storm-tint" aria-hidden="true"></div>
+
+      <div class="hud">
+        <div class="objective"><small>OBJECTIVE</small><strong id="objectiveText">Leave the lander and scan the atmosphere</strong></div>
+        <div class="stats">
+          <span><small>SAMPLES</small><b id="samplesText">0 / 4</b></span>
+          <span><small>TRACKS</small><b id="tracksText">0 / 3</b></span>
+          <span><small>SUIT</small><b id="suitText">100%</b></span>
+          <span><small>STARS</small><b id="starsText">0</b></span>
+        </div>
+      </div>
+
+      <aside class="orish-comms">
+        <img src="assets/orish-approved-hq.webp" alt="Orish">
+        <p><small>ORISH</small><span id="orishText">Low gravity confirmed. Move carefully — jumping will carry you farther here.</span></p>
+      </aside>
+
+      <div class="controls" aria-label="Touch controls">
+        <div class="dpad">
+          <button type="button" data-move="up" aria-label="Move up">▲</button>
+          <button type="button" data-move="left" aria-label="Move left">◀</button>
+          <button type="button" data-move="down" aria-label="Move down">▼</button>
+          <button type="button" data-move="right" aria-label="Move right">▶</button>
+        </div>
+        <button id="jumpButton" class="jump-button" type="button"><span>↥</span><b>JUMP</b></button>
+        <button id="actionButton" class="action-button" type="button"><span>◎</span><b>SCAN</b></button>
+      </div>
+
+      <div id="eventLayer" class="event-layer" hidden><section id="eventCard" class="event-card"></section></div>
+
+      <section id="intro" class="intro">
+        <div class="intro-art">
+          <div class="echo-planet"></div><div class="echo-moon"></div><div class="lander"></div>
+          <img src="assets/orish-explorer.webp" alt="Orish ready to explore Echo Planet">
+        </div>
+        <div class="intro-copy">
+          <p class="kicker">ECHO PLANET // FIRST LANDING</p>
+          <h1>Something left tracks.</h1>
+          <p>The signal brought us here. The surface has low gravity, sudden geysers, mineral storms and marks that do not match the wind. Explore, collect evidence and decide what kind of life — if any — could survive here.</p>
+          <div class="tags"><span>Low gravity</span><span>Alien world</span><span>Exploration</span><span>Life science</span></div>
+          <button id="beginMission" class="primary" type="button">OPEN LANDER</button>
+        </div>
+      </section>
+    </section>
+  </main>
+</body>
+</html>
