@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#041126">
+  <title>Level 1 — Orish's World</title>
+  <link rel="stylesheet" href="level-one.css?v=20260826-1">
+  <script src="level-one.js?v=20260826-1" defer></script>
+</head>
+<body>
+  <div class="stars" aria-hidden="true"></div>
+  <header class="topbar">
+    <a href="world-map.html">← World map</a>
+    <div class="brand"><small>ORISH'S WORLD</small><strong>LEVEL 1 // THE UNKNOWN SIGNAL</strong></div>
+    <button id="resetLevel" type="button" class="ghost">Reset test</button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="kicker">CONNECTED ADVENTURE · TEST LEVEL</p>
+        <h1>The signal is only the beginning.</h1>
+        <p>Investigate a moving deep-space signal, survive a station emergency, follow the evidence to a distant world and decide what the science actually proves.</p>
+        <div class="progress-row">
+          <div><span>LEVEL PROGRESS</span><strong id="levelProgress">0%</strong></div>
+          <div class="bar"><i id="levelProgressBar"></i></div>
+        </div>
+      </div>
+      <div class="hero-orish">
+        <img src="assets/orish-explorer.webp" alt="Orish dressed for exploration">
+        <p><small>ORISH</small><span id="orishLevelMessage">First stop: the observatory. Something out there just changed direction.</span></p>
+      </div>
+    </section>
+
+    <section class="mission-grid" aria-label="Level 1 missions">
+      <article class="mission-card station-card" id="spaceCard">
+        <div class="mission-number">01</div>
+        <div class="mission-art station-art"><span class="dish"></span><span class="pulse"></span></div>
+        <p class="kicker">SPACE SIGNAL</p>
+        <h2>Station Emergency</h2>
+        <p>Run the observatory, protect critical systems, dodge electrical faults, rescue the research drone and triangulate the moving pulse.</p>
+        <div class="feature-tags"><span>Action</span><span>Movement</span><span>Choices</span><span>Science</span></div>
+        <a class="mission-button" href="space-signal-level1.html">PLAY MISSION 1</a>
+        <p class="mission-status" id="spaceStatus">Not completed</p>
+      </article>
+
+      <article class="mission-card planet-card locked" id="echoCard">
+        <div class="mission-number">02</div>
+        <div class="mission-art planet-art"><span class="planet"></span><span class="moon"></span></div>
+        <p class="kicker">ECHO PLANET</p>
+        <h2>The Signal Has a Destination</h2>
+        <p>Land on a low-gravity world, cross unstable ground, analyse samples, follow strange tracks and build a life-form hypothesis from evidence.</p>
+        <div class="feature-tags"><span>Alien world</span><span>Exploration</span><span>Low gravity</span><span>Mystery</span></div>
+        <a class="mission-button" id="echoLink" href="echo-planet.html" aria-disabled="true">COMPLETE MISSION 1</a>
+        <p class="mission-status" id="echoStatus">Locked by story</p>
+      </article>
+    </section>
+
+    <section class="level-reward" id="levelReward" hidden>
+      <p class="kicker">LEVEL 1 COMPLETE</p>
+      <h2>Unknown Signal Investigator</h2>
+      <p>You followed evidence across two worlds without turning a mystery into a false conclusion.</p>
+      <div class="badge-row"><span>📡 Signal Investigator</span><span>🛰 Systems Responder</span><span>🪐 Planet Explorer</span><span>🔬 Evidence Thinker</span></div>
+      <a href="world-map.html" class="finish-button">RETURN TO ORISH'S WORLD</a>
+    </section>
+  </main>
+</body>
+</html>
