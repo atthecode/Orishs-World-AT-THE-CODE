@@ -2,68 +2,66 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#041126">
-  <title>Level 1 — Orish's World</title>
-  <link rel="stylesheet" href="level-one.css?v=20260826-2">
-  <script src="level-one.js?v=20260826-2" defer></script>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#020817">
+  <title>Level 1 — The Unknown Signal</title>
+  <link rel="stylesheet" href="level-one-flagship.css?v=20260827-1">
+  <script src="level-one-flagship.js?v=20260827-1" defer></script>
 </head>
 <body>
-  <div class="stars" aria-hidden="true"></div>
-  <header class="topbar">
-    <a href="world-map.html">← World map</a>
-    <div class="brand"><small>ORISH'S WORLD</small><strong>LEVEL 1 // THE UNKNOWN SIGNAL</strong></div>
-    <button id="resetLevel" type="button" class="ghost">Reset test</button>
-  </header>
+  <main id="gameRoot" class="game" aria-label="Orish's World Level 1 flagship adventure">
+    <canvas id="gameCanvas" aria-label="Playable Level 1 adventure"></canvas>
+    <div class="storm-filter" id="stormFilter" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="damage-flash" id="damageFlash" aria-hidden="true"></div>
 
-  <main>
-    <section class="hero">
-      <div class="hero-copy">
-        <p class="kicker">CONNECTED ADVENTURE · TEST LEVEL</p>
-        <h1>The signal is only the beginning.</h1>
-        <p>Investigate a moving deep-space signal, survive a station emergency, follow the evidence to a distant world and decide what the science actually proves.</p>
-        <div class="progress-row">
-          <div><span>LEVEL PROGRESS</span><strong id="levelProgress">0%</strong></div>
-          <div class="bar"><i id="levelProgressBar"></i></div>
-        </div>
+    <div class="topbar">
+      <a class="back" href="world-map.html" aria-label="Back to world map">←</a>
+      <div class="chapter"><small>ORISH'S WORLD // LEVEL 1</small><strong id="chapterLabel">SPACE SIGNAL // OBSERVATORY</strong></div>
+      <div class="top-actions">
+        <button id="soundBtn" class="icon-btn" type="button" aria-label="Toggle sound">♫</button>
+        <button id="pauseBtn" class="icon-btn" type="button" aria-label="Pause game">Ⅱ</button>
       </div>
-      <div class="hero-orish">
-        <img src="assets/orish-explorer.webp" alt="Orish dressed for exploration">
-        <p><small>ORISH</small><span id="orishLevelMessage">First stop: the observatory. Something out there just changed direction.</span></p>
+    </div>
+
+    <section class="objective-card" aria-live="polite">
+      <small>OBJECTIVE</small>
+      <strong id="objectiveText">Reach the signal console</strong>
+    </section>
+
+    <section class="hud-stats" aria-label="Mission status">
+      <span><small>CHECKPOINT</small><b id="checkpointLabel">Arrival</b></span>
+      <span><small>EVIDENCE</small><b id="evidenceText">0</b></span>
+      <span><small>SUIT</small><b id="suitText">100%</b></span>
+      <span><small>STARS</small><b id="starsText">0</b></span>
+    </section>
+
+    <aside class="comms" aria-live="polite">
+      <img src="assets/orish-approved-hq.webp" alt="Orish">
+      <p><small>ORISH</small><span id="commsText">Something out there just changed direction.</span></p>
+    </aside>
+
+    <div class="controls" aria-label="Game controls">
+      <div id="joystick" class="joystick" role="application" aria-label="Movement joystick">
+        <div id="stick" class="stick"></div>
       </div>
-    </section>
+      <div class="action-stack">
+        <button id="abilityBtn" class="ability ready" type="button"><span>»</span><b>DASH</b></button>
+        <button id="actionBtn" class="action" type="button"><span>◎</span><b>ACTION</b></button>
+      </div>
+    </div>
 
-    <section class="mission-grid" aria-label="Level 1 missions">
-      <article class="mission-card station-card" id="spaceCard">
-        <div class="mission-number">01</div>
-        <div class="mission-art station-art"><span class="dish"></span><span class="pulse"></span></div>
-        <p class="kicker">SPACE SIGNAL</p>
-        <h2>Station Emergency</h2>
-        <p>Run the observatory, protect critical systems, dodge electrical faults, rescue the research drone and triangulate the moving pulse.</p>
-        <div class="feature-tags"><span>Action</span><span>Movement</span><span>Choices</span><span>Science</span></div>
-        <a class="mission-button" href="space-signal-level1.html?v=20260826-2">PLAY MISSION 1</a>
-        <p class="mission-status" id="spaceStatus">Not completed</p>
-      </article>
+    <div id="miniMeter" class="mini-meter" aria-hidden="true"><i></i></div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-      <article class="mission-card planet-card locked" id="echoCard">
-        <div class="mission-number">02</div>
-        <div class="mission-art planet-art"><span class="planet"></span><span class="moon"></span></div>
-        <p class="kicker">ECHO PLANET</p>
-        <h2>The Signal Has a Destination</h2>
-        <p>Land on a low-gravity world, cross unstable ground, analyse samples, follow strange tracks and build a life-form hypothesis from evidence.</p>
-        <div class="feature-tags"><span>Alien world</span><span>Exploration</span><span>Low gravity</span><span>Mystery</span></div>
-        <a class="mission-button" id="echoLink" href="echo-planet.html?v=20260826-2" aria-disabled="true">COMPLETE MISSION 1</a>
-        <p class="mission-status" id="echoStatus">Locked by story</p>
-      </article>
-    </section>
+    <div id="overlay" class="overlay">
+      <section id="overlayPanel" class="panel"></section>
+    </div>
 
-    <section class="level-reward" id="levelReward" hidden>
-      <p class="kicker">LEVEL 1 COMPLETE</p>
-      <h2>Unknown Signal Investigator</h2>
-      <p>You followed evidence across two worlds without turning a mystery into a false conclusion.</p>
-      <div class="badge-row"><span>📡 Signal Investigator</span><span>🛰 Systems Responder</span><span>🪐 Planet Explorer</span><span>🔬 Evidence Thinker</span></div>
-      <a href="world-map.html" class="finish-button">RETURN TO ORISH'S WORLD</a>
-    </section>
+    <div class="orientation-note" aria-hidden="true">
+      <b>Landscape works best</b>
+      <span>You can still play in portrait, but turning the phone sideways gives you more of the world.</span>
+    </div>
   </main>
 </body>
 </html>
