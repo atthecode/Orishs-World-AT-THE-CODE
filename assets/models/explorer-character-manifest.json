@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "status": "approved-production-target",
+  "approvedOn": "2026-08-24",
+  "characterId": "explorer-01",
+  "displayName": "My Explorer",
+  "agePresentation": "8-10",
+  "runtimeFormat": "glb",
+  "sourceFormatPreference": "blend",
+  "prototypeIsFinal": false,
+  "identity": {
+    "description": "Premium cinematic Black child explorer in the Orish's World visual universe",
+    "defaultHair": "shoulder-length-locs",
+    "defaultOutfit": "navy-cyan-explorer"
+  },
+  "requiredAnimationClips": [
+    "idle",
+    "walk",
+    "run",
+    "turn",
+    "scan",
+    "point",
+    "wave",
+    "celebrate",
+    "listen",
+    "wrong-route-reaction",
+    "console-interact",
+    "clue-pickup"
+  ],
+  "hairVariants": [
+    "rounded-afro",
+    "beaded-braids",
+    "shoulder-length-locs",
+    "round-curls",
+    "close-waves",
+    "straight-side-swept"
+  ],
+  "outfitFamilies": [
+    "explorer",
+    "scientist",
+    "space",
+    "chef",
+    "artist"
+  ],
+  "qualityGates": {
+    "coherentAnatomy": true,
+    "labelledHairMatchesGeometry": true,
+    "mobileReadable": true,
+    "localRuntimeOnly": true,
+    "commercialRightsRecorded": true,
+    "walkRunAreDistinct": true,
+    "levelOneCollisionTested": true
+  }
+}

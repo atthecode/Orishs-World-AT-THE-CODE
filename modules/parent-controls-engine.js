@@ -3,6 +3,7 @@
 
   const KEY = 'orish.v1.parentControls';
   const ROLE_IDS = ['parent','sibling','grandparent','family'];
+  const CAREGIVER_TITLES = ['parent','parents','mother','father','guardian','grandparent','teacher','grown-up'];
 
   function safeParse(value, fallback) {
     try { return value ? JSON.parse(value) : fallback; } catch { return fallback; }
@@ -22,6 +23,17 @@
       kitchenLab: true,
       goodNews: true,
       parentMissions: true,
+      playSchedule: { preset:'anytime', start:'00:00', end:'23:59', dailyMinutes:30, bedtimeMode:false },
+      conversationalDailyMinutes: 10,
+      conversationalDailyTurns: 20,
+      conversationIdleSeconds: 60,
+      caregiverTitle: 'parent',
+      greetingStyle: 'hello',
+      routineGateEnabled: false,
+      routineTasks: ['wash','teeth','dress','breakfast','bag'],
+      familySupportFocus: '',
+      conversationMemory: 'off',
+      memoryRetentionDays: 7,
       trustedFamilyRoles: [...ROLE_IDS],
       futureLiveAI: false,
       futureWebSearch: false,
@@ -47,6 +59,23 @@
       kitchenLab: input.kitchenLab !== false,
       goodNews: input.goodNews !== false,
       parentMissions: input.parentMissions !== false,
+      playSchedule: {
+        preset: String(input.playSchedule?.preset || base.playSchedule.preset),
+        start: /^\d{2}:\d{2}$/.test(input.playSchedule?.start || '') ? input.playSchedule.start : base.playSchedule.start,
+        end: /^\d{2}:\d{2}$/.test(input.playSchedule?.end || '') ? input.playSchedule.end : base.playSchedule.end,
+        dailyMinutes: Math.min(60, Math.max(10, Number(input.playSchedule?.dailyMinutes) || base.playSchedule.dailyMinutes)),
+        bedtimeMode: input.playSchedule?.preset === 'bedtime' || input.playSchedule?.bedtimeMode === true
+      },
+      conversationalDailyMinutes: Math.min(10, Math.max(0, Number(input.conversationalDailyMinutes) || base.conversationalDailyMinutes)),
+      conversationalDailyTurns: Math.min(20, Math.max(0, Number(input.conversationalDailyTurns) || base.conversationalDailyTurns)),
+      conversationIdleSeconds: Math.min(90, Math.max(30, Number(input.conversationIdleSeconds) || base.conversationIdleSeconds)),
+      caregiverTitle: CAREGIVER_TITLES.includes(input.caregiverTitle) ? input.caregiverTitle : base.caregiverTitle,
+      greetingStyle: ['hello','good-morning','grand-rising','rich-risings','grand-evening','grand-night'].includes(input.greetingStyle) ? input.greetingStyle : base.greetingStyle,
+      routineGateEnabled: input.routineGateEnabled === true,
+      routineTasks: Array.isArray(input.routineTasks) ? input.routineTasks.filter(task => ['wash','teeth','dress','breakfast','bag','listen','tidy','calm'].includes(task)).slice(0,8) : base.routineTasks,
+      familySupportFocus: String(input.familySupportFocus || '').replace(/[<>\u0000-\u001f]/g,'').trim().slice(0,240),
+      conversationMemory: ['off','session','last-summary'].includes(input.conversationMemory) ? input.conversationMemory : base.conversationMemory,
+      memoryRetentionDays: [1,7,30].includes(Number(input.memoryRetentionDays)) ? Number(input.memoryRetentionDays) : base.memoryRetentionDays,
       trustedFamilyRoles: roles.length ? [...new Set(roles)] : ['parent'],
       // Future online-capability flags are deliberately locked OFF in this prototype.
       futureLiveAI: false,
@@ -107,5 +136,5 @@
     return enabled.length ? enabled.join(' • ') : 'Only core guided learning is enabled';
   }
 
-  window.OrishParentControls = { KEY, ROLE_IDS, defaults, normalise, get, save, reset, remove, isRoleApproved, describe };
+  window.OrishParentControls = { KEY, ROLE_IDS, CAREGIVER_TITLES, defaults, normalise, get, save, reset, remove, isRoleApproved, describe };
 })();

@@ -1,0 +1,45 @@
+name: Quality Gates
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+      - 'recovery/**'
+      - 'stabilize/**'
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  static-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS= read -r -d '' file; do
+            echo "Checking ${file}"
+            node --check "${file}"
+          done < <(find . -type f -name '*.js' -not -path './.git/*' -print0)
+
+      - name: Check Python syntax
+        run: python -m compileall -q voice-gateway tools
+
+      - name: Run static repository checks
+        run: python tools/ci_static_checks.py

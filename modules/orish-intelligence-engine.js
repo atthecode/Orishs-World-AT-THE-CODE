@@ -31,6 +31,19 @@
     { id:'mission', label:'Mission HQ', icon:'🎯', launcher:'mission', subject:'Mixed learning', keywords:['mission','challenge me','give me a challenge','surprise me','something to do','activity'], interests:[], reason:'A mixed mission is a good fit when the child wants a challenge rather than one specific subject.' }
   ];
 
+  const FAMILY_SUPPORT_ROUTES = [
+    { id:'routine', pattern:/\b(routine|morning|bedtime|sleep|teeth|dressed|getting ready|tidy|belongings|school bag|listening|instructions)\b/i },
+    { id:'literacy', pattern:/\b(read|reading|phonics|spell|spelling|writing|vocabulary|comprehension|letters|words)\b/i },
+    { id:'maths', pattern:/\b(math|maths|number|numbers|times table|fraction|fractions|counting|multiply|division)\b/i },
+    { id:'story', pattern:/\b(confidence|feelings|kindness|manners|respect|turn[- ]?taking|sharing|communication|friendship|new school|taking turns)\b/i },
+    { id:'family', pattern:/\b(family|sibling|brother|sister|together|cooperate|cooperation)\b/i },
+    { id:'space', pattern:/\b(space|planet|planets|moon|rocket|astronomy|stars)\b/i },
+    { id:'science', pattern:/\b(science|experiment|nature|dinosaur|fossil|weather|animals)\b/i },
+    { id:'body', pattern:/\b(body|bones|skeleton|organs|muscles|anatomy)\b/i },
+    { id:'money', pattern:/\b(money|saving|budget|shopping|prices|finance)\b/i },
+    { id:'maker', pattern:/\b(build|building|origami|craft|making|paper plane)\b/i }
+  ];
+
   const SAFETY = [
     { pattern:/\b(kill myself|suicide|self[- ]?harm|hurt myself)\b/i, kind:'urgent', message:'I can’t turn that into a game. Please tell a trusted grown-up who is with you now. You deserve real-world help from an adult, not a game response.' },
     { pattern:/\b(kill someone|hurt someone|make a bomb|build a bomb|make a weapon|gun instructions|weapon instructions)\b/i, kind:'harm', message:'I can’t help with instructions for hurting someone or making a weapon. I can switch this into a safe science, law, feelings or problem-solving activity instead.' },
@@ -40,6 +53,27 @@
 
   function clean(value, max=180){
     return String(value || '').replace(/[<>\u0000-\u001f]/g,' ').replace(/\s+/g,' ').trim().slice(0,max);
+  }
+
+  function routeById(id){ return ROUTES.find(route => route.id === id) || null; }
+
+  function familySupportRouteId(context={}){
+    const focus = clean(context.familySupportFocus || '', 240);
+    if(!focus) return '';
+    return FAMILY_SUPPORT_ROUTES.find(item => item.pattern.test(focus))?.id || '';
+  }
+
+  function enrichContext(context={}){
+    const next = {...context};
+    const profile = window.OrishSecurityStore?.getActiveProfile?.();
+    if(!profile || !window.OrishParentControls?.get) return next;
+    const controls = window.OrishParentControls.get(profile.id, profile.ageBand);
+    if(!next.ageBand) next.ageBand = profile.ageBand;
+    if(!Array.isArray(next.interests)) next.interests = profile.interests || [];
+    if(!next.currentFocus) next.currentFocus = profile.currentFocus || '';
+    if(!next.familySupportFocus) next.familySupportFocus = controls.familySupportFocus || '';
+    if(!next.caregiverTitle) next.caregiverTitle = controls.caregiverTitle || 'parent';
+    return next;
   }
 
   function tokenScore(text, route){
@@ -58,11 +92,14 @@
     if(route.id === 'routine' && /(morning|bedtime|listening|confidence|trying something new)/.test(focus)) score += 2;
     if(route.id === 'family' && /(sharing|turn-taking|family)/.test(focus)) score += 2;
     if(route.id === 'kitchen' && /family cooking/.test(focus)) score += 3;
+    if(familySupportRouteId(context) === route.id) score += 2;
     return score;
   }
 
   function fallbackRoute(context){
     const age = context.ageBand || '7-9';
+    const supportRoute = routeById(familySupportRouteId(context));
+    if(supportRoute) return supportRoute;
     const interests = Array.isArray(context.interests) ? context.interests : [];
     const byInterest = ROUTES.find(route => route.interests.some(item => interests.includes(item)) && !['news','family'].includes(route.id));
     if(byInterest) return byInterest;
@@ -87,6 +124,7 @@
   }
 
   function makePlan(prompt, context={}){
+    context = enrichContext(context);
     const cleanPrompt = clean(prompt);
     const text = cleanPrompt.toLowerCase();
     const safety = getSafetyResponse(text);
@@ -106,7 +144,7 @@
       .sort((a,b) => b.score - a.score || ROUTES.indexOf(a.route) - ROUTES.indexOf(b.route));
     let primary = ranked[0] && ranked[0].score > 0 ? ranked[0].route : fallbackRoute(context);
 
-    // Broad requests should use the profile as a guide rather than always choosing the first keyword-free route.
+    // Broad requests may use a parent-approved support goal or saved interests. A specific child request still wins.
     if(/^(make me|give me|i want|can we do|what can we do|surprise me)/.test(text) && ranked[0]?.score < 5){
       primary = fallbackRoute(context);
     }
@@ -127,6 +165,7 @@
     const profileNote = Array.isArray(context.interests) && context.interests.length
       ? `I also considered the saved interests for this local profile (${context.interests.slice(0,3).join(', ')}).`
       : 'No saved interest was needed to choose this route.';
+    const supportRouteId = familySupportRouteId(context);
 
     return {
       ok:true,
@@ -143,7 +182,8 @@
         subject:primary.subject,
         approvedTemplateOnly:true,
         arbitraryCode:false,
-        networkRequired:false
+        networkRequired:false,
+        familySupportApplied:Boolean(supportRouteId && supportRouteId === primary.id)
       }
     };
   }

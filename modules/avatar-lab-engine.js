@@ -15,7 +15,7 @@
   const defaults = {
     mode: 'real',
     skin: '#805141',
-    hair: 'afro',
+    hair: 'locs',
     hairColor: '#17120f',
     outfit: 'explorer',
     accent: '#17d7e8',

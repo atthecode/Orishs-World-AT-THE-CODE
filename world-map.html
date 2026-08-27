@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#071f37">
+  <title>Games — Orish's World</title>
+  <link rel="stylesheet" href="world-map.css?v=20260825-12">
+  <link rel="stylesheet" href="world-map-play.css?v=20260825-2">
+  <script src="modules/security-store.js" defer></script>
+  <script src="modules/parent-controls-engine.js" defer></script>
+  <script src="modules/beta-session-guard.js" defer></script>
+  <script src="world-map.js?v=20260825-13" defer></script>
+  <script src="world-map-play.js?v=20260825-2" defer></script>
+</head>
+<body>
+  <header class="map-header">
+    <a class="brand" href="premium-preview.html"><img src="assets/orish-approved-hq.webp" alt=""><span><small>ORISH'S WORLD</small><strong>Games</strong></span></a>
+    <div class="map-score"><span>★</span><strong id="totalStars">0</strong><small>Explorer stars</small></div>
+    <a class="account-map-link" href="account.html" aria-label="Parent sign in and child profiles">🔒</a>
+    <button id="mapSound" type="button" aria-label="Turn map sound on">🔇</button>
+  </header>
+
+  <main>
+    <section class="quick-play" aria-labelledby="quickPlayTitle">
+      <div class="quick-play-card" id="quickPlayCard">
+        <div class="quick-play-icon" id="quickPlayIcon">🎮</div>
+        <div class="quick-play-copy"><small id="quickPlayState">YOUR GAME</small><h2 id="quickPlayTitle">Loading your playable game…</h2><p id="quickPlayCopy">We are matching the game to the selected age profile.</p></div>
+        <div class="quick-play-actions"><a id="quickPlayLink" href="#">PLAY NOW →</a><button id="exploreWorldButton" type="button">EXPLORE FULL WORLD</button></div>
+      </div>
+    </section>
+
+    <section class="map-intro">
+      <button class="panel-toggle" id="introToggle" type="button" aria-expanded="true" aria-label="Hide map information">−</button>
+      <b class="collapsed-label">WORLD GUIDE</b>
+      <div class="intro-content"><p>OPTIONAL WORLD MAP</p><h1>Explore other areas.</h1><span>Only glowing PLAYABLE locations open a game.</span></div>
+    </section>
+
+    <section class="map-viewport" id="mapViewport" aria-label="Interactive map of Orish's World">
+      <div class="map-stage">
+        <img src="assets/orish-world-map-v2.webp" alt="A connected adventure world with a fossil canyon, story forest, cinema, city, maker harbour and space observatory">
+        <canvas class="world-effects" id="worldEffects" aria-hidden="true"></canvas>
+        <div class="living-world" aria-hidden="true">
+          <i class="cloud cloud-one">☁</i><i class="cloud cloud-two">☁</i><i class="cloud cloud-three">☁</i><i class="flying-rocket"></i>
+          <i class="scene-boat boat-one"><b></b><span></span></i><i class="scene-boat boat-two"><b></b><span></span></i><i class="scene-car car-one"><b></b><span></span></i><i class="scene-car car-two"><b></b><span></span></i><i class="scene-car car-three"><b></b><span></span></i>
+          <i class="walker walker-one"><b></b><span></span></i><i class="walker walker-two"><b></b><span></span></i><i class="walker walker-three"><b></b><span></span></i><i class="walker walker-four"><b></b><span></span></i>
+          <i class="portal-live portal-left"></i><i class="portal-live portal-right"></i><i class="portal-live portal-centre"></i><i class="water-light water-one"></i><i class="water-light water-two"></i><i class="water-light water-three"></i>
+          <i class="world-beacon beacon-space"></i><i class="world-beacon beacon-cinema"></i><i class="world-beacon beacon-maker"></i><i class="window-light w1"></i><i class="window-light w2"></i><i class="window-light w3"></i><i class="window-light w4"></i><i class="window-light w5"></i><i class="window-light w6"></i><i class="window-light w7"></i><i class="window-light w8"></i><i class="window-light w9"></i><i class="window-light w10"></i><i class="window-light w11"></i><i class="window-light w12"></i><i class="window-light w13"></i><i class="window-light w14"></i><i class="window-light w15"></i><i class="window-light w16"></i><i class="cinema-ray ray-one"></i><i class="cinema-ray ray-two"></i><div class="focus-halo" id="focusHalo"></div>
+        </div>
+        <div class="route-glow route-one" aria-hidden="true"></div><div class="route-glow route-two" aria-hidden="true"></div>
+        <button class="map-pin coming story" data-world="story" type="button"><i>📖</i><span>Story Forest<small>BUILDING</small></span></button>
+        <button class="map-pin playable fossil selected" data-world="fossil" type="button"><i>🦴</i><span>Fossil Detective<small>PLAYABLE</small></span></button>
+        <button class="map-pin coming family" data-world="family" type="button"><i>🌈</i><span>Family Meadow<small>BUILDING</small></span></button>
+        <button class="map-pin playable cinema" data-world="cinema" type="button"><i>🎬</i><span>Learning Cinema<small>OPEN</small></span></button>
+        <button class="map-pin playable city" data-world="city" type="button"><i>🏙️</i><span>Life City<small>PLAYABLE</small></span></button>
+        <button class="map-pin playable space" data-world="space" type="button"><i>🚀</i><span>Space Signal<small>PLAYABLE</small></span></button>
+        <button class="map-pin coming maker" data-world="maker" type="button"><i>⚙️</i><span>Maker Harbour<small>BUILDING</small></span></button>
+      </div>
+    </section>
+
+    <section class="mission-dock" aria-live="polite">
+      <button class="dock-toggle" id="dockToggle" type="button" aria-expanded="true" aria-label="Hide mission information">⌄</button>
+      <div class="orish-map-guide"><img src="assets/orish-approved-hq.webp" alt="Orish"><span>ORISH SAYS</span></div>
+      <div class="mission-copy"><p id="missionType">PLAYABLE GAME</p><h2 id="missionTitle">Fossil Detective</h2><p id="missionCopy">Select a glowing playable location.</p><div id="missionSkills" class="skill-pills"><span>Play</span></div><div class="mission-list" id="missionList"></div></div>
+      <div class="mission-actions"><button id="hearLocation" type="button">🔉 Hear Orish</button><a id="missionLink" href="fossil-detective.html">PLAY HERE <b>→</b></a></div>
+    </section>
+  </main>
+  <footer><span>🔒 Parent-controlled profiles</span><span>🛡️ No open child chat</span><a href="premium-preview.html">About Orish's World</a></footer>
+</body>
+</html>

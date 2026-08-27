@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#020817">
+  <title>Level 1 — The Unknown Signal</title>
+  <link rel="stylesheet" href="level-one-flagship.css?v=20260827-1">
+  <script src="level-one-flagship.js?v=20260827-1" defer></script>
+</head>
+<body>
+  <main id="gameRoot" class="game" aria-label="Orish's World Level 1 flagship adventure">
+    <canvas id="gameCanvas" aria-label="Playable Level 1 adventure"></canvas>
+    <div class="storm-filter" id="stormFilter" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="damage-flash" id="damageFlash" aria-hidden="true"></div>
+
+    <div class="topbar">
+      <a class="back" href="world-map.html" aria-label="Back to world map">←</a>
+      <div class="chapter"><small>ORISH'S WORLD // LEVEL 1</small><strong id="chapterLabel">SPACE SIGNAL // OBSERVATORY</strong></div>
+      <div class="top-actions">
+        <button id="soundBtn" class="icon-btn" type="button" aria-label="Toggle sound">♫</button>
+        <button id="pauseBtn" class="icon-btn" type="button" aria-label="Pause game">Ⅱ</button>
+      </div>
+    </div>
+
+    <section class="objective-card" aria-live="polite">
+      <small>OBJECTIVE</small>
+      <strong id="objectiveText">Reach the signal console</strong>
+    </section>
+
+    <section class="hud-stats" aria-label="Mission status">
+      <span><small>CHECKPOINT</small><b id="checkpointLabel">Arrival</b></span>
+      <span><small>EVIDENCE</small><b id="evidenceText">0</b></span>
+      <span><small>SUIT</small><b id="suitText">100%</b></span>
+      <span><small>STARS</small><b id="starsText">0</b></span>
+    </section>
+
+    <aside class="comms" aria-live="polite">
+      <img src="assets/orish-approved-hq.webp" alt="Orish">
+      <p><small>ORISH</small><span id="commsText">Something out there just changed direction.</span></p>
+    </aside>
+
+    <div class="controls" aria-label="Game controls">
+      <div id="joystick" class="joystick" role="application" aria-label="Movement joystick">
+        <div id="stick" class="stick"></div>
+      </div>
+      <div class="action-stack">
+        <button id="abilityBtn" class="ability ready" type="button"><span>»</span><b>DASH</b></button>
+        <button id="actionBtn" class="action" type="button"><span>◎</span><b>ACTION</b></button>
+      </div>
+    </div>
+
+    <div id="miniMeter" class="mini-meter" aria-hidden="true"><i></i></div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <div id="overlay" class="overlay">
+      <section id="overlayPanel" class="panel"></section>
+    </div>
+
+    <div class="orientation-note" aria-hidden="true">
+      <b>Landscape works best</b>
+      <span>You can still play in portrait, but turning the phone sideways gives you more of the world.</span>
+    </div>
+  </main>
+</body>
+</html>

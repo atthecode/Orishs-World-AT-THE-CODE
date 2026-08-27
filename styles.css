@@ -530,3 +530,27 @@ linear-gradient(180deg,#071c37 0%,#071326 54%,#030b19 100%);border:1px solid rgb
 .orish-live-character{width:230px;height:300px;display:grid;place-items:end center;overflow:visible;filter:drop-shadow(0 20px 30px rgba(0,0,0,.3))}
 .orish-live-character-img{display:block;max-width:100%;max-height:300px;width:auto;height:auto;object-fit:contain;object-position:center bottom}
 @media(max-width:520px){.orish-live-character{width:200px;height:260px}.orish-live-character-img{max-height:260px}}
+
+
+/* Parent account beta gate */
+.parent-account-notice{max-width:760px;margin:18px auto 0;padding:14px 17px;border:1px solid rgba(255,215,100,.42);border-radius:18px;background:linear-gradient(135deg,rgba(255,200,76,.11),rgba(79,230,255,.07));color:#eaf7ff;line-height:1.55}
+.parent-account-notice strong{color:#ffe18a}
+.parent-account-notice strong+strong{margin-left:.45rem}
+.gate-shell form{min-width:0}
+.gate-step{margin:0 0 .28rem!important;color:var(--cyan2)!important;font-size:.7rem!important;font-weight:900;letter-spacing:.16em}
+.gate-shell input{width:100%;min-height:52px;font-size:1.05rem}
+.gate-actions .primary-button[disabled]{cursor:wait;opacity:.7}
+.launch-account-card{max-width:760px;margin:16px auto 30px;padding:22px;border:1px solid var(--line-strong);border-radius:24px;background:linear-gradient(145deg,rgba(10,42,70,.94),rgba(5,20,36,.97));box-shadow:var(--shadow)}
+.launch-account-card h3{margin:.2rem 0 .5rem;font-size:1.35rem}
+.launch-account-card p{margin:.25rem 0;color:var(--muted);line-height:1.55}
+.account-flow-list{margin:17px 0;padding-left:1.3rem;display:grid;gap:8px;color:#eaf8ff}
+.account-flow-list li::marker{color:var(--cyan2);font-weight:900}
+.account-roadmap-pill{display:inline-flex;margin-top:3px;padding:8px 11px;border-radius:999px;background:rgba(113,241,177,.1);border:1px solid rgba(113,241,177,.3);color:#9effcd;font-size:.72rem;font-weight:850}
+@media (max-width:620px){
+  .parent-account-notice strong{display:block}
+  .parent-account-notice strong+strong{margin:.55rem 0 0}
+  .gate-shell{grid-template-columns:1fr;padding:20px}
+  .gate-icon{width:58px;height:58px;border-radius:17px}
+  .gate-actions>*{flex:1 1 100%}
+  .launch-account-card{padding:19px}
+}

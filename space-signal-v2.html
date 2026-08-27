@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#020817">
+  <title>Space Signal V2 — Orish's World</title>
+  <link rel="stylesheet" href="space-signal-v2.css?v=20260826-1">
+  <script src="space-signal-v2.js?v=20260826-1" defer></script>
+</head>
+<body>
+  <main class="mission-shell">
+    <header class="mission-topbar">
+      <a href="world-map.html" class="back">← World</a>
+      <div class="brand"><small>ORISH'S WORLD</small><strong>SPACE SIGNAL // V2</strong></div>
+      <button id="soundButton" class="round-button" type="button" aria-label="Toggle sound">♫</button>
+    </header>
+
+    <section class="mission-stage" aria-label="Space Signal mission">
+      <canvas id="stationCanvas" width="1280" height="720"></canvas>
+
+      <div class="cinema-bars" aria-hidden="true"></div>
+      <div class="screen-glow" aria-hidden="true"></div>
+
+      <div class="mission-hud">
+        <div class="hud-cluster">
+          <span class="hud-label">MISSION</span>
+          <strong id="missionObjective">Reach the signal console</strong>
+        </div>
+        <div class="hud-stats">
+          <div><span>POWER</span><b id="powerValue">100%</b></div>
+          <div><span>SIGNAL</span><b id="signalValue">UNSTABLE</b></div>
+          <div><span>EVIDENCE</span><b id="evidenceValue">0 / 3</b></div>
+        </div>
+      </div>
+
+      <aside class="orish-panel" id="orishPanel">
+        <img src="assets/orish-approved-hq.webp" alt="Orish">
+        <div><small>ORISH</small><p id="orishText">The station is picking up something strange. Move to the glowing signal console.</p></div>
+      </aside>
+
+      <div class="mobile-controls" aria-label="Movement controls">
+        <div class="dpad">
+          <button type="button" data-move="up" aria-label="Move up">▲</button>
+          <button type="button" data-move="left" aria-label="Move left">◀</button>
+          <button type="button" data-move="down" aria-label="Move down">▼</button>
+          <button type="button" data-move="right" aria-label="Move right">▶</button>
+        </div>
+        <button id="actionButton" class="action-button" type="button"><span>◎</span><b>ACTION</b></button>
+      </div>
+
+      <div id="eventLayer" class="event-layer" hidden aria-live="polite">
+        <section id="eventCard" class="event-card"></section>
+      </div>
+
+      <section id="missionIntro" class="mission-intro">
+        <div class="intro-visual">
+          <div class="orb"></div>
+          <div class="signal-lines"></div>
+          <img src="assets/orish-approved-hq.webp" alt="Orish">
+        </div>
+        <div class="intro-copy">
+          <p class="kicker">DEEP SPACE OBSERVATORY // 21:47</p>
+          <h1>The signal moved.</h1>
+          <p>A repeating pulse has returned to the observatory — but this time its direction is changing. Explore the station, protect critical systems and find out what the evidence actually proves.</p>
+          <div class="mission-pill-row"><span>Explore</span><span>Investigate</span><span>Make choices</span><span>Unknown source</span></div>
+          <button id="beginV2" class="begin-button" type="button">ENTER OBSERVATORY</button>
+        </div>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

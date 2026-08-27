@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#07142f">
+  <title>Space Signal — Orish's World</title>
+  <link rel="stylesheet" href="space-signal.css?v=20260824-11">
+  <link rel="stylesheet" href="space-signal-adventure.css?v=20260826-1">
+  <script src="modules/security-store.js" defer></script>
+  <script src="modules/parent-controls-engine.js" defer></script>
+  <script src="modules/avatar-lab-engine.js" defer></script>
+  <script src="modules/avatar-3d-viewer.js" defer></script>
+  <script src="modules/beta-session-guard.js" defer></script>
+  <script src="space-signal.js?v=20260824-11" defer></script>
+  <script src="space-signal-adventure.js?v=20260826-1" defer></script>
+</head>
+<body>
+  <div class="starfield" aria-hidden="true"></div>
+  <header class="game-header">
+    <a class="back-link" href="world-map.html">← World map</a>
+    <div class="mission-title"><small>ORISH'S WORLD</small><strong>SPACE SIGNAL</strong></div>
+    <button id="soundToggle" class="icon-button" type="button" aria-label="Mute music and sound">♫</button>
+  </header>
+
+  <main class="game-shell">
+    <section class="briefing" id="briefing">
+      <div class="briefing-orish">
+        <img src="assets/orish-approved-hq.webp" alt="Orish">
+        <span>ORISH</span>
+      </div>
+      <div class="briefing-copy">
+        <p class="eyebrow">TRAINING MISSION · STATION 01</p>
+        <h1>The signal has returned.</h1>
+        <p>Move through the observatory, scan all three signal traces and work out which pattern is real. Watch the energy gates—they change direction.</p>
+        <div class="character-choice" aria-label="Mission character">
+          <strong>Your mission guide</strong>
+          <div><button class="character-button active" type="button" data-character="orish"><img src="assets/orish-approved-hq.webp" alt="">Play as Orish</button></div>
+          <div class="avatar-builder" id="avatarBuilder" hidden>
+            <span id="avatarPreview" hidden aria-hidden="true"></span>
+            <div class="avatar-designer-preview">
+              <div class="avatar-render-status"><span>Private on this device</span><b id="avatar3DStatus" data-state="loading">Loading local 3D character…</b></div>
+              <div id="avatarViewport" class="avatar-viewport" aria-label="Three-dimensional Explorer preview"><div id="avatar3DNote" class="sr-only" aria-live="polite"></div><div class="avatar-platform"><span></span></div><div class="avatar-placeholder" aria-hidden="true">★</div></div>
+            </div>
+            <div class="avatar-designer-controls">
+              <div class="avatar-mode-row"><button id="avatarRealMode" class="avatar-control active" type="button">Real-world tones</button><button id="avatarCreativeMode" class="avatar-control" type="button">Creative colours</button><button id="avatarSurprise" class="avatar-control" type="button">🎲 Surprise me</button></div>
+              <label>Skin tone</label><div id="avatarSkinPalette" class="designer-swatches" role="group" aria-label="Skin tone choices"></div>
+              <label>Hair style</label><div id="avatarHairStyles" class="designer-choices" role="group" aria-label="Hair style choices"></div>
+              <label>Hair colour</label><div id="avatarHairPalette" class="designer-swatches small" role="group" aria-label="Hair colour choices"></div>
+              <label>Outfit</label><div id="avatarOutfits" class="designer-choices" role="group" aria-label="Outfit choices"></div>
+              <label>Outfit accent colour</label><div id="avatarAccentPalette" class="designer-swatches small" role="group" aria-label="Outfit colour choices"></div>
+              <button id="avatarSave" class="primary-button" type="button">Use this Explorer</button><p id="avatarSaveStatus">No photo, name or personal information is needed.</p>
+            </div>
+          </div>
+        </div>
+        <div class="mission-tags"><span>Explore</span><span>Observe</span><span>Test evidence</span><span>Non-violent</span></div>
+        <div class="briefing-actions"><button id="startMission" class="primary-button" type="button">Begin mission</button><button id="playOrishWelcome" class="speak-button original-voice-button" type="button">🎙 Hear Orish welcome</button><button id="openSignalGuide" class="guide-button" type="button">〰 Learn signal waves</button><button id="hearMissionVoice" class="speak-button original-voice-button" type="button">🎙 Hear mission</button></div>
+      </div>
+    </section>
+
+    <section class="game-stage" id="gameStage" hidden aria-label="Playable Space Signal mission">
+      <div class="hud">
+        <div class="hud-card"><small>MISSION</small><strong id="objectiveText">Find the first trace</strong></div>
+        <div class="hud-card evidence-hud"><small>EVIDENCE</small><strong><span id="evidenceCount">0</span> / 3</strong></div>
+        <div class="hud-card mini-hud"><small>MINI MISSIONS</small><strong>✦ <span id="miniCount">0</span> / 3</strong></div>
+        <div class="hud-card"><small>STARS</small><strong>★ <span id="starCount">300</span></strong></div>
+      </div>
+
+      <div class="viewport-wrap">
+        <canvas id="gameCanvas" width="960" height="540" aria-label="Top-down space station exploration game"></canvas>
+        <div class="scan-vignette" id="scanVignette" aria-hidden="true"></div>
+      </div>
+
+      <div class="orish-comms" id="orishComms" role="status" aria-live="polite">
+        <img src="assets/orish-approved-hq.webp" alt="">
+        <p><small>ORISH</small><span id="commsText">Use the controls to explore. Scan when the meter glows.</span></p>
+        <button class="comms-speak" type="button" aria-label="Hear Orish's message">🔊</button>
+      </div>
+
+      <div class="controls" aria-label="Game controls">
+        <div class="dpad">
+          <button type="button" data-move="up" aria-label="Move up">▲</button>
+          <button type="button" data-move="left" aria-label="Move left">◀</button>
+          <button type="button" data-move="down" aria-label="Move down">▼</button>
+          <button type="button" data-move="right" aria-label="Move right">▶</button>
+        </div>
+        <div class="action-controls">
+          <div class="movement-mode" role="group" aria-label="Choose walking or running"><button class="active" type="button" data-movement-mode="walk" aria-pressed="true">🚶 WALK</button><button type="button" data-movement-mode="run" aria-pressed="false">🏃 RUN</button></div>
+          <button id="pauseButton" class="pause-button" type="button" aria-label="Pause mission">Ⅱ <span>PAUSE</span></button>
+          <div class="scanner-meter"><span id="scannerFill"></span></div>
+          <button id="scanButton" class="scan-button" type="button"><span>◎</span> SCAN</button>
+        </div>
+      </div>
+      <p class="keyboard-help">Keyboard: WASD or arrow keys to move · Space to scan</p>
+    </section>
+
+    <section class="analysis-panel" id="analysisPanel" hidden>
+      <p class="eyebrow">EVIDENCE LAB</p>
+      <h2>Which trace is the repeating signal?</h2>
+      <p>Use the evidence you collected. A pulse is one short burst of energy. A repeating signal sends pulses with the same time gap between them.</p>
+      <div class="signal-meaning-clue"><span>BURST</span><b>▆</b><i>equal gap</i><b>▆</b><i>equal gap</i><b>▆</b></div>
+      <button class="speak-button" type="button" data-speak="Which trace is the repeating signal? A pulse means one short burst of energy. A repeating signal sends pulses with the same amount of time between each burst. Look for equal gaps. Trace A has irregular energy. Trace B has equal pulse gaps. Trace C has rising energy." aria-label="Hear the meaning, question and answers">🔉</button>
+      <div class="pattern-grid">
+        <div class="answer-card"><button type="button" data-answer="noise"><small>CHOICE A · TRACE A</small><span>▂ ▆ ▃ ▇ ▂ ▅</span><b>Irregular energy</b><em>The height and gaps keep changing.</em></button><button class="answer-speak" type="button" data-speak="Choice A. Irregular energy. The height and gaps keep changing without a steady pattern." aria-label="Hear choice A">🔉</button></div>
+        <div class="answer-card"><button type="button" data-answer="signal"><small>CHOICE B · TRACE B</small><span>▆ · ▆ · ▆ ·</span><b>Equal pulse gaps</b><em>Every pulse has the same space after it.</em></button><button class="answer-speak" type="button" data-speak="Choice B. Equal pulse gaps. Equal means the same. Every pulse has the same amount of space after it." aria-label="Hear choice B">🔉</button></div>
+        <div class="answer-card"><button type="button" data-answer="drift"><small>CHOICE C · TRACE C</small><span>▂ ▃ ▄ ▅ ▆ ▇</span><b>Rising energy</b><em>The signal grows stronger each time.</em></button><button class="answer-speak" type="button" data-speak="Choice C. Rising energy. The signal grows stronger each time, but it does not repeat evenly." aria-label="Hear choice C">🔉</button></div>
+      </div>
+      <p id="analysisFeedback" class="analysis-feedback" role="status"></p>
+    </section>
+
+    <section class="complete-panel" id="completePanel" hidden>
+      <div class="completion-burst" aria-hidden="true">★</div>
+      <p class="eyebrow">MISSION COMPLETE</p>
+      <h2>Signal calibrated.</h2>
+      <p>You explored the station, collected evidence and tested the pattern before deciding.</p>
+      <div class="reward-row"><span><b id="spaceFinalStars">★ 0</b> Earned stars</span><span><b>+1</b> Signal badge</span><span><b>UNLOCKED</b> Cinema ending</span></div>
+      <div class="complete-actions">
+        <button id="replayMission" class="secondary-button" type="button">Replay mission</button>
+        <a class="primary-button" href="learning-cinema.html">Enter the cinema →</a>
+      </div>
+    </section>
+  </main>
+
+  <div class="pause-modal" id="pauseModal" hidden>
+    <div><p class="eyebrow">MISSION PAUSED</p><h2>Ready when you are.</h2><p>Taking a break is part of playing well.</p><button id="resumeButton" class="primary-button" type="button">Resume</button><a href="world-map.html">Leave mission</a></div>
+  </div>
+  <div class="mini-modal" id="miniModal" hidden>
+    <div class="mini-card">
+      <p class="eyebrow" id="miniBadge">MINI MISSION</p>
+      <h2 id="miniTitle">Station challenge</h2>
+      <p id="miniQuestion"></p>
+      <div id="miniClue" class="mini-clue" aria-label="Visual clue"></div>
+      <button id="miniSpeak" class="speak-button" type="button" aria-label="Hear question and answers">🔉</button>
+      <div class="mini-options" id="miniOptions"></div>
+      <p class="analysis-feedback" id="miniFeedback" role="status"></p>
+      <button id="miniClose" class="secondary-button" type="button">Continue exploring</button>
+    </div>
+  </div>
+  <div class="signal-guide-modal" id="signalGuide" hidden>
+    <div class="signal-guide-card">
+      <button id="closeSignalGuide" class="modal-close" type="button" aria-label="Close signal guide">×</button>
+      <p class="eyebrow">ORISH'S SIGNAL GUIDE</p><h2>How do signal waves work?</h2>
+      <p>A signal wave carries information. We can compare its shape instead of guessing what it means.</p>
+      <div class="wave-lessons">
+        <article><span class="wave high-wave">⌁</span><h3>Amplitude</h3><p>The height of the wave. A taller wave usually means a stronger signal.</p></article>
+        <article><span class="wave fast-wave">∿∿∿</span><h3>Frequency</h3><p>How many waves pass in the same amount of time. More waves means a higher frequency.</p></article>
+        <article><span class="wave gap-wave">▆ · ▆ · ▆</span><h3>Interval</h3><p>The space or time between pulses. Equal gaps can show a repeating pattern.</p></article>
+        <article><span class="wave direction-wave">◉ →</span><h3>Direction</h3><p>Compare where the signal is strongest to work out where it came from.</p></article>
+      </div>
+      <button class="speak-button" type="button" data-speak="A signal wave carries information. Amplitude means the height of the wave. A taller wave usually means a stronger signal. Frequency means how many waves pass in the same amount of time. Interval means the space or time between pulses. Equal gaps can show a repeating pattern. Direction tells us where the signal came from by comparing where it is strongest.">🔊 Hear the signal lesson</button>
+    </div>
+  </div>
+</body>
+</html>
