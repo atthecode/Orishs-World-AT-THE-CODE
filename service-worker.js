@@ -1,4 +1,4 @@
-const CACHE='orish-world-v170-webmcp-agent-studio';
+const CACHE='orish-world-v171-webmcp-mission-fix';
 const SHELL=[
   './','./index.html','./styles.css','./app.js','./manifest.webmanifest',
   './agent-mission-studio.html','./agent-mission-studio.css','./agent-mission-studio.js',
@@ -32,5 +32,5 @@ self.addEventListener('fetch',(event)=>{
   }
   const shellKey=new URL(url.pathname,url.origin).href;
   if(!SHELL_URLS.has(shellKey))return;
-  event.respondWith(caches.match(shellKey).then((cached)=>cached||fetch(event.request,{cache:'no-store'}).then((response)=>{const copy=response.clone();caches.open(CACHE).then((cache)=>cache.put(shellKey,copy));return response;})));
+  event.respondWith(fetch(event.request,{cache:'no-store'}).then((response)=>{const copy=response.clone();caches.open(CACHE).then((cache)=>cache.put(shellKey,copy));return response;}).catch(()=>caches.match(shellKey)));
 });
