@@ -1,6 +1,7 @@
-const CACHE='orish-world-v169-flagship-level-one';
+const CACHE='orish-world-v170-webmcp-agent-studio';
 const SHELL=[
   './','./index.html','./styles.css','./app.js','./manifest.webmanifest',
+  './agent-mission-studio.html','./agent-mission-studio.css','./agent-mission-studio.js',
   './premium-preview.html','./premium-preview.css','./premium-preview-fixes.css','./premium-preview-additions.css','./premium-preview.js','./account.html','./account-v1.css','./account-schedule.css','./account-v1.js','./family-check-in.html','./family-check-in.css','./family-check-in.js',
   './world-map.html','./world-map.css','./world-map-play.css','./world-map.js','./world-map-play.js','./older-games.css','./level-one.html','./level-one-flagship.css','./level-one-flagship.js','./space-signal.html','./space-signal.css','./space-signal.js','./space-signal-adventure.css','./space-signal-adventure.js','./signal-detective.html','./signal-detective.js','./fossil-detective.html','./fossil-detective.css','./fossil-detective-fixes.css','./fossil-detective.js','./life-city.html','./life-city.css','./life-city-play.css','./life-city-play.js','./life-city.js','./grid-rescue.html','./grid-rescue.js','./learning-cinema.html','./learning-cinema-v3.css','./learning-cinema-v3.js',
   './assets/orish-approved-hq.webp','./assets/orish-game-walk.webp','./assets/orish-world-map-v2.webp','./assets/orish-fossil-detective-v2.webp','./assets/fossil-dig-bed-v3.webp',
