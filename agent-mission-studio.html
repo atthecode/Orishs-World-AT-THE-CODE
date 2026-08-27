@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#031126">
+  <meta name="description" content="Orish's World Agent Mission Studio — a WebMCP human-agent learning mission demo.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests">
+  <title>Agent Mission Studio — Orish's World</title>
+  <link rel="stylesheet" href="agent-mission-studio.css?v=20260827-1">
+  <script src="agent-mission-studio.js?v=20260827-1" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="back" href="index.html">← Orish's World</a>
+    <div class="brand"><small>AT THE CODE</small><strong>AGENT MISSION STUDIO</strong></div>
+    <span id="webmcpBadge" class="status checking">Checking WebMCP…</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">WEBMCP CHALLENGE BUILD · AUGUST 2026</p>
+        <h1>One learning world.<br>Two ways to build the adventure.</h1>
+        <p>A parent can shape a mission on screen while their AI agent uses the same live page through WebMCP site tools. The child-facing game remains controlled, age-adapted and separate from unrestricted AI.</p>
+        <div class="trust"><span>Demo learner only</span><span>No real child data</span><span>No unrestricted child chatbot</span></div>
+      </div>
+      <div class="orish-card">
+        <img src="assets/orish-explorer.webp" alt="Orish ready for an exploration mission">
+        <p><small>ORISH</small><strong>Tell your agent what kind of adventure you want. I’ll turn the plan into play.</strong></p>
+      </div>
+    </section>
+
+    <section class="studio-grid">
+      <article class="panel human-panel">
+        <div class="panel-head"><div><p class="eyebrow">HUMAN SIDE</p><h2>Mission controls</h2></div><span class="live-dot">LIVE</span></div>
+        <p class="note">Competition safety mode uses a fictional learner profile only.</p>
+
+        <label>Demo age experience
+          <select id="ageBand">
+            <option value="4-6">4–6 Early Explorer</option>
+            <option value="7-9" selected>7–9 Growing Explorer</option>
+            <option value="10-12">10–12 Big Explorer</option>
+            <option value="13-16">13–16 Teen Explorer</option>
+          </select>
+        </label>
+
+        <label>Adventure topic
+          <select id="topic">
+            <option value="space" selected>Space & strange signals</option>
+            <option value="fossils">Fossils & deep time</option>
+            <option value="evidence">Evidence detective</option>
+            <option value="money">Money & real-life choices</option>
+            <option value="science">Science mystery</option>
+          </select>
+        </label>
+
+        <label>Mission length
+          <select id="duration">
+            <option value="10">10 minutes</option>
+            <option value="15" selected>15 minutes</option>
+            <option value="20">20 minutes</option>
+            <option value="30">30 minutes</option>
+          </select>
+        </label>
+
+        <label>Learning goal
+          <input id="learningGoal" maxlength="120" value="Use evidence before deciding what a strange signal means">
+        </label>
+
+        <label>Play style
+          <select id="style">
+            <option value="explore" selected>Explore + investigate</option>
+            <option value="puzzle">Puzzle + solve</option>
+            <option value="build">Build + test</option>
+            <option value="story">Story + choices</option>
+          </select>
+        </label>
+
+        <div class="actions">
+          <button id="buildMission" class="primary" type="button">Build mission</button>
+          <button id="exampleMission" class="secondary" type="button">Load judge demo</button>
+        </div>
+      </article>
+
+      <article class="panel agent-panel">
+        <div class="panel-head"><div><p class="eyebrow">AGENT SIDE</p><h2>WebMCP site tools</h2></div><span class="agent-mark">↗ AI</span></div>
+        <p>In ChatGPT’s built-in browser, the agent can discover and call these tools directly on this page.</p>
+        <div id="toolList" class="tool-list">
+          <div><b>get_orish_world_capabilities</b><span>Discover safe mission options</span></div>
+          <div><b>create_learning_mission</b><span>Build an age-adapted mission</span></div>
+          <div><b>adapt_learning_mission</b><span>Change difficulty, duration or style</span></div>
+          <div><b>launch_learning_mission</b><span>Open the matched playable world</span></div>
+          <div><b>get_learning_summary</b><span>Read local demo progress</span></div>
+          <div><b>suggest_real_world_followup</b><span>Turn screen learning into an offline activity</span></div>
+        </div>
+        <div class="prompt-card">
+          <small>TRY SAYING TO CHATGPT</small>
+          <p>“Create a 15-minute space investigation for an 8-year-old about evidence, make it exciting, then launch it.”</p>
+        </div>
+      </article>
+
+      <article class="panel mission-panel">
+        <div class="panel-head"><div><p class="eyebrow">SHARED LIVE STATE</p><h2>Mission preview</h2></div><span id="missionState" class="state-pill">Ready</span></div>
+        <div id="emptyMission" class="empty-state">
+          <div class="signal-orbit"><i></i><i></i><span>?</span></div>
+          <strong>No mission yet</strong>
+          <p>Build one manually or ask your agent to create one through WebMCP.</p>
+        </div>
+        <div id="missionPreview" class="mission-preview" hidden>
+          <p id="missionKicker" class="eyebrow"></p>
+          <h3 id="missionTitle"></h3>
+          <p id="missionBrief"></p>
+          <div class="mission-meta"><span id="missionAge"></span><span id="missionDuration"></span><span id="missionStyle"></span></div>
+          <ol id="missionSteps"></ol>
+          <div class="evidence-box"><small>LEARNING TARGET</small><strong id="missionGoal"></strong></div>
+          <div class="real-world"><small>OFF-SCREEN FOLLOW-UP</small><p id="followupText"></p></div>
+          <div class="actions"><button id="launchMission" class="primary" type="button">Launch playable mission →</button><button id="copyPrompt" class="secondary" type="button">Copy demo prompt</button></div>
+        </div>
+      </article>
+
+      <aside class="activity-panel panel">
+        <div class="panel-head"><div><p class="eyebrow">PROOF</p><h2>Agent activity</h2></div><button id="clearActivity" class="text-button" type="button">Clear</button></div>
+        <div id="activityLog" class="activity-log" aria-live="polite"><p><time>NOW</time><span>Studio ready. Waiting for a human or agent action.</span></p></div>
+      </aside>
+    </section>
+
+    <section class="how-it-works">
+      <p class="eyebrow">HUMAN + AGENT EXPERIENCE</p>
+      <h2>The agent does not replace the learning world. It helps the family configure it.</h2>
+      <div class="flow"><span>Parent intent</span><i>→</i><span>ChatGPT</span><i>→</i><span>WebMCP tools</span><i>→</i><span>Safe mission plan</span><i>→</i><span>Child plays Orish's World</span><i>→</i><span>Real-world follow-up</span></div>
+    </section>
+  </main>
+</body>
+</html>
