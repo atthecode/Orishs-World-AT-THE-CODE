@@ -1,5 +1,19 @@
 const encoder = new TextEncoder();
 
+const INKTHREADABLE_SIZE_SKUS = {
+  "3-4": "STTK184-FNY-3-4",
+  "3-4 years": "STTK184-FNY-3-4",
+  "5-6": "STTK184-FNY-5-6",
+  "5-6 years": "STTK184-FNY-5-6",
+  "7-8": "STTK184-FNY-7-8",
+  "7-8 years": "STTK184-FNY-7-8",
+  "9-11": "STTK184-FNY-9-11",
+  "9-11 years": "STTK184-FNY-9-11",
+  "12-13": "STTK184-FNY-12-14",
+  "12-13 year": "STTK184-FNY-12-14",
+  "12-13 years": "STTK184-FNY-12-14"
+};
+
 function hex(buffer) {
   return [...new Uint8Array(buffer)]
     .map((b) => b.toString(16).padStart(2, "0"))
@@ -48,13 +62,15 @@ function customField(session, key) {
   return field?.dropdown?.value ?? field?.text?.value ?? field?.numeric?.value ?? null;
 }
 
-function sizeEnvKey(size) {
-  const normalized = String(size || "")
+function normalizeSize(size) {
+  return String(size || "")
     .trim()
-    .toUpperCase()
-    .replace(/[^A-Z0-9]+/g, "_")
-    .replace(/^_+|_+$/g, "");
-  return normalized ? `INKTHREADABLE_PN_${normalized}` : null;
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+}
+
+function inkthreadableSkuForSize(size) {
+  return INKTHREADABLE_SIZE_SKUS[normalizeSize(size)] || null;
 }
 
 function shippingAddress(session) {
@@ -85,8 +101,7 @@ function missingAddressFields(address) {
 
 async function createInkthreadableOrder(env, session) {
   const size = customField(session, "size") || session.metadata?.size;
-  const pnKey = sizeEnvKey(size);
-  const pn = pnKey ? env[pnKey] : null;
+  const pn = inkthreadableSkuForSize(size);
 
   if (!env.INKTHREADABLE_APP_ID || !env.INKTHREADABLE_SECRET_KEY) {
     throw new Error("Inkthreadable API credentials are not configured");
@@ -104,7 +119,7 @@ async function createInkthreadableOrder(env, session) {
     throw new Error(`Checkout is missing shipping fields: ${missing.join(", ")}`);
   }
 
-  const amount = Number(session.amount_total || 2499) / 100;
+  const amount = Number(session.amount_total || 2999) / 100;
   const body = JSON.stringify({
     external_id: session.id,
     brandName: "Orish's World",
