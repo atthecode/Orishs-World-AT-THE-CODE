@@ -17,6 +17,10 @@ async function hmacSha256(secret, message) {
   return hex(await crypto.subtle.sign("HMAC", key, encoder.encode(message)));
 }
 
+async function sha1(message) {
+  return hex(await crypto.subtle.digest("SHA-1", encoder.encode(message)));
+}
+
 function safeEqual(a, b) {
   if (!a || !b || a.length !== b.length) return false;
   let result = 0;
@@ -42,6 +46,117 @@ async function verifyStripe(rawBody, stripeSignatureHeader, secret) {
 function customField(session, key) {
   const field = (session.custom_fields || []).find((item) => item.key === key);
   return field?.dropdown?.value ?? field?.text?.value ?? field?.numeric?.value ?? null;
+}
+
+function sizeEnvKey(size) {
+  const normalized = String(size || "")
+    .trim()
+    .toUpperCase()
+    .replace(/[^A-Z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+  return normalized ? `INKTHREADABLE_PN_${normalized}` : null;
+}
+
+function shippingAddress(session) {
+  const details = session.customer_details || {};
+  const shipping = session.shipping_details || {};
+  const address = shipping.address || details.address || {};
+  const fullName = shipping.name || details.name || "";
+  const parts = fullName.trim().split(/\s+/).filter(Boolean);
+
+  return {
+    firstName: parts.shift() || "Customer",
+    lastName: parts.join(" ") || "Customer",
+    company: "",
+    address1: address.line1 || "",
+    address2: address.line2 || "",
+    city: address.city || "",
+    county: address.state || "",
+    postcode: address.postal_code || "",
+    country: address.country || "United Kingdom",
+    phone1: details.phone || ""
+  };
+}
+
+function missingAddressFields(address) {
+  const required = ["address1", "city", "postcode", "country"];
+  return required.filter((key) => !address[key]);
+}
+
+async function createInkthreadableOrder(env, session) {
+  const size = customField(session, "size") || session.metadata?.size;
+  const pnKey = sizeEnvKey(size);
+  const pn = pnKey ? env[pnKey] : null;
+
+  if (!env.INKTHREADABLE_APP_ID || !env.INKTHREADABLE_SECRET_KEY) {
+    throw new Error("Inkthreadable API credentials are not configured");
+  }
+  if (!pn) {
+    throw new Error(`No Inkthreadable variant configured for size: ${size || "missing"}`);
+  }
+  if (!env.INKTHREADABLE_DESIGN_FRONT_URL) {
+    throw new Error("INKTHREADABLE_DESIGN_FRONT_URL is not configured");
+  }
+
+  const address = shippingAddress(session);
+  const missing = missingAddressFields(address);
+  if (missing.length) {
+    throw new Error(`Checkout is missing shipping fields: ${missing.join(", ")}`);
+  }
+
+  const amount = Number(session.amount_total || 2499) / 100;
+  const body = JSON.stringify({
+    external_id: session.id,
+    brandName: "Orish's World",
+    comment: `Stripe checkout ${session.id}. Orish Too-Fast Rocket Tee. Size: ${size}`,
+    shipping_address: address,
+    shipping: {
+      shippingMethod: env.INKTHREADABLE_SHIPPING_METHOD || "regular"
+    },
+    items: [
+      {
+        pn,
+        quantity: 1,
+        retailPrice: amount.toFixed(2),
+        description: "Orish's World — Too-Fast Rocket Tee. Front DTG print.",
+        designs: {
+          front: env.INKTHREADABLE_DESIGN_FRONT_URL
+        }
+      }
+    ]
+  });
+
+  const signature = await sha1(body + env.INKTHREADABLE_SECRET_KEY);
+  const endpoint = new URL("https://www.inkthreadable.co.uk/api/orders.php");
+  endpoint.searchParams.set("AppId", env.INKTHREADABLE_APP_ID);
+  endpoint.searchParams.set("Signature", signature);
+
+  const response = await fetch(endpoint.toString(), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body
+  });
+  const text = await response.text();
+
+  if (!response.ok) {
+    throw new Error(`Inkthreadable ${response.status}: ${text.slice(0, 500)}`);
+  }
+
+  let order = null;
+  try {
+    order = JSON.parse(text);
+  } catch {
+    order = { raw: text };
+  }
+
+  console.log("Inkthreadable order created", {
+    stripe_checkout_session: session.id,
+    size,
+    pn,
+    response: order
+  });
+
+  return order;
 }
 
 export default {
@@ -70,7 +185,13 @@ export default {
 
     if (!verified) return new Response("Invalid Stripe signature", { status: 400 });
 
-    const event = JSON.parse(rawBody);
+    let event;
+    try {
+      event = JSON.parse(rawBody);
+    } catch {
+      return new Response("Invalid JSON", { status: 400 });
+    }
+
     if (event.type !== "checkout.session.completed") {
       return new Response("Event ignored", { status: 200 });
     }
@@ -80,12 +201,27 @@ export default {
       return new Response("Not a T-shirt order", { status: 200 });
     }
 
-    console.log("Verified Orish T-shirt order", {
-      checkout_session: session.id,
-      size: customField(session, "size"),
-      colour: customField(session, "colour")
-    });
-
-    return new Response("T-shirt order verified", { status: 200 });
+    try {
+      const order = await createInkthreadableOrder(env, session);
+      return Response.json({
+        ok: true,
+        message: "T-shirt order sent to Inkthreadable",
+        stripe_checkout_session: session.id,
+        inkthreadable_order: order
+      });
+    } catch (error) {
+      console.error("Orish T-shirt fulfilment failed", {
+        stripe_checkout_session: session.id,
+        error: error?.message || String(error)
+      });
+      return Response.json(
+        {
+          ok: false,
+          message: "T-shirt order was verified by Stripe but not sent to Inkthreadable",
+          error: error?.message || String(error)
+        },
+        { status: 500 }
+      );
+    }
   }
 };
