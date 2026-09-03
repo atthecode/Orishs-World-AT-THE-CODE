@@ -47,12 +47,13 @@ function customField(session, key) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    const path = url.pathname.replace(/\/+$/, "") || "/";
 
-    if (url.pathname === "/health") {
+    if (path === "/" || path === "/health") {
       return new Response("Orish fulfilment worker is ready", { status: 200 });
     }
 
-    if (url.pathname !== "/stripe-webhook" || request.method !== "POST") {
+    if (path !== "/stripe-webhook" || request.method !== "POST") {
       return new Response("Not found", { status: 404 });
     }
 
