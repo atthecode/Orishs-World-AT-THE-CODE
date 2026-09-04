@@ -3,44 +3,57 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Orish's World — WebMCP Demo</title>
+<title>Orish's World — WebMCP Challenge</title>
 <style>
-:root{--navy:#071b35;--gold:#d8ad55;--cream:#fff9ec}*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,sans-serif;background:var(--navy);color:var(--cream)}main{max-width:760px;margin:auto;padding:32px 20px}.brand{color:var(--gold);font-family:Georgia,serif;font-size:2.1rem;font-weight:700}.card{margin-top:24px;padding:24px;border:1px solid #d8ad5570;border-radius:22px;background:#0b2748}h1{font-family:Georgia,serif;font-size:2.3rem;margin:.3em 0}.pill{display:inline-block;padding:7px 12px;border-radius:99px;background:#d8ad5520;color:var(--gold);font-weight:700}.lesson{font-size:1.25rem;line-height:1.55}.status{margin-top:18px;padding:14px;border-radius:14px;background:#06182d}.ok{color:#9ee6ae}.warn{color:#ffd58a}button{border:0;border-radius:14px;padding:14px 18px;background:var(--gold);color:#071b35;font-weight:800;font-size:1rem}code{word-break:break-word}</style>
+:root{--navy:#071b35;--navy2:#0c2b52;--gold:#d8ad55;--cream:#fff9ec;--muted:#c9d4e2;--panel:#0b2748}*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,sans-serif;background:radial-gradient(circle at top,#123a69 0,#071b35 36%,#041426 100%);color:var(--cream)}a{color:inherit}.wrap{max-width:920px;margin:auto;padding:24px 18px 64px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{color:var(--gold);font-family:Georgia,serif;font-size:2rem;font-weight:700}.badge{padding:8px 12px;border:1px solid #d8ad5580;border-radius:999px;color:var(--gold);font-weight:800;font-size:.86rem}.hero{margin-top:22px;padding:30px 24px;border:1px solid #d8ad5580;border-radius:28px;background:linear-gradient(180deg,#102e56,#0a2342);box-shadow:0 24px 60px #0004}.kicker{color:var(--gold);font-weight:900;letter-spacing:.08em;text-transform:uppercase;font-size:.82rem}.hero h1{font-family:Georgia,serif;font-size:clamp(2.35rem,8vw,4.6rem);line-height:.98;margin:.25em 0}.hero p{font-size:1.12rem;line-height:1.6;color:#edf3fa}.lesson{font-size:1.15rem;font-weight:800;color:var(--gold)}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.btn{display:inline-block;border:0;border-radius:14px;padding:13px 16px;background:var(--gold);color:#071b35;font-weight:900;text-decoration:none;font-size:.96rem}.btn.alt{background:#ffffff12;color:var(--cream);border:1px solid #ffffff24}.status{margin-top:18px;padding:14px 16px;border-radius:15px;background:#05182f;border:1px solid #ffffff12}.ok{color:#9ee6ae}.warn{color:#ffd58a}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}.card{padding:20px;border:1px solid #d8ad5545;border-radius:20px;background:#0a2342}.card h3{margin:.2em 0 .45em}.card p{color:var(--muted);line-height:1.5}.section{margin-top:28px}.section h2{font-family:Georgia,serif;font-size:2rem;margin:.2em 0}.tool{margin-top:14px;padding:20px;border-radius:20px;background:#0a2342;border:1px solid #ffffff14}.toolhead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.tool code{color:var(--gold);font-size:.82rem}.tool button{border:0;border-radius:13px;padding:12px 14px;background:var(--gold);color:#071b35;font-weight:900}.result{margin-top:12px;white-space:pre-wrap;padding:14px;border-radius:13px;background:#041629;color:#dfeaf5;min-height:52px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.84rem}.flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:10px;align-items:center}.step{padding:18px;border-radius:18px;background:#0a2342;border:1px solid #ffffff14;text-align:center}.arrow{color:var(--gold);font-size:1.5rem;font-weight:900}.footer{margin-top:32px;padding-top:22px;border-top:1px solid #ffffff18;color:#bfcde0}.mini{font-size:.88rem;color:#aebdd1}@media(max-width:720px){.grid{grid-template-columns:1fr}.flow{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}.top{align-items:flex-start}.hero{padding:24px 20px}.hero h1{font-size:3rem}}
+</style>
 </head>
-<body><main>
-<div class="brand">♛ Orish's World</div>
-<div class="card">
-<span class="pill">WebMCP Challenge Demo</span>
-<h1>AI-ready learning, directly from the web</h1>
-<p class="lesson">This page exposes structured Orish's World learning actions to compatible AI agents using <code>document.modelContext.registerTool()</code>.</p>
-<p><strong>Featured lesson:</strong> Too-Fast Rocket</p>
-<p>STOP. LOOK. LISTEN. THINK. THEN TRY.</p>
+<body><div class="wrap">
+<div class="top"><div class="brand">♛ Orish's World</div><div class="badge">WebMCP Challenge 2026</div></div>
+<section class="hero">
+<div class="kicker">AI-ready children’s learning universe</div>
+<h1>Stories that come to life.<br>Lessons that stay with them.</h1>
+<p>Orish’s World connects stories, hands-on activities and family learning. For the WebMCP Challenge, this page exposes structured actions directly to compatible AI agents using <strong>document.modelContext.registerTool()</strong>.</p>
+<p class="lesson">Featured adventure: Orish and the Too-Fast Rocket — STOP. LOOK. LISTEN. THINK. THEN TRY.</p>
+<div class="actions"><a class="btn" href="https://orishsworld.com">Visit the live Orish’s World</a><a class="btn alt" href="#tools">See the WebMCP tools</a></div>
 <div id="status" class="status">Checking WebMCP support…</div>
+</section>
+
+<section class="section"><h2>What the experience connects</h2>
+<div class="grid">
+<div class="card"><h3>📖 Story</h3><p>Children meet Orish through a short adventure built around a clear learning lesson.</p></div>
+<div class="card"><h3>🚀 Real-world activity</h3><p>The story can continue off-screen through a cardboard rocket build, reading task or science activity.</p></div>
+<div class="card"><h3>🤖 AI action layer</h3><p>WebMCP lets a compatible AI discover supported actions from the webpage instead of guessing what the site can do.</p></div>
+</div></section>
+
+<section class="section"><h2>How WebMCP changes the journey</h2>
+<div class="flow"><div class="step"><strong>Family asks</strong><br><span class="mini">“Give me a rocket activity.”</span></div><div class="arrow">→</div><div class="step"><strong>AI discovers tools</strong><br><span class="mini">Registered by the webpage.</span></div><div class="arrow">→</div><div class="step"><strong>Orish’s World responds</strong><br><span class="mini">Structured learning data + grown-up guidance.</span></div></div>
+</section>
+
+<section class="section" id="tools"><h2>Live WebMCP tool showcase</h2>
+<div class="tool"><div class="toolhead"><div><h3>Tool 1 — Get a learning activity</h3><code>get_orish_learning_activity</code><p>Returns an age-appropriate activity by topic: rocket, reading or science.</p></div><button id="activity">Run demo</button></div><div id="activityResult" class="result">Tap “Run demo” to see the structured response.</div></div>
+<div class="tool"><div class="toolhead"><div><h3>Tool 2 — Get the Too-Fast Rocket lesson</h3><code>get_too_fast_rocket_lesson</code><p>Returns the story lesson plus a parent discussion prompt.</p></div><button id="lesson">Run demo</button></div><div id="lessonResult" class="result">Tap “Run demo” to see the structured response.</div></div>
+<div class="tool"><div class="toolhead"><div><h3>Tool 3 — Plan a mini learning session</h3><code>plan_orish_learning_session</code><p>Combines a topic and age into a short story-to-activity learning path.</p></div><button id="plan">Run demo</button></div><div id="planResult" class="result">Tap “Run demo” to see the structured response.</div></div>
+</section>
+
+<section class="section"><h2>Why this matters</h2><div class="card"><p>Orish’s World is not trying to replace parents or turn every moment into screen time. The aim is to let AI help families move from a digital story into a useful real-world learning activity, while the website defines the available actions and keeps grown-up guidance visible.</p></div></section>
+
+<div class="footer">Built with WebMCP, JavaScript, GitHub and Cloudflare Workers. <a href="https://orishsworld.com">orishsworld.com</a></div>
 </div>
-<div class="card">
-<h2>Tool 1 — Get a learning activity</h2>
-<p>An AI can ask for an age-appropriate Orish's World activity by topic.</p>
-<button id="activity">Try it on this page</button>
-<p id="activityResult"></p>
-</div>
-<div class="card">
-<h2>Tool 2 — Get the featured story lesson</h2>
-<p>An AI can retrieve the lesson and parent discussion prompt from the current adventure.</p>
-<button id="lesson">Show lesson</button>
-<p id="lessonResult"></p>
-</div>
-</main>
 <script>
 const activities={rocket:{title:"Build a Cardboard Rocket",age:"6+",lesson:"Plan before you build. Stop, look, listen, think, then try.",grownUp:"Help with cutting and supervise tools."},reading:{title:"Rocket Word Hunt",age:"5+",lesson:"Find and read five words from the Too-Fast Rocket adventure.",grownUp:"Sound out difficult words together."},science:{title:"What Makes a Rocket Move?",age:"6+",lesson:"Explore push, force and movement with a balloon rocket experiment.",grownUp:"Supervise the activity and discuss what changed."}};
 function getActivity(topic="rocket"){const key=String(topic).toLowerCase();return activities[key]||activities.rocket}
 function getLesson(){return {story:"Orish and the Too-Fast Rocket",lesson:"STOP. LOOK. LISTEN. THINK. THEN TRY.",discussionPrompt:"Ask the child: What changed when Orish slowed down and made a plan?",site:"https://orishsworld.com"}}
-async function register(){const status=document.getElementById('status');if(!document.modelContext){status.className='status warn';status.textContent='WebMCP is not enabled in this browser. The page contains the real WebMCP registration code; use a compatible WebMCP browser/environment to expose the tools.';return}
-try{
-await document.modelContext.registerTool({name:"get_orish_learning_activity",description:"Get an age-appropriate Orish's World learning activity by topic. Use this when a family wants a simple learning activity connected to Orish's World.",inputSchema:{type:"object",properties:{topic:{type:"string",enum:["rocket","reading","science"],description:"Learning topic"}},required:["topic"],additionalProperties:false},annotations:{readOnlyHint:true},execute:async({topic})=>getActivity(topic)});
+function planSession(age=6,topic="rocket"){const activity=getActivity(topic);return {age,topic,story:"Orish and the Too-Fast Rocket",warmUp:"Ask what the child thinks makes a rocket move.",activity,reflection:"What did you notice when you slowed down and made a plan?",grownUpNote:"Keep the activity short, supervise tools and let the child explain their thinking."}}
+async function register(){const status=document.getElementById('status');if(!document.modelContext){status.className='status warn';status.textContent='WebMCP is not enabled in this browser. The demo is still fully viewable, and the real registration code is built into this page for compatible WebMCP environments.';return}try{
+await document.modelContext.registerTool({name:"get_orish_learning_activity",description:"Get an age-appropriate Orish's World learning activity by topic.",inputSchema:{type:"object",properties:{topic:{type:"string",enum:["rocket","reading","science"]}},required:["topic"],additionalProperties:false},annotations:{readOnlyHint:true},execute:async({topic})=>getActivity(topic)});
 await document.modelContext.registerTool({name:"get_too_fast_rocket_lesson",description:"Get the core lesson and parent discussion prompt for Orish and the Too-Fast Rocket.",inputSchema:{type:"object",properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:async()=>getLesson()});
-status.className='status ok';status.textContent='✓ WebMCP active — 2 Orish’s World tools registered for AI agents.';
+await document.modelContext.registerTool({name:"plan_orish_learning_session",description:"Create a short Orish's World story-to-activity learning session for a child by age and topic.",inputSchema:{type:"object",properties:{age:{type:"integer",minimum:4,maximum:16},topic:{type:"string",enum:["rocket","reading","science"]}},required:["age","topic"],additionalProperties:false},annotations:{readOnlyHint:true},execute:async({age,topic})=>planSession(age,topic)});
+status.className='status ok';status.textContent='✓ WebMCP active — 3 Orish’s World tools registered for compatible AI agents.';
 }catch(e){status.className='status warn';status.textContent='WebMCP detected, but registration returned: '+e.message}}
 register();
-document.getElementById('activity').onclick=()=>{document.getElementById('activityResult').textContent=JSON.stringify(getActivity('rocket'),null,2)};
-document.getElementById('lesson').onclick=()=>{document.getElementById('lessonResult').textContent=JSON.stringify(getLesson(),null,2)};
+const out=(id,obj)=>document.getElementById(id).textContent=JSON.stringify(obj,null,2);
+document.getElementById('activity').onclick=()=>out('activityResult',getActivity('rocket'));
+document.getElementById('lesson').onclick=()=>out('lessonResult',getLesson());
+document.getElementById('plan').onclick=()=>out('planResult',planSession(6,'science'));
 </script></body></html>
