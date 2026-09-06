@@ -46,3 +46,10 @@ This is a prototype, not production child-data infrastructure.
 ## Next engineering step
 
 After this flow is tested, move the recognition layer to Raspberry Pi using an offline speech model, then connect physical buttons, a speaker, status LEDs and optional servos without changing the lesson engine.
+
+
+## School V0.2
+
+`school-app.html` expands the reading prototype into a multi-role school demo with Child, Teacher, Parent/Carer, Headteacher/Deputy, Home-school, Health Visitor and Owner views. It includes the existing phonics loop, an adaptive printable worksheet demo, a UK-nation curriculum selector, whole-school summary views, a health-visitor privacy boundary, and a problem/suggestion inbox saved locally for prototype testing.
+
+The same prototype boundary applies: this is not production child-data infrastructure and must not be used with real sensitive child information until secure authentication, backend authorization, audit logging and formal safeguarding/privacy work are complete.
