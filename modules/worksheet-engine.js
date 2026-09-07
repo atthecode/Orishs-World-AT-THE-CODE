@@ -115,7 +115,7 @@
         {prompt:'Find 15% of 80.',hint:'10% + 5% can help.',answer:'12'},
         {prompt:'Simplify the ratio 18:24.',hint:'Divide both parts by the same factor.',answer:'3:4'},
         {prompt:'The mean of 6, 8, 10 and x is 9. Find x.',hint:'The total must be 4 × 9.',answer:'12'},
-        {prompt: level==='stretch'?'A price rises from €40 to €46. Find the percentage increase.':'A £60 item is reduced by 20%. Find the sale price.',hint:'Find the change as a fraction of the original.',answer:level==='stretch'?'15%':'£48'}
+        {prompt: level==='stretch'?'A price rises from 40 units to 46 units. Find the percentage increase.':'A 60-unit item is reduced by 20%. Find the sale price.',hint:'Find the change as a fraction of the original.',answer:level==='stretch'?'15%':'48 units'}
       ],
       '13-16': [
         {prompt:'Solve: 3x + 7 = 25',hint:'Undo +7, then divide by 3.',answer:'x = 6'},
