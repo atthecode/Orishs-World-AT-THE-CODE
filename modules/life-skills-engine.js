@@ -48,10 +48,15 @@
   function list(ageBand){return Object.keys(missions).map(key=>get(key,ageBand));}
   function jurisdictionNote(curriculum){
     if(['england','scotland','wales','ni'].includes(curriculum)) return 'UK learning mode: laws still differ across England, Scotland, Wales and Northern Ireland. These are general educational examples, not legal advice.';
+    if(curriculum==='ireland') return 'Republic of Ireland learning mode: legal rules and public services are jurisdiction-specific. These are general educational examples, not legal advice.';
     if(curriculum==='us') return 'US learning mode: laws vary by federal, state and local jurisdiction. These are general educational examples, not legal advice.';
     return 'General learning mode: laws differ by jurisdiction. These examples teach reasoning, not personalised legal advice.';
   }
-  function currencySymbol(curriculum){return curriculum==='us'?'$':'£';}
+  function currencySymbol(curriculum){if(curriculum==='us')return '
+
+  window.OrishLifeSkills={list,get,jurisdictionNote,currencySymbol,ageMeta};
+})();
+;if(curriculum==='ireland')return '€';return '£';}
 
   window.OrishLifeSkills={list,get,jurisdictionNote,currencySymbol,ageMeta};
 })();
