@@ -4,6 +4,7 @@
   const $ = id => document.getElementById(id);
   const Store = window.OrishSecurityStore;
   const Curriculum = window.OrishCurriculum;
+  const SchoolSupport = window.OrishSchoolSupport;
   const AgeGames = window.OrishAgeGames;
   const Rewards = window.OrishRewards;
   const ProfileUI = window.OrishProfileUI;
@@ -1240,6 +1241,93 @@
     });
   }
 
+  function renderSchoolSupport() {
+    if (!SchoolSupport || !$('schoolSupportSummary')) return;
+    const config = SchoolSupport.getConfig();
+    const profiles = Store.getProfiles();
+    const active = Store.getActiveProfile();
+    $('schoolSettingType').value = config.settingType;
+    $('schoolSupportRole').value = config.role;
+    $('schoolSupportOrganisation').value = config.organisation;
+
+    const view = SchoolSupport.buildView(config, profiles, id => Store.getEvidence(id), active);
+    const box = $('schoolSupportSummary');
+    box.innerHTML = '';
+
+    const heading = document.createElement('strong');
+    heading.textContent = `${view.role.label} • ${view.role.scope}`;
+    box.appendChild(heading);
+
+    const intro = document.createElement('p');
+    intro.textContent = view.message;
+    box.appendChild(intro);
+
+    if (config.role === 'healthVisitor') {
+      const boundary = document.createElement('div');
+      boundary.className = 'curriculum-row';
+      const label = document.createElement('b');
+      label.textContent = 'Data boundary';
+      const text = document.createElement('span');
+      text.textContent = 'No child reading scores, Learning Passport records, private parent requests or school-performance data are exposed in this role.';
+      boundary.append(label, text);
+      box.appendChild(boundary);
+      return;
+    }
+
+    if (view.aggregate) {
+      const totals = document.createElement('div');
+      totals.className = 'curriculum-row';
+      const label = document.createElement('b');
+      label.textContent = 'Local demo aggregate';
+      const text = document.createElement('span');
+      text.textContent = `${view.aggregate.profileCount} profile${view.aggregate.profileCount === 1 ? '' : 's'} • ${view.aggregate.evidenceCount} learning evidence record${view.aggregate.evidenceCount === 1 ? '' : 's'}`;
+      totals.append(label, text);
+      box.appendChild(totals);
+
+      const subjects = Object.entries(view.aggregate.subjectCounts).sort((a,b)=>b[1]-a[1]).slice(0,6);
+      const subjectRow = document.createElement('div');
+      subjectRow.className = 'curriculum-row';
+      const subjectLabel = document.createElement('b');
+      subjectLabel.textContent = 'Learning areas';
+      const subjectText = document.createElement('span');
+      subjectText.textContent = subjects.length ? subjects.map(([name,count]) => `${name}: ${count}`).join(' • ') : 'No learning evidence recorded yet.';
+      subjectRow.append(subjectLabel, subjectText);
+      box.appendChild(subjectRow);
+      return;
+    }
+
+    if (!view.profiles.length) {
+      const empty = document.createElement('p');
+      empty.textContent = config.role === 'teacher'
+        ? 'Select an active child profile to preview the assigned-child teacher view.'
+        : 'No local child profiles are available yet.';
+      box.appendChild(empty);
+      return;
+    }
+
+    view.profiles.forEach(profile => {
+      const row = document.createElement('div');
+      row.className = 'curriculum-row';
+      const label = document.createElement('b');
+      label.textContent = profile.nickname;
+      const text = document.createElement('span');
+      text.textContent = `${profile.ageBand} • ${Curriculum.getFrameworkName(profile.curriculum)} • ${profile.evidenceCount} learning evidence record${profile.evidenceCount === 1 ? '' : 's'}`;
+      row.append(label, text);
+      box.appendChild(row);
+    });
+  }
+
+  function saveSchoolSupportSettings() {
+    if (!SchoolSupport) return;
+    const config = SchoolSupport.saveConfig({
+      settingType: $('schoolSettingType').value,
+      role: $('schoolSupportRole').value,
+      organisation: $('schoolSupportOrganisation').value
+    });
+    $('schoolSupportStatus').textContent = `${SchoolSupport.getRole(config.role).label} prototype view saved locally.`;
+    renderSchoolSupport();
+  }
+
   function renderEvidence() {
     const profile = Store.getActiveProfile();
     const grid = $('evidenceGrid');
@@ -1265,6 +1353,7 @@
   function refreshParentStudio() {
     renderProfiles();
     renderCurriculumPreview();
+    renderSchoolSupport();
     renderEvidence();
     renderParentLearningSummary();
     fillExtendedParentSettings();
@@ -3330,6 +3419,7 @@
   $('lockParent').addEventListener('click', () => { Store.lockParent(); configureGate(); show('parentGateScreen'); });
   $('saveProfile').addEventListener('click', saveProfileFromForm);
   $('newProfile').addEventListener('click', resetProfileForm);
+  $('saveSchoolSupport').addEventListener('click', saveSchoolSupportSettings);
   $('makeMission').addEventListener('click', makeMission);
   $('saveRoutines').addEventListener('click', saveRoutinesFromParent);
   $('saveKitchenSetup').addEventListener('click', saveKitchenFromParent);
@@ -3351,6 +3441,7 @@
     const typed = window.prompt('Type DELETE to remove all Orish’s World prototype data stored in this browser.');
     if (typed === 'DELETE') {
       Store.clearAllLocalData();
+      SchoolSupport?.clear?.();
       resetProfileForm();
       updateChildExperience();
       configureGate();
