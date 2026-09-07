@@ -6,6 +6,7 @@
     scotland: 'Scotland Curriculum for Excellence tags',
     wales: 'Curriculum for Wales tags',
     ni: 'Northern Ireland Curriculum tags',
+    ireland: 'Republic of Ireland Primary Curriculum Framework / redeveloped curriculum starter tags',
     us: 'US Common Core + NGSS starter tags',
     custom: 'Flexible homeschool learning goals'
   };
