@@ -1,8 +1,8 @@
-const CACHE='orish-world-v129-school-foundation';
+const CACHE='orish-world-v130-adaptive-worksheets';
 const SHELL=[
   './','./index.html','./styles.css','./app.js','./manifest.webmanifest',
   './toy-portal/index.html','./toy-portal/styles.css','./toy-portal/app.js',
-  './modules/security-store.js','./modules/curriculum-engine.js','./modules/school-support-engine.js','./modules/age-game-engine.js','./modules/rewards-engine.js','./modules/profile-ui.js',
+  './modules/security-store.js','./modules/curriculum-engine.js','./modules/school-support-engine.js','./modules/worksheet-engine.js','./modules/age-game-engine.js','./modules/rewards-engine.js','./modules/profile-ui.js',
   './modules/mission-engine.js','./modules/routines-engine.js','./modules/kitchen-engine.js','./modules/maker-engine.js','./modules/creative-engine.js','./modules/visual-game-engine.js','./modules/family-engine.js',
   './modules/accessibility-engine.js','./modules/memory-game-engine.js','./modules/maths-game-engine.js','./modules/observation-game-engine.js','./modules/sequencing-game-engine.js','./modules/literacy-keyboard-engine.js','./modules/story-choice-engine.js','./modules/good-news-engine.js','./modules/parent-summary-engine.js','./modules/discovery-engine.js','./modules/life-skills-engine.js','./modules/global-history-engine.js','./modules/are-we-alone-engine.js','./modules/orish-intelligence-engine.js','./modules/parent-controls-engine.js','./modules/avatar-lab-engine.js','./modules/avatar-3d-viewer.js','./modules/open-voice-engine.js',
   './assets/models/avatar-base.glb','./assets/at-the-code-mark.webp','./assets/orish-explorer.webp','./assets/fossil-detective.webp','./assets/fraction-rescue.webp','./assets/learning-adventures.webp','./assets/icon-192.png','./assets/icon-512.png','./assets/icon-maskable-192.png','./assets/icon-maskable-512.png','./assets/apple-touch-icon.png'
