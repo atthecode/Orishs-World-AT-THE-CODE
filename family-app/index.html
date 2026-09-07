@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#06172f">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Orish's World @ THE CODE — Family Beta</title>
+<style>
+:root{
+  --navy:#06172f;--navy2:#0b2c52;--navy3:#103d6f;--gold:#f0c45f;--gold2:#dba63c;
+  --cream:#fff8e7;--muted:#b8c8df;--line:#ffffff20;--good:#80e49c;--danger:#ff8f96;
+  --shadow:0 18px 55px #0007;--r:24px;
+}
+*{box-sizing:border-box}
+html{background:var(--navy);color-scheme:dark}
+body{margin:0;font-family:Inter,ui-rounded,"SF Pro Rounded",system-ui,-apple-system,sans-serif;background:
+radial-gradient(circle at 72% -10%,#174f8f 0,#0a2a4f 26%,#06172f 56%,#030c19 100%);
+color:var(--cream);min-height:100vh}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{max-width:760px;margin:auto;min-height:100vh;padding-bottom:96px}
+.topbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:12px;padding:14px 16px;
+background:#06172fee;backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.crest{width:50px;height:50px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(145deg,#ffe58d,#b87819);
+color:#06172f;font-family:Georgia,serif;font-size:26px;font-weight:900;box-shadow:inset 0 0 0 1px #fff8}
+.brand{flex:1;min-width:0}
+.brand b{font-family:Georgia,serif;color:#ffe7a4;font-size:22px;display:block;line-height:1}
+.brand span{font-size:10px;letter-spacing:.24em;color:#d9e3f0}
+.pill{border:1px solid #f0c45f88;background:#ffffff09;color:#ffe7a4;border-radius:999px;padding:8px 10px;font-size:12px;font-weight:800}
+.iconbtn{width:42px;height:42px;border-radius:14px;border:1px solid var(--line);background:#ffffff08;color:white;font-size:20px}
+.hero{position:relative;overflow:hidden;margin:16px;border-radius:30px;border:1px solid #f0c45f66;box-shadow:var(--shadow);
+background:linear-gradient(155deg,#0d3565,#071a34 66%,#081322);min-height:520px}
+.stars{position:absolute;inset:0;opacity:.6;background-image:
+radial-gradient(circle at 15% 12%,#fff 0 1px,transparent 2px),
+radial-gradient(circle at 76% 18%,#ffe7a4 0 1.5px,transparent 2.5px),
+radial-gradient(circle at 45% 39%,#fff 0 1px,transparent 2px),
+radial-gradient(circle at 84% 52%,#fff 0 1px,transparent 2px),
+radial-gradient(circle at 26% 68%,#ffe7a4 0 1px,transparent 2px)}
+.heroCopy{position:relative;z-index:3;padding:28px 24px 20px;max-width:430px}
+.kicker{color:var(--gold);text-transform:uppercase;letter-spacing:.12em;font-size:11px;font-weight:900}
+.hero h1{font-family:Georgia,serif;font-size:clamp(42px,10vw,64px);line-height:.92;margin:12px 0;color:#fff2c8}
+.hero p{font-size:16px;line-height:1.55;color:#e7eef8;margin:0 0 18px}
+.hero p strong{color:#ffd978}
+.cta{border:0;border-radius:18px;padding:15px 20px;background:linear-gradient(#ffe486,#dca73c);color:#07172e;font-weight:950;
+box-shadow:0 10px 25px #0005,inset 0 1px #fff;min-width:220px}
+.cta.secondary{background:#ffffff0d;color:#fff;border:1px solid #ffffff27;box-shadow:none;min-width:auto}
+.detective{position:absolute;right:-10px;bottom:-5px;width:290px;height:330px;z-index:2;filter:drop-shadow(0 18px 25px #0008)}
+.heroTag{position:absolute;z-index:4;right:14px;bottom:18px;max-width:190px;padding:10px 12px;border-radius:16px;background:#031127d9;
+border:1px solid #f0c45f52;color:#ffe4a0;font-family:Georgia,serif;font-weight:700;text-align:center}
+.section{padding:8px 16px 2px}
+.sectionHead{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:15px 2px 10px}
+.sectionHead h2{font-family:Georgia,serif;color:#fff0c0;margin:0;font-size:28px}
+.sectionHead p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.linkbtn{border:0;background:none;color:#dce8ff;text-decoration:underline;font-weight:800}
+.worlds{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.world{position:relative;min-height:170px;text-align:left;border:1px solid #ffffff1f;border-radius:22px;padding:16px;color:#fff;
+background:linear-gradient(155deg,#123d70,#081d38);overflow:hidden;box-shadow:0 10px 30px #0004}
+.world:after{content:"";position:absolute;width:100px;height:100px;border-radius:50%;right:-26px;bottom:-34px;background:#ffffff08}
+.world .emoji{font-size:36px;display:block;margin-bottom:14px}
+.world b{display:block;font-family:Georgia,serif;font-size:22px;color:#fff2c8;line-height:1}
+.world small{display:block;color:#c7d4e6;margin-top:8px;line-height:1.25}
+.world .go{position:absolute;right:12px;bottom:12px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#ffffff0f;border:1px solid #ffffff27}
+.daily{margin:12px 16px;padding:16px;border-radius:22px;background:linear-gradient(135deg,#182d47,#0a1b30);border:1px solid #f0c45f44}
+.dailyTop{display:flex;align-items:center;gap:12px}.dailyTop .badge2{width:44px;height:44px;border-radius:14px;background:#f0c45f1a;border:1px solid #f0c45f55;display:grid;place-items:center;font-size:23px}
+.daily h3{margin:0;color:#fff0c0}.daily p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.progressbar{height:9px;border-radius:99px;background:#ffffff14;margin-top:12px;overflow:hidden}.progressbar i{display:block;height:100%;background:linear-gradient(90deg,#dca73c,#ffe486);width:0}
+.safety{margin:14px 16px;color:#91a6bf;font-size:11px;text-align:center;line-height:1.4}
+.bottom{position:fixed;z-index:50;left:50%;bottom:0;transform:translateX(-50%);width:min(760px,100%);padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+background:#041226ef;backdrop-filter:blur(20px);border-top:1px solid #ffffff16;display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.nav{border:0;background:none;color:#899bb4;padding:6px 2px;border-radius:14px;font-size:10px}.nav span{display:block;font-size:22px;margin-bottom:2px}.nav.active{color:#ffd86e;background:#ffffff08}
+.screen{display:none;padding:14px 16px 110px}.screen.active{display:block}
+.screenTop{display:flex;align-items:center;gap:10px;margin:2px 0 16px}.screenTop h1{font-family:Georgia,serif;color:#fff0c0;margin:0;font-size:32px}
+.back{width:42px;height:42px;border-radius:14px;border:1px solid var(--line);background:#ffffff08;color:white;font-size:20px}
+.panel{padding:18px;border-radius:22px;background:#0a2343;border:1px solid #ffffff17;box-shadow:0 12px 30px #0003;margin-bottom:12px}
+.panel h3{margin:0 0 7px;color:#fff0c0}.panel p{color:#c9d5e5;line-height:1.5}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.action{border:0;border-radius:14px;padding:12px 14px;background:linear-gradient(#ffe486,#dca73c);color:#07172e;font-weight:900}
+.action.alt{background:#ffffff0d;color:#fff;border:1px solid #ffffff20}.action.good{background:#163f2a;color:#bff7cd;border:1px solid #65d98666}
+.storyCard{font-family:Georgia,serif;font-size:22px;line-height:1.55;color:#fff3cf}
+.wordgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:12px}.word{border:1px solid #ffffff25;background:#ffffff08;color:#fff;border-radius:14px;padding:12px;font-weight:850}.word.correct{background:#18482b;border-color:#65d986}.word.wrong{background:#4b2024;border-color:#ff8f96}
+.mathQ{text-align:center;font-size:56px;font-weight:950;color:#fff0bd;margin:14px 0}.answers{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.answer{padding:17px;border-radius:16px;border:1px solid #ffffff20;background:#ffffff0b;color:#fff;font-weight:950;font-size:22px}
+.score{text-align:center;color:#b9cae0;margin-top:8px}
+.video{width:100%;aspect-ratio:16/9;border:1px solid #f0c45f33;border-radius:18px;background:#020a13;display:block}
+.steps{counter-reset:s}.steps li{list-style:none;position:relative;padding:0 0 14px 44px;color:#d6e0ed;line-height:1.45}.steps li:before{counter-increment:s;content:counter(s);position:absolute;left:0;top:-2px;width:30px;height:30px;border-radius:10px;background:#f0c45f1d;border:1px solid #f0c45f66;color:#ffd76c;display:grid;place-items:center;font-weight:900}
+.setting{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid #ffffff12}.setting:last-child{border-bottom:0}
+.setting label{font-weight:800}.setting small{display:block;color:#97aac2;font-weight:500;margin-top:3px}
+input,select{background:#04162b;border:1px solid #ffffff25;border-radius:12px;color:white;padding:10px;max-width:160px}
+.pinbox{max-width:330px;margin:50px auto;text-align:center}.pinbox input{max-width:none;width:100%;text-align:center;font-size:28px;letter-spacing:.3em}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.stat{text-align:center;padding:14px 8px;border-radius:17px;background:#ffffff08;border:1px solid #ffffff12}.stat b{display:block;font-size:25px;color:#ffd86d}.stat span{font-size:10px;color:#a8b9cf}
+.missionList{display:grid;gap:9px}.mission{display:flex;gap:12px;align-items:center;padding:12px;border-radius:16px;background:#ffffff07;border:1px solid #ffffff10}.mission.done{border-color:#65d98655}.mission .micon{width:42px;height:42px;border-radius:13px;background:#ffffff09;display:grid;place-items:center;font-size:22px}.mission b{display:block}.mission small{color:#9fb1c8}
+.notice{padding:12px;border-radius:14px;background:#f0c45f10;border:1px solid #f0c45f38;color:#ffe5a1;font-size:12px;line-height:1.4}
+.toast{position:fixed;z-index:99;left:50%;bottom:100px;transform:translate(-50%,20px);opacity:0;pointer-events:none;transition:.25s;padding:11px 14px;border-radius:14px;background:#fff;color:#08182c;font-weight:850;box-shadow:var(--shadow);max-width:90%;text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}
+.hide{display:none!important}
+@media(min-width:620px){.worlds{grid-template-columns:repeat(4,1fr)}.hero{min-height:470px}.detective{width:360px;height:410px}.heroCopy{padding:36px 30px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="crest">OW</div>
+    <div class="brand"><b>Orish's World</b><span>@ THE CODE · CURIOUS MINDS</span></div>
+    <button class="pill" onclick="openFamily()">👨‍👩‍👦 Family Beta</button>
+    <button class="iconbtn" onclick="showScreen('profile')" aria-label="Profile">☰</button>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="stars"></div>
+      <div class="heroCopy">
+        <div class="kicker">Curiosity builds brighter tomorrows</div>
+        <h1>Stories that come alive. Lessons that stay.</h1>
+        <p>Reading becomes a <strong>rocket mission</strong>. Maths becomes something children build. Stories become adventures. Real-world tasks get them <strong>away from screens</strong>.</p>
+        <div class="row">
+          <button class="cta" onclick="startDaily()">Enter Orish's World →</button>
+          <button class="cta secondary" onclick="showScreen('progress')">My progress</button>
+        </div>
+      </div>
+      <svg class="detective" viewBox="0 0 300 360" aria-label="Junior detective illustration">
+        <defs><linearGradient id="j" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#173f73"/><stop offset="1" stop-color="#06172f"/></linearGradient></defs>
+        <circle cx="171" cy="108" r="62" fill="#8c4f2f"/>
+        <path d="M112 103c0-67 115-76 121-10-18-25-47-36-82-27-18 5-31 19-39 37z" fill="#130d0b"/>
+        <circle cx="148" cy="110" r="6" fill="#17100e"/><circle cx="194" cy="110" r="6" fill="#17100e"/>
+        <path d="M153 139q20 18 40 0" fill="none" stroke="#351b16" stroke-width="5" stroke-linecap="round"/>
+        <path d="M92 301q8-116 77-118 75 1 91 118" fill="url(#j)" stroke="#d7ac4f" stroke-width="3"/>
+        <path d="M131 194l39 39 39-39" fill="#eee7dc"/>
+        <path d="M143 216l27 31 27-31-27 66z" fill="#e5b94d"/>
+        <rect x="132" y="245" width="75" height="48" rx="10" fill="#07172f" stroke="#e5b94d" stroke-width="3"/>
+        <text x="169.5" y="264" text-anchor="middle" fill="#f0c45f" font-size="9" font-weight="900">JUNIOR</text>
+        <text x="169.5" y="277" text-anchor="middle" fill="#f0c45f" font-size="9" font-weight="900">DETECTIVE</text>
+        <circle cx="77" cy="200" r="38" fill="none" stroke="#f0c45f" stroke-width="9"/><line x1="100" y1="228" x2="128" y2="269" stroke="#f0c45f" stroke-width="11" stroke-linecap="round"/>
+      </svg>
+      <div class="heroTag">Small clues. Big futures. 👑</div>
+    </section>
+
+    <section class="daily">
+      <div class="dailyTop"><div class="badge2">⭐</div><div><h3>Today's 10-minute mission</h3><p id="dailyText">Read · solve · do one real-world task</p></div></div>
+      <div class="progressbar"><i id="dailyBar"></i></div>
+    </section>
+
+    <section class="section">
+      <div class="sectionHead"><div><h2>Explore the world</h2><p>Four worlds. One learning journey.</p></div></div>
+      <div class="worlds">
+        <button class="world" onclick="showScreen('reading')"><span class="emoji">🚀📖</span><b>Reading Rocket Bay</b><small>Read, listen and find the clue words.</small><span class="go">›</span></button>
+        <button class="world" onclick="showScreen('maths')"><span class="emoji">🪐➕</span><b>Maths Galaxy</b><small>Build confidence one challenge at a time.</small><span class="go">›</span></button>
+        <button class="world" onclick="showScreen('cinema')"><span class="emoji">🎬🍿</span><b>Story Cinema</b><small>Watch, listen, imagine and discuss.</small><span class="go">›</span></button>
+        <button class="world" onclick="showScreen('make')"><span class="emoji">💡🛠️</span><b>Make Lab</b><small>Turn ideas into real-world tasks.</small><span class="go">›</span></button>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="panel">
+        <div class="kicker">Three Paths</div>
+        <h3>What would a good investigator do?</h3>
+        <p>You knock over somebody's building by accident.</p>
+        <div class="row">
+          <button class="action alt" onclick="pathAnswer('hide')">Walk away</button>
+          <button class="action alt" onclick="pathAnswer('blame')">Blame someone</button>
+          <button class="action" onclick="pathAnswer('repair')">Tell them + help rebuild</button>
+        </div>
+      </div>
+    </section>
+    <p class="safety">Family Beta: no adverts, no open chat, no location tracking. Learning progress stays on this device in this beta.</p>
+  </main>
+
+  <section class="screen" id="reading">
+    <div class="screenTop"><button class="back" onclick="goHome()">‹</button><h1>Reading Rocket Bay</h1></div>
+    <div class="panel">
+      <div class="kicker">Mission 01 · Orish and the Too-Fast Rocket</div>
+      <div id="storyPage" class="storyCard"></div>
+      <div class="row">
+        <button class="action alt" onclick="prevStory()">← Back</button>
+        <button class="action" onclick="nextStory()">Next →</button>
+        <button class="action alt" onclick="readStory()">🔊 Read to me</button>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Clue-word hunt</h3>
+      <p>Tap the two words that tell Orish what to do before he tries again.</p>
+      <div class="wordgrid" id="wordGrid"></div>
+      <p id="wordResult"></p>
+    </div>
+  </section>
+
+  <section class="screen" id="maths">
+    <div class="screenTop"><button class="back" onclick="goHome()">‹</button><h1>Maths Galaxy</h1></div>
+    <div class="panel">
+      <div class="kicker">5-question mission</div>
+      <h3>Fuel the rocket</h3>
+      <p>Get the maths right to fill the fuel tank.</p>
+      <div class="mathQ" id="mathQ">8 + 4</div>
+      <div class="answers" id="answers"></div>
+      <div class="score" id="mathScore">Question 1 of 5</div>
+    </div>
+  </section>
+
+  <section class="screen" id="cinema">
+    <div class="screenTop"><button class="back" onclick="goHome()">‹</button><h1>Story Cinema</h1></div>
+    <div class="panel">
+      <div class="kicker">Now showing</div><h3>Orish and the Too-Fast Rocket</h3>
+      <video class="video" controls playsinline preload="metadata" src="https://orishsworld.com/assets/rocket-film.mp4"></video>
+      <p class="notice">If the film is not available on this test link, the discussion mission still works. The final cinema library will use approved, family-safe films.</p>
+      <button class="action" onclick="complete('cinema')">I watched it ✓</button>
+    </div>
+    <div class="panel"><h3>Talk about it</h3><p>What changed when Orish slowed down? What would you do differently if your first idea did not work?</p></div>
+  </section>
+
+  <section class="screen" id="make">
+    <div class="screenTop"><button class="back" onclick="goHome()">‹</button><h1>Make Lab</h1></div>
+    <div class="panel"><div class="kicker">Away-from-screen mission</div><h3>Build a paper aeroplane</h3>
+      <ol class="steps"><li>Choose one sheet of paper.</li><li>Fold it in half, then open it again.</li><li>Fold both top corners into the middle line.</li><li>Fold again to make a pointed nose.</li><li>Fold the wings down.</li><li>Test it from a safe open space.</li></ol>
+      <p class="notice"><b>Grown-up:</b> help where needed. Ask the child to measure how far the plane travels using steps or a tape measure.</p>
+      <button class="action" onclick="complete('make')">I did this in real life ✓</button>
+    </div>
+    <div class="panel"><h3>More practical missions</h3><div class="missionList">
+      <div class="mission"><div class="micon">📏</div><div><b>Measure three things</b><small>Find the longest and shortest.</small></div></div>
+      <div class="mission"><div class="micon">🥣</div><div><b>Help prepare dinner</b><small>Count, measure and talk about safety.</small></div></div>
+      <div class="mission"><div class="micon">📦</div><div><b>Cardboard rocket</b><small>Plan first. Build second. Improve third.</small></div></div>
+    </div></div>
+  </section>
+
+  <section class="screen" id="progress">
+    <div class="screenTop"><button class="back" onclick="goHome()">‹</button><h1>My Progress</h1></div>
+    <div class="panel"><div class="stats">
+      <div class="stat"><b id="starsStat">0</b><span>STARS</span></div>
+      <div class="stat"><b id="missionsStat">0</b><span>MISSIONS</span></div>
+      <div class="stat"><b id="streakStat">1</b><span>DAY STREAK</span></div>
+    </div></div>
+    <div class="panel"><h3>Mission map</h3><div id="missionList" class="missionList"></div></div>
+    <div class="panel"><h3>Growing skills</h3><p id="skillNote">Complete a mission to begin your learning map.</p></div>
+  </section>
+
+  <section class="screen" id="family">
+    <div id="pinGate" class="pinbox">
+      <div class="crest" style="margin:auto">OW</div>
+      <h1 style="font-family:Georgia,serif;color:#fff0c0">Grown-up area</h1>
+      <p id="pinHelp">Set a 4-digit family PIN for this test device.</p>
+      <input id="pinInput" type="password" inputmode="numeric" maxlength="4" placeholder="••••">
+      <button class="action" style="width:100%;margin-top:10px" onclick="submitPin()">Continue</button>
+      <button class="action alt" style="width:100%;margin-top:8px" onclick="goHome()">Back to Orish's World</button>
+    </div>
+    <div id="familyPanel" class="hide">
+      <div class="screenTop"><button class="back" onclick="goHome()">‹</button><h1>Family Dashboard</h1></div>
+      <div class="panel">
+        <h3>Child profile</h3>
+        <div class="setting"><div><label>Name</label><small>Shown inside the app only.</small></div><input id="childName" maxlength="20" value="Orish"></div>
+        <div class="setting"><div><label>Age</label><small>Adjusts learning difficulty.</small></div><select id="childAge"><option>5</option><option selected>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option></select></div>
+        <div class="setting"><div><label>Daily session</label><small>Gentle screen-time target.</small></div><select id="sessionLen"><option>10</option><option>15</option><option>20</option><option>30</option></select></div>
+        <button class="action" onclick="saveFamily()">Save settings</button>
+      </div>
+      <div class="panel"><h3>Safety controls</h3>
+        <div class="setting"><div><label>Child-safe mode</label><small>No open chat, adverts, external search or location.</small></div><b style="color:#80e49c">LOCKED ON</b></div>
+        <div class="setting"><div><label>Voice read-aloud</label><small>Uses the device's built-in voice.</small></div><select id="voiceToggle"><option value="on">On</option><option value="off">Off</option></select></div>
+      </div>
+      <div class="panel"><h3>Your data</h3><p>This Family Beta stores progress locally on this device. A school-ready release will need secure adult accounts and server-side permissions.</p>
+        <div class="row"><button class="action alt" onclick="exportData()">Export progress</button><button class="action alt" onclick="resetData()">Reset local progress</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" id="profile">
+    <div class="screenTop"><button class="back" onclick="goHome()">‹</button><h1>Profile</h1></div>
+    <div class="panel" style="text-align:center"><div class="crest" style="margin:auto auto 12px">👑</div><h3 id="profileName">Orish</h3><p id="profileAge">Junior Explorer · Age 6</p></div>
+    <div class="panel"><h3>My investigator promise</h3><p>I can be curious, kind and observant. I can slow down, think, ask for help and try again.</p></div>
+    <button class="action" onclick="openFamily()">Grown-up settings</button>
+  </section>
+
+  <nav class="bottom">
+    <button class="nav active" data-nav="home" onclick="goHome()"><span>🏠</span>Home</button>
+    <button class="nav" data-nav="explore" onclick="showScreen('reading')"><span>🧭</span>Explore</button>
+    <button class="nav" data-nav="progress" onclick="showScreen('progress')"><span>📊</span>Progress</button>
+    <button class="nav" data-nav="family" onclick="openFamily()"><span>👨‍👩‍👦</span>Family</button>
+    <button class="nav" data-nav="profile" onclick="showScreen('profile')"><span>👤</span>Profile</button>
+  </nav>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const KEY='orishWorldFamilyBetaV1';
+const defaultState={name:'Orish',age:6,session:10,voice:'on',pin:'',stars:0,missions:{reading:false,maths:false,cinema:false,make:false,kindness:false},mathBest:0,lastDay:'',streak:1};
+let state=load(),storyIndex=0,wordCorrect=new Set(),mathIndex=0,mathRight=0,currentMath=null;
+const story=[
+  "Orish had a brilliant idea. He wanted his rocket to be the fastest rocket in the whole world.",
+  "He rushed. He skipped the plan, pushed pieces together and tried to launch before checking his work.",
+  "The rocket wobbled and fell. Orish felt disappointed, but he did not give up.",
+  "He remembered the investigator rule: STOP. LOOK. LISTEN. THINK. THEN TRY.",
+  "Orish checked every piece, asked for help and made one careful change at a time.",
+  "This time the rocket was not just faster — it was safer, stronger and built from what Orish had learned."
+];
+function load(){try{return {...defaultState,...JSON.parse(localStorage.getItem(KEY)||'{}'),missions:{...defaultState.missions,...(JSON.parse(localStorage.getItem(KEY)||'{}').missions||{})}}}catch(e){return structuredClone(defaultState)}}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));updateUI()}
+function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('show');clearTimeout(window.__toast);window.__toast=setTimeout(()=>e.classList.remove('show'),2200)}
+function allScreensOff(){document.getElementById('home').style.display='none';document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'))}
+function setNav(name){document.querySelectorAll('.nav').forEach(n=>n.classList.toggle('active',n.dataset.nav===name))}
+function goHome(){allScreensOff();document.getElementById('home').style.display='block';setNav('home');scrollTo({top:0,behavior:'smooth'});updateUI()}
+function showScreen(id){allScreensOff();document.getElementById(id).classList.add('active');setNav(id==='reading'||id==='maths'||id==='cinema'||id==='make'?'explore':id);scrollTo({top:0,behavior:'smooth'});if(id==='reading')renderStory();if(id==='maths')startMath();if(id==='progress')renderProgress();if(id==='profile')updateUI()}
+function openFamily(){allScreensOff();document.getElementById('family').classList.add('active');setNav('family');document.getElementById('pinInput').value='';document.getElementById('pinGate').classList.remove('hide');document.getElementById('familyPanel').classList.add('hide');document.getElementById('pinHelp').textContent=state.pin?'Enter your 4-digit family PIN.':'Set a 4-digit family PIN for this test device.';scrollTo({top:0,behavior:'smooth'})}
+function submitPin(){const v=document.getElementById('pinInput').value.trim();if(!/^\d{4}$/.test(v)){toast('Please use 4 numbers');return}if(!state.pin){state.pin=v;save();toast('Family PIN set for this device')}else if(v!==state.pin){toast('That PIN is not correct');return}showFamily()}
+function showFamily(){document.getElementById('pinGate').classList.add('hide');document.getElementById('familyPanel').classList.remove('hide');document.getElementById('childName').value=state.name;document.getElementById('childAge').value=state.age;document.getElementById('sessionLen').value=state.session;document.getElementById('voiceToggle').value=state.voice}
+function saveFamily(){state.name=(document.getElementById('childName').value||'Explorer').trim();state.age=+document.getElementById('childAge').value;state.session=+document.getElementById('sessionLen').value;state.voice=document.getElementById('voiceToggle').value;save();toast('Family settings saved')}
+function startDaily(){if(!state.missions.reading)showScreen('reading');else if(!state.missions.maths)showScreen('maths');else if(!state.missions.make)showScreen('make');else showScreen('progress')}
+function renderStory(){document.getElementById('storyPage').textContent=story[storyIndex];const words=['STOP','RUSH','LOOK','HIDE','THINK','BLAME'];const grid=document.getElementById('wordGrid');grid.innerHTML='';words.forEach(w=>{const b=document.createElement('button');b.className='word';b.textContent=w;b.onclick=()=>pickWord(w,b);grid.appendChild(b)});document.getElementById('wordResult').textContent='';wordCorrect.clear()}
+function nextStory(){if(storyIndex<story.length-1){storyIndex++;document.getElementById('storyPage').textContent=story[storyIndex]}else{complete('reading');toast('Reading mission complete! ⭐⭐⭐')}}
+function prevStory(){if(storyIndex>0){storyIndex--;document.getElementById('storyPage').textContent=story[storyIndex]}}
+function readStory(){if(state.voice==='off'){toast('Read-aloud is off in Family settings');return}if('speechSynthesis' in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(story[storyIndex]);u.rate=.86;u.pitch=1.04;speechSynthesis.speak(u)}else toast('Read-aloud is not available on this device')}
+function pickWord(w,b){const good=['STOP','THINK'];if(good.includes(w)){b.classList.add('correct');wordCorrect.add(w);if(wordCorrect.size===2){document.getElementById('wordResult').textContent='Great investigating — stop and think before trying again!';complete('reading')}}else{b.classList.add('wrong');setTimeout(()=>b.classList.remove('wrong'),700)}}
+function startMath(){mathIndex=0;mathRight=0;nextMath()}
+function makeMath(){const age=state.age||6;let a,b,op='+',ans;if(age<=6){a=2+Math.floor(Math.random()*9);b=1+Math.floor(Math.random()*7);ans=a+b}else if(age<=8){a=5+Math.floor(Math.random()*16);b=1+Math.floor(Math.random()*10);if(Math.random()>.5&&a>b){op='−';ans=a-b}else ans=a+b}else{a=3+Math.floor(Math.random()*10);b=2+Math.floor(Math.random()*10);if(Math.random()>.65){op='×';ans=a*b}else{ans=a+b}}return {a,b,op,ans}}
+function nextMath(){if(mathIndex>=5){state.mathBest=Math.max(state.mathBest,mathRight);complete('maths');toast('Maths mission complete — '+mathRight+'/5!');document.getElementById('mathScore').textContent='Mission complete: '+mathRight+' out of 5';return}currentMath=makeMath();document.getElementById('mathQ').textContent=currentMath.a+' '+currentMath.op+' '+currentMath.b;const opts=new Set([currentMath.ans]);while(opts.size<4){opts.add(Math.max(0,currentMath.ans+(Math.floor(Math.random()*9)-4)))}const arr=[...opts].sort(()=>Math.random()-.5);const box=document.getElementById('answers');box.innerHTML='';arr.forEach(n=>{const b=document.createElement('button');b.className='answer';b.textContent=n;b.onclick=()=>answerMath(n,b);box.appendChild(b)});document.getElementById('mathScore').textContent='Question '+(mathIndex+1)+' of 5 · Score '+mathRight}
+function answerMath(n,b){document.querySelectorAll('.answer').forEach(x=>x.disabled=true);if(n===currentMath.ans){mathRight++;b.style.background='#18482b';toast('Correct! ⭐')}else{b.style.background='#4b2024';toast('Good try — the answer was '+currentMath.ans)}mathIndex++;setTimeout(nextMath,650)}
+function complete(kind){if(!state.missions[kind]){state.missions[kind]=true;state.stars+=3;save()}updateDaily();renderProgress()}
+function pathAnswer(v){if(v==='repair'){complete('kindness');toast('Direct Path: tell the truth, repair it, learn from it ⭐')}else if(v==='hide')toast('That is the Merry-Go-Round path. What could you do to repair it?');else toast('That is the Familiar Road. Try choosing responsibility instead.')}
+function updateDaily(){const done=['reading','maths','make'].filter(k=>state.missions[k]).length;document.getElementById('dailyBar').style.width=(done/3*100)+'%';document.getElementById('dailyText').textContent=done===3?'Today’s core mission complete — brilliant work!':'Read · solve · do one real-world task ('+done+'/3)'}
+function renderProgress(){const list=document.getElementById('missionList');if(!list)return;const data=[['reading','🚀','Reading Rocket Bay'],['maths','🪐','Maths Galaxy'],['cinema','🎬','Story Cinema'],['make','🛠️','Make Lab'],['kindness','🤝','Three Paths']];list.innerHTML='';data.forEach(([k,i,n])=>{const d=document.createElement('div');d.className='mission '+(state.missions[k]?'done':'');d.innerHTML='<div class="micon">'+i+'</div><div><b>'+n+'</b><small>'+(state.missions[k]?'Completed · +3 stars':'Ready when you are')+'</small></div>';list.appendChild(d)});const count=Object.values(state.missions).filter(Boolean).length;document.getElementById('skillNote').textContent=count<2?'Keep exploring — every mission adds to your learning map.':count<5?'You are building reading, number, practical and decision-making skills.':'Full investigator set complete. Tomorrow can begin with a fresh challenge.'}
+function updateUI(){const count=Object.values(state.missions).filter(Boolean).length;const e=id=>document.getElementById(id);if(e('starsStat'))e('starsStat').textContent=state.stars;if(e('missionsStat'))e('missionsStat').textContent=count;if(e('streakStat'))e('streakStat').textContent=state.streak;if(e('profileName'))e('profileName').textContent=state.name;if(e('profileAge'))e('profileAge').textContent='Junior Explorer · Age '+state.age;updateDaily()}
+function exportData(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='orish-world-progress.json';a.click();URL.revokeObjectURL(a.href)}
+function resetData(){if(confirm('Reset learning progress on this device? Family PIN and profile will stay.')){state.stars=0;state.missions={reading:false,maths:false,cinema:false,make:false,kindness:false};state.mathBest=0;save();toast('Local progress reset')}}
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+updateUI();
+</script>
+</body></html>
