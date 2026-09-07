@@ -129,10 +129,6 @@
         sessionTurns += 1;
         const remaining = Math.max(0, SESSION_CAP - sessionTurns);
         setStatus(`Orish Live • Qwen • ${remaining} session turn${remaining === 1 ? '' : 's'} left • local fallback always available`);
-        if (typeof window.speechSynthesis !== 'undefined' && window.OrishOpenVoice?.interrupt) {
-          // app-level read-aloud remains governed by the existing parent controls;
-          // live text is not auto-spoken here to avoid bypassing them.
-        }
         statusCache = { ...statusCache, processDailyRemaining: data.processDailyRemaining };
         return;
       }
@@ -188,8 +184,11 @@
   }
 
   function attach() {
-    $('sendToOrish')?.addEventListener('click', interceptClick);
-    $('orishInput')?.addEventListener('keydown', interceptEnter);
+    // Capture phase lets this optional online layer sit in front of the existing local
+    // app listeners even when this module is loaded after app.js. If live AI is not
+    // available, the event is allowed through untouched or deliberately replayed.
+    $('sendToOrish')?.addEventListener('click', interceptClick, true);
+    $('orishInput')?.addEventListener('keydown', interceptEnter, true);
     getStatus().then(status => {
       if (status?.configured) {
         setStatus(`Orish Live ready • Qwen free-quota test • ${SESSION_CAP} session turns available`);
