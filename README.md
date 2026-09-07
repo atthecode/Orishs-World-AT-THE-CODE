@@ -1,5 +1,18 @@
 # Orish’s World @ THE CODE
 
+**Current prototype: V1.30 — Adaptive Printable Worksheets** — keeps the V1.29 school/home-education foundation and adds local personalised literacy, maths and mixed worksheets that adapt from recent scored Learning Passport evidence, with colour and black-and-white print modes.
+
+## V1.30 now working locally — Adaptive Printable Worksheets
+
+- Adds locally generated **Reading & Literacy**, **Maths** and **Mixed Learning** worksheets.
+- Worksheet difficulty adapts to recent scored evidence: lower recent confidence produces **Supported practice**, typical performance produces **Core practice**, and strong recent performance can produce a **Stretch challenge**.
+- If no scored evidence exists, the worksheet starts from the child’s current age band and learning framework rather than inventing a performance judgement.
+- Print output includes answer space plus a separate grown-up/teacher answer guide.
+- Supports **Colour** and **Black & white / ink saver** modes.
+- Teacher/home-educator views can personalise from the active child profile.
+- Health-visitor/family-support and leadership role previews generate a **generic sheet without reading Learning Passport data**, preserving the V1.29 role boundary.
+- The worksheet engine is local and template-based in this prototype; it is not presented as a formal statutory assessment or certified curriculum product.
+
 **Current prototype: V1.29 — School & Home Education Foundation** — keeps the V1.28 local-voice and child-safety boundaries, adds Republic of Ireland curriculum starter mapping, and introduces local prototype role views for teachers, school leaders, health visitors/family support and home educators.
 
 ## V1.29 now working locally — School & Home Education Foundation
