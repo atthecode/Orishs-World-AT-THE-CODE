@@ -1111,7 +1111,7 @@
 
 
           <section class="control-card wide release-readiness-card">
-            <div class="section-row"><div><p class="eyebrow">V1 RELEASE READINESS</p><h3>App & device readiness</h3><p>Checks this browser/device without analytics or sending device details anywhere.</p></div><span id="releaseVersion" class="safe-pill">V1.29</span></div>
+            <div class="section-row"><div><p class="eyebrow">V1 RELEASE READINESS</p><h3>App & device readiness</h3><p>Checks this browser/device without analytics or sending device details anywhere.</p></div><span id="releaseVersion" class="safe-pill">V1.30</span></div>
             <div class="release-readiness-grid">
               <div class="readiness-stat"><small>Connection</small><strong id="networkStatus">Checking…</strong></div>
               <div class="readiness-stat"><small>App mode</small><strong id="displayModeStatus">Browser tab</strong></div>
@@ -1204,6 +1204,38 @@
             <p class="privacy-note"><strong>Prototype boundary:</strong> these local role views are not production identity or school authorization. Real school/service use requires verified adult accounts, server-side role permissions, secure organisation boundaries and safeguarding/privacy review.</p>
           </section>
 
+          <section class="control-card wide">
+            <div class="section-row">
+              <div><h3>Adaptive printable worksheets</h3><p>Creates a different local worksheet from the child’s age band, framework and recent scored learning evidence.</p></div>
+              <span class="safe-pill">V1.30 adaptive print</span>
+            </div>
+            <div class="two-col">
+              <label for="worksheetSubject">Worksheet
+                <select id="worksheetSubject">
+                  <option value="mixed">Mixed learning</option>
+                  <option value="literacy">Reading & literacy</option>
+                  <option value="maths">Maths</option>
+                </select>
+              </label>
+              <label for="worksheetPrintMode">Print style
+                <select id="worksheetPrintMode">
+                  <option value="colour">Colour</option>
+                  <option value="bw">Black & white / ink saver</option>
+                </select>
+              </label>
+            </div>
+            <div class="form-actions">
+              <button id="generateWorksheet" class="primary-button" type="button">Generate worksheet</button>
+              <button id="printWorksheet" class="ghost-button" type="button" disabled>Print worksheet</button>
+            </div>
+            <p id="worksheetStatus" class="gate-status" aria-live="polite"></p>
+            <div id="worksheetPreview" class="curriculum-preview">
+              <strong>No worksheet generated yet</strong>
+              <p>The engine will use recent scored practice when available. Low confidence produces shorter supported practice; strong confidence can unlock a stretch sheet.</p>
+            </div>
+            <p class="privacy-note">Personalised worksheet generation stays local in this prototype. Health-visitor/family-support and leadership role previews do not use a child’s Learning Passport to personalise a sheet.</p>
+          </section>
+
           <section class="control-card">
             <h3>Private back channel</h3>
             <p>Tell Orish what you want the active child to practise. The child-facing version never quotes this private wording.</p>
@@ -1289,12 +1321,13 @@
 
     <footer>
       <strong>Orish's World @ THE CODE</strong>
-      <span>V1.29 school & home education foundation • self-hosted voice gateway architecture • no paid AI dependency • no advertising • <strong id="footerConnectionStatus">checking connection</strong></span>
+      <span>V1.30 adaptive worksheets • self-hosted voice gateway architecture • no paid AI dependency • no advertising • <strong id="footerConnectionStatus">checking connection</strong></span>
     </footer>
   </div>
   <script src="modules/security-store.js" defer></script>
   <script src="modules/curriculum-engine.js" defer></script>
   <script src="modules/school-support-engine.js" defer></script>
+  <script src="modules/worksheet-engine.js" defer></script>
   <script src="modules/age-game-engine.js" defer></script>
   <script src="modules/rewards-engine.js" defer></script>
   <script src="modules/profile-ui.js" defer></script>
