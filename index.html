@@ -1111,7 +1111,7 @@
 
 
           <section class="control-card wide release-readiness-card">
-            <div class="section-row"><div><p class="eyebrow">V1 RELEASE READINESS</p><h3>App & device readiness</h3><p>Checks this browser/device without analytics or sending device details anywhere.</p></div><span id="releaseVersion" class="safe-pill">V1.28</span></div>
+            <div class="section-row"><div><p class="eyebrow">V1 RELEASE READINESS</p><h3>App & device readiness</h3><p>Checks this browser/device without analytics or sending device details anywhere.</p></div><span id="releaseVersion" class="safe-pill">V1.29</span></div>
             <div class="release-readiness-grid">
               <div class="readiness-stat"><small>Connection</small><strong id="networkStatus">Checking…</strong></div>
               <div class="readiness-stat"><small>App mode</small><strong id="displayModeStatus">Browser tab</strong></div>
@@ -1148,7 +1148,7 @@
                 <select id="profileAge"><option value="0-2">0–2</option><option value="2-4">2–4</option><option value="4-6">4–6</option><option value="7-9" selected>7–9</option><option value="10-12">10–12</option><option value="13-16">13–16</option></select>
               </label>
               <label for="curriculumRegion">Learning framework
-                <select id="curriculumRegion"><option value="england">England</option><option value="scotland">Scotland</option><option value="wales">Wales</option><option value="ni">Northern Ireland</option><option value="us">US starter mapping</option><option value="custom">Flexible homeschool</option></select>
+                <select id="curriculumRegion"><option value="england">England</option><option value="scotland">Scotland</option><option value="wales">Wales</option><option value="ni">Northern Ireland</option><option value="ireland">Republic of Ireland</option><option value="us">US starter mapping</option><option value="custom">Flexible homeschool</option></select>
               </label>
             </div>
             <label for="routineGoal">Current focus</label>
@@ -1166,6 +1166,42 @@
           <section class="control-card">
             <div class="section-row"><div><h3>Family profiles</h3><p>Switch which child Orish adapts to.</p></div><span id="profileCount" class="safe-pill">0 profiles</span></div>
             <div id="profileList" class="profile-list"><div class="empty-evidence">No profiles yet.</div></div>
+          </section>
+
+          <section class="control-card wide">
+            <div class="section-row">
+              <div><h3>School & home education</h3><p>Prototype role views built on the existing Learning Passport without opening private parent notes.</p></div>
+              <span class="safe-pill">V1.29 foundation</span>
+            </div>
+            <div class="two-col">
+              <label for="schoolSettingType">Setting
+                <select id="schoolSettingType">
+                  <option value="school">School</option>
+                  <option value="home">Home education</option>
+                  <option value="family-support">Family support service</option>
+                </select>
+              </label>
+              <label for="schoolSupportRole">Adult role
+                <select id="schoolSupportRole">
+                  <option value="teacher">Teacher</option>
+                  <option value="headteacher">Headteacher / school leader</option>
+                  <option value="deputy">Deputy head / school leader</option>
+                  <option value="healthVisitor">Health visitor / family support</option>
+                  <option value="homeEducator">Home educator</option>
+                </select>
+              </label>
+            </div>
+            <label for="schoolSupportOrganisation">School / service name <span>prototype label only</span></label>
+            <input id="schoolSupportOrganisation" type="text" maxlength="80" placeholder="Optional local label">
+            <div class="form-actions">
+              <button id="saveSchoolSupport" class="primary-button" type="button">Save local role setup</button>
+            </div>
+            <p id="schoolSupportStatus" class="gate-status" aria-live="polite"></p>
+            <div id="schoolSupportSummary" class="curriculum-preview">
+              <strong>School support not configured yet</strong>
+              <p>Choose a role to preview the correct data boundary.</p>
+            </div>
+            <p class="privacy-note"><strong>Prototype boundary:</strong> these local role views are not production identity or school authorization. Real school/service use requires verified adult accounts, server-side role permissions, secure organisation boundaries and safeguarding/privacy review.</p>
           </section>
 
           <section class="control-card">
@@ -1253,11 +1289,12 @@
 
     <footer>
       <strong>Orish's World @ THE CODE</strong>
-      <span>V1.28 local-voice runtime • self-hosted voice gateway architecture • no paid AI dependency • no advertising • <strong id="footerConnectionStatus">checking connection</strong></span>
+      <span>V1.29 school & home education foundation • self-hosted voice gateway architecture • no paid AI dependency • no advertising • <strong id="footerConnectionStatus">checking connection</strong></span>
     </footer>
   </div>
   <script src="modules/security-store.js" defer></script>
   <script src="modules/curriculum-engine.js" defer></script>
+  <script src="modules/school-support-engine.js" defer></script>
   <script src="modules/age-game-engine.js" defer></script>
   <script src="modules/rewards-engine.js" defer></script>
   <script src="modules/profile-ui.js" defer></script>
