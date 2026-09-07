@@ -5,6 +5,7 @@
   const Store = window.OrishSecurityStore;
   const Curriculum = window.OrishCurriculum;
   const SchoolSupport = window.OrishSchoolSupport;
+  const Worksheets = window.OrishWorksheets;
   const AgeGames = window.OrishAgeGames;
   const Rewards = window.OrishRewards;
   const ProfileUI = window.OrishProfileUI;
@@ -143,6 +144,7 @@
   let cookTimerInterval = null;
   let selectedGoodNewsCategory = 'All';
   let currentGoodNewsStoryId = null;
+  let currentWorksheet = null;
 
   function show(id) {
     if (id !== 'avatarPanel') stopAvatarAutoSpin();
@@ -1326,6 +1328,110 @@
     });
     $('schoolSupportStatus').textContent = `${SchoolSupport.getRole(config.role).label} prototype view saved locally.`;
     renderSchoolSupport();
+  }
+
+  function renderWorksheetPreview(sheet) {
+    const box = $('worksheetPreview');
+    if (!box) return;
+    box.innerHTML = '';
+    if (!sheet) {
+      const strong = document.createElement('strong');
+      strong.textContent = 'No worksheet generated yet';
+      const p = document.createElement('p');
+      p.textContent = 'Generate a worksheet to preview its adaptive level and activities.';
+      box.append(strong,p);
+      return;
+    }
+
+    const title = document.createElement('strong');
+    title.textContent = `${sheet.nickname} • ${sheet.title}`;
+    const meta = document.createElement('p');
+    const accuracy = Number.isFinite(sheet.progress?.accuracy) ? ` • recent scored accuracy ${Math.round(sheet.progress.accuracy * 100)}%` : '';
+    meta.textContent = `${sheet.framework} • Age ${sheet.ageBand} • ${sheet.levelLabel}${accuracy}`;
+    const intro = document.createElement('p');
+    intro.textContent = sheet.introduction;
+    box.append(title, meta, intro);
+
+    sheet.items.forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'curriculum-row';
+      const number = document.createElement('b');
+      number.textContent = item.area ? `${item.number}. ${item.area}` : `${item.number}.`;
+      const text = document.createElement('span');
+      text.textContent = item.prompt;
+      row.append(number,text);
+      box.appendChild(row);
+    });
+
+    const note = document.createElement('p');
+    note.className = 'privacy-note';
+    note.textContent = 'The printable version includes answer space and a grown-up/teacher answer guide on a separate page.';
+    box.appendChild(note);
+  }
+
+  function generateAdaptiveWorksheet() {
+    if (!Worksheets) return;
+    const config = SchoolSupport?.getConfig?.() || { role:'homeEducator' };
+    const restricted = ['healthVisitor','headteacher','deputy'].includes(config.role);
+    const active = Store.getActiveProfile();
+
+    if (!restricted && !active) {
+      $('worksheetStatus').textContent = 'Create or select a child profile first.';
+      currentWorksheet = null;
+      $('printWorksheet').disabled = true;
+      renderWorksheetPreview(null);
+      return;
+    }
+
+    const profile = restricted
+      ? {
+          nickname: config.role === 'healthVisitor' ? 'Family Explorer' : 'Sample Explorer',
+          ageBand: '7-9',
+          curriculum: 'custom',
+          interests: ['Learning']
+        }
+      : active;
+    const evidence = restricted ? [] : Store.getEvidence(active.id);
+
+    currentWorksheet = Worksheets.createWorksheet({
+      profile,
+      evidence,
+      subject: $('worksheetSubject').value,
+      printMode: $('worksheetPrintMode').value
+    });
+
+    renderWorksheetPreview(currentWorksheet);
+    $('printWorksheet').disabled = false;
+
+    if (restricted) {
+      $('worksheetStatus').textContent = config.role === 'healthVisitor'
+        ? 'Generated a general family-support worksheet without using any child Learning Passport data.'
+        : 'Generated a generic leadership sample worksheet without using an individual child record.';
+    } else {
+      const progress = currentWorksheet.progress;
+      $('worksheetStatus').textContent = progress.scoredCount
+        ? `Generated from ${progress.scoredCount} recent scored learning record${progress.scoredCount===1?'':'s'}: ${currentWorksheet.levelLabel}.`
+        : `No recent scored evidence was available, so ${currentWorksheet.levelLabel.toLowerCase()} was used from the age/framework profile.`;
+    }
+  }
+
+  function printAdaptiveWorksheet() {
+    if (!currentWorksheet || !Worksheets) {
+      $('worksheetStatus').textContent = 'Generate a worksheet first.';
+      return;
+    }
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      $('worksheetStatus').textContent = 'The print window was blocked. Allow pop-ups for this app, then try Print worksheet again.';
+      return;
+    }
+    printWindow.document.open();
+    printWindow.document.write(Worksheets.toPrintableHTML(currentWorksheet));
+    printWindow.document.close();
+    printWindow.focus();
+    window.setTimeout(() => {
+      try { printWindow.print(); } catch {}
+    }, 250);
   }
 
   function renderEvidence() {
@@ -3420,6 +3526,14 @@
   $('saveProfile').addEventListener('click', saveProfileFromForm);
   $('newProfile').addEventListener('click', resetProfileForm);
   $('saveSchoolSupport').addEventListener('click', saveSchoolSupportSettings);
+  $('generateWorksheet').addEventListener('click', generateAdaptiveWorksheet);
+  $('printWorksheet').addEventListener('click', printAdaptiveWorksheet);
+  $('worksheetPrintMode').addEventListener('change', () => {
+    if (currentWorksheet) {
+      currentWorksheet = {...currentWorksheet, printMode:$('worksheetPrintMode').value};
+      renderWorksheetPreview(currentWorksheet);
+    }
+  });
   $('makeMission').addEventListener('click', makeMission);
   $('saveRoutines').addEventListener('click', saveRoutinesFromParent);
   $('saveKitchenSetup').addEventListener('click', saveKitchenFromParent);
