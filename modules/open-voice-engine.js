@@ -248,3 +248,16 @@
     getGateway
   };
 })();
+
+// Load the optional hosted live-AI layer separately from the local voice engine.
+// It uses capture-phase listeners and therefore does not replace the existing
+// local Orish routing; when unavailable, the original app behaviour continues.
+(() => {
+  if (document.querySelector('script[data-orish-live-ai]')) return;
+  const script = document.createElement('script');
+  script.src = './modules/live-ai-client.js';
+  script.async = true;
+  script.dataset.orishLiveAi = 'true';
+  script.addEventListener('error', () => { /* Local Orish remains the fallback. */ }, { once: true });
+  document.head.appendChild(script);
+})();
