@@ -1,6 +1,16 @@
 # Orish’s World @ THE CODE
 
-**Current prototype: V1.28 — Local Voice Runtime** — keeps the V1.27 parent-controlled voice boundary and adds a practical self-hosted runtime path: a `whisper.cpp` STT adapter, a local Kokoro TTS adapter, private runtime setup/start scripts, model/runtime Git exclusions, a readiness doctor and an end-to-end adapter contract test. The child route still goes through Orish’s approved learning router rather than directly into an unrestricted LLM.
+**Current prototype: V1.29 — School & Home Education Foundation** — keeps the V1.28 local-voice and child-safety boundaries, adds Republic of Ireland curriculum starter mapping, and introduces local prototype role views for teachers, school leaders, health visitors/family support and home educators.
+
+## V1.29 now working locally — School & Home Education Foundation
+
+- Adds **Republic of Ireland** as a curriculum option using Primary Curriculum Framework / redeveloped curriculum starter tags.
+- Republic of Ireland money examples use **€** and legal-literacy prompts use a Republic-of-Ireland jurisdiction warning rather than UK wording.
+- Adds a Parent Studio **School & home education** section with local prototype roles for Teacher, Headteacher / school leader, Deputy head / school leader, Health visitor / family support and Home educator.
+- Headteacher/deputy views are **aggregate-only** in this prototype.
+- Teacher view is limited to the currently active/assigned child profile.
+- Health visitor/family-support view intentionally exposes **no child reading scores, Learning Passport records, private parent requests or school-performance data**.
+- These role views are not production authentication or authorisation. Real school/service use still requires verified adult accounts, server-side role permissions, secure organisation boundaries and formal safeguarding/privacy review.
 
 ## V1.28 now working locally — Local Voice Runtime
 
@@ -75,7 +85,7 @@ The £0 prototype remains fully local: no paid model, no external AI request, no
 - local child profiles with minimal information only;
 - private Parent Studio with a local adult PIN gate;
 - active-profile switching for families;
-- curriculum framework starter mapping for England, Scotland, Wales, Northern Ireland, US starter tags and flexible homeschool;
+- curriculum framework starter mapping for England, Scotland, Wales, Northern Ireland, Republic of Ireland, US starter tags and flexible homeschool;
 - Parent Studio private back channel that creates a child-facing mission without quoting the adult's wording;
 - Mission HQ with playable parent-created missions and non-graded Learning Passport evidence;
 - configurable Morning Launch and Night Landing routines with positive, non-punitive step tracking;
