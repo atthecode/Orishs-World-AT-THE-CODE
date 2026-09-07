@@ -52,11 +52,11 @@
     if(curriculum==='us') return 'US learning mode: laws vary by federal, state and local jurisdiction. These are general educational examples, not legal advice.';
     return 'General learning mode: laws differ by jurisdiction. These examples teach reasoning, not personalised legal advice.';
   }
-  function currencySymbol(curriculum){if(curriculum==='us')return '
-
-  window.OrishLifeSkills={list,get,jurisdictionNote,currencySymbol,ageMeta};
-})();
-;if(curriculum==='ireland')return '€';return '£';}
+  function currencySymbol(curriculum){
+    if(curriculum==='us') return '$';
+    if(curriculum==='ireland') return '€';
+    return '£';
+  }
 
   window.OrishLifeSkills={list,get,jurisdictionNote,currencySymbol,ageMeta};
 })();
